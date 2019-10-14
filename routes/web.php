@@ -11,10 +11,9 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Auth::routes();
+Route::group(['namespace' => 'Auth'], function() {
+	Route::get('/', 'LoginController@index')->name('login.index');
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
