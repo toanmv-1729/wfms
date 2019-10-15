@@ -39,6 +39,11 @@ class LoginController extends Controller
 
     public function index()
     {
-        return view('layouts.app');
+        return redirect()->route('login');
+    }
+
+    public function showLoginForm()
+    {
+        return view('auth.index');
     }
 }
