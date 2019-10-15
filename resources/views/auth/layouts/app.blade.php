@@ -11,48 +11,29 @@
     <title>Work Flow Management System 2019</title>
     <link href="{{ asset('vendor/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     @stack('css')
-
-    <link href="{{ asset('vendor/plugins/chartist-js/dist/chartist.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/plugins/chartist-js/dist/chartist-init.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/plugins/css-chart/css-chart.css') }}" rel="stylesheet">
-
-    <link href="{{ asset('vendor/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" />
-
     <link href="{{ asset('vendor/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/css/colors/blue.css') }}" id="theme" rel="stylesheet">
 </head>
 
-<body class="fix-header fix-sidebar card-no-border logo-center">
+<body>
     <div class="preloader">
         <svg class="circular" viewBox="25 25 50 50">
-            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
     </div>
-    <div id="main-wrapper">
-        @include('layouts.header')
-
-        @include('layouts.sidebar')
-
-        <div class="page-wrapper">
-            @yield('content')
-            @include('layouts.footer')
-        </div>
-    </div>
+    @yield('content')
+    
     <script src="{{ asset('vendor/plugins/jquery/jquery.min.js') }}"></script>
-
     <script src="{{ asset('vendor/plugins/bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ asset('vendor/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
-
+    @stack('js')
     <script src="{{ asset('vendor/js/jquery.slimscroll.js') }}"></script>
     <script src="{{ asset('vendor/js/waves.js') }}"></script>
     <script src="{{ asset('vendor/js/sidebarmenu.js') }}"></script>
-
     <script src="{{ asset('vendor/plugins/sticky-kit-master/dist/sticky-kit.min.js') }}"></script>
-
     <script src="{{ asset('vendor/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
-
     <script src="{{ asset('vendor/js/custom.min.js') }}"></script>
-    @stack('js')
+    <script src="{{ asset('vendor/plugins/styleswitcher/jQuery.style.switcher.js') }}"></script>
 </body>
 
 </html>
