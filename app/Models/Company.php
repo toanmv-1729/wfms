@@ -10,11 +10,11 @@ class Company extends Model
     use SoftDeletes;
 
     protected $fillable = [
-    	'name',
+        'name',
     ];
 
     public function users()
     {
-    	return $this->hasMany(User::class);
+        return $this->hasMany(User::class);
     }
 }

@@ -13,7 +13,11 @@
 
 Auth::routes();
 Route::group(['namespace' => 'Auth'], function() {
-	Route::get('/', 'LoginController@index')->name('login.index');
+    Route::get('/', 'LoginController@index')->name('login.index');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group([ 'middleware' => ['auth']], function() {
+    Route::get('/companies', 'HomeController@index')->name('home');
+
+    Route::post('/companies', 'CompanyController@store')->name('company.store');
+});
