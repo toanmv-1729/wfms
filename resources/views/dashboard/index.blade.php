@@ -38,7 +38,43 @@
         </div>
     </div>
     <div class="row">
-    	<h1>DASHBOARD</h1>
+        <h1>DASHBOARD</h1>
+        <div class="modal fade" id="createCompanyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel1">Create New Company</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal form-material" method="POST" action="{{ route('company.store') }}">
+                            @csrf
+                            <div class="form-group">
+                                <div class="col-md-12 m-b-20">
+                                    <label for="recipient-name" class="control-label">Name:</label>
+                                    <input type="text" name="name" class="form-control" placeholder="Company Name">
+                                </div>
+                                <div class="col-md-12 m-b-20">
+                                    <label for="recipient-name" class="control-label">Image: </label>
+                                    <div class="fileupload btn btn-success btn-rounded waves-effect waves-light">
+                                        <span>
+                                            <i class="fa fa-link"></i>
+                                        </span>
+                                        <input type="file" onchange="loadFile(event)" accept="image/*" name="image" class="upload">
+                                        <br>
+                                    </div>
+                                    <img id="output" style="width: 100%;">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="right-sidebar">
         <div class="slimscrollright">
@@ -94,4 +130,10 @@
 @endsection
 
 @push('js')
+<script>
+    var loadFile = function(event) {
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>
 @endpush

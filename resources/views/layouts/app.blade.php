@@ -20,7 +20,7 @@
     <link href="{{ asset('vendor/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" />
 
     <link href="{{ asset('vendor/css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/css/colors/blue.css') }}" id="theme" rel="stylesheet">
+    <link href="{{ asset('vendor/css/colors/green.css') }}" id="theme" rel="stylesheet">
 </head>
 
 <body class="fix-header fix-sidebar card-no-border logo-center">
@@ -31,7 +31,11 @@
     <div id="main-wrapper">
         @include('layouts.header')
 
-        @include('layouts.sidebar')
+        @if(auth()->user()->is_admin)
+            @include('layouts.admin_sidebar')
+        @else
+            @include('layouts.sidebar')
+        @endif
 
         <div class="page-wrapper">
             @yield('content')
