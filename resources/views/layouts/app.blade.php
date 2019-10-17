@@ -10,7 +10,6 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon.png') }}">
     <title>Work Flow Management System 2019</title>
     <link href="{{ asset('vendor/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    @stack('css')
 
     <link href="{{ asset('vendor/plugins/chartist-js/dist/chartist.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/plugins/chartist-js/dist/chartist-init.css') }}" rel="stylesheet">
@@ -21,6 +20,8 @@
 
     <link href="{{ asset('vendor/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/css/colors/green.css') }}" id="theme" rel="stylesheet">
+    @toastr_css
+    @stack('css')
 </head>
 
 <body class="fix-header fix-sidebar card-no-border logo-center">
@@ -56,6 +57,18 @@
     <script src="{{ asset('vendor/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
 
     <script src="{{ asset('vendor/js/custom.min.js') }}"></script>
+    @toastr_js
+    @toastr_render
+    <script>
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error('{{ $error }}','Error',{
+                    closeButton:true,
+                    progressBar:true,
+                });
+            @endforeach
+        @endif
+    </script>
     @stack('js')
 </body>
 

@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/companies';
 
     /**
      * Create a new controller instance.
@@ -45,5 +45,18 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('auth.index');
+    }
+
+    /**
+     * Update login time
+     *
+     * @param User $user
+     * @return void
+     */
+    private function updateLoginTime(User $user): void
+    {
+        $user->update([
+            'last_login_time' => Carbon::now(),
+        ]);
     }
 }
