@@ -17,7 +17,6 @@ Route::group(['namespace' => 'Auth'], function() {
 });
 
 Route::group([ 'middleware' => ['auth']], function() {
-    Route::get('/companies', 'HomeController@index')->name('home');
-
+    Route::get('/companies', 'CompanyController@index')->name('company.index');
     Route::post('/companies', 'CompanyController@store')->name('company.store');
 });

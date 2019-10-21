@@ -17,4 +17,9 @@ class Company extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function userCompany()
+    {
+        return $this->users()->where('user_type', 'company')->first();
+    }
 }

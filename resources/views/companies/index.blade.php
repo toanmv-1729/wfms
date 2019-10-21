@@ -8,10 +8,10 @@
     <div class="row page-titles">
         <div class="col-md-5 col-8 align-self-center">
             <h3 class="text-themecolor">Dashboard</h3>
-            <ol class="breadcrumb">
+            {{-- <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
                 <li class="breadcrumb-item active">Dashboard3</li>
-            </ol>
+            </ol> --}}
         </div>
         <div class="col-md-7 col-4 align-self-center">
             <div class="d-flex m-t-10 justify-content-end">
@@ -38,7 +38,6 @@
         </div>
     </div>
     <div class="row">
-        <h1>DASHBOARD</h1>
         <div class="modal fade" id="createCompanyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -47,7 +46,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal form-material" method="POST" action="{{ route('company.store') }}">
+                        <form class="form-horizontal form-material" enctype="multipart/form-data" method="POST" action="{{ route('company.store') }}">
                             @csrf
                             <div class="form-group">
                                 <div class="col-md-12 m-b-20">
@@ -71,6 +70,49 @@
                                 <button type="submit" class="btn btn-primary">Create</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Data Company</h4>
+                    <h6 class="card-subtitle">Export data to Copy, CSV, Excel, PDF & Print</h6>
+                    <div class="table-responsive m-t-40">
+                        <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Image</th>
+                                    <th>Last Login Time</th>
+                                    <th>Employees</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($companies as $key => $company)
+                                <tr>
+                                    <td>{{ $company->users[0]->name }}</td>
+                                    <td>{{ $company->users[0]->email }}</td>
+                                    <td>
+                                        <img src="{{ asset(storage_url($company->users[0]->media[0]->preview_path ?? null)) }}" alt="Company Image">
+                                    </td>
+                                    <td>{{ $company->users[0]->last_login_time ?? '-' }}</td>
+                                    <td>{{ $company->users->count() }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-icon btn-success" data-toggle="tooltip" data-original-title="Edit" aria-describedby="tooltip190692">
+                                            <i class="ti-pencil-alt" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-icon btn-danger" data-toggle="tooltip" data-original-title="Delete" aria-describedby="tooltip190692">
+                                            <i class="ti-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -130,10 +172,68 @@
 @endsection
 
 @push('js')
-<script>
-    var loadFile = function(event) {
-        var output = document.getElementById('output');
-        output.src = URL.createObjectURL(event.target.files[0]);
-    };
-</script>
+    <script>
+        var loadFile = function(event) {
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+        };
+    </script>
+
+    <script src="{{ asset('vendor/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+
+    <script src="{{ asset('vendor/js/dataTables/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('vendor/js/dataTables/buttons.flash.min.js') }}"></script>
+    <script src="{{ asset('vendor/js/dataTables/jszip.min.js') }}"></script>
+    <script src="{{ asset('vendor/js/dataTables/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('vendor/js/dataTables/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('vendor/js/dataTables/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('vendor/js/dataTables/buttons.print.min.js') }}"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('#myTable').DataTable();
+        $(document).ready(function() {
+            var table = $('#example').DataTable({
+                "columnDefs": [{
+                    "visible": false,
+                    "targets": 2
+                }],
+                "order": [
+                    [2, 'asc']
+                ],
+                "displayLength": 25,
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    var rows = api.rows({
+                        page: 'current'
+                    }).nodes();
+                    var last = null;
+                    api.column(2, {
+                        page: 'current'
+                    }).data().each(function(group, i) {
+                        if (last !== group) {
+                            $(rows).eq(i).before('<tr class="group"><td colspan="5">' + group + '</td></tr>');
+                            last = group;
+                        }
+                    });
+                }
+            });
+            // Order by the grouping
+            $('#example tbody').on('click', 'tr.group', function() {
+                var currentOrder = table.order()[0];
+                if (currentOrder[0] === 2 && currentOrder[1] === 'asc') {
+                    table.order([2, 'desc']).draw();
+                } else {
+                    table.order([2, 'asc']).draw();
+                }
+            });
+        });
+    });
+    $('#example23').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
+    </script>
 @endpush
