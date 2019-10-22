@@ -32,9 +32,7 @@
     <div id="main-wrapper">
         @include('layouts.header')
 
-        @if(auth()->user()->is_admin)
-            @include('layouts.admin_sidebar')
-        @else
+        @if(!auth()->user()->is_admin)
             @include('layouts.sidebar')
         @endif
 

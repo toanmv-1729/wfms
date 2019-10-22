@@ -39,4 +39,29 @@ class CompanyController extends Controller
 
         return redirect()->route('company.index');
     }
+
+    public function update()
+    {
+        //
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $company = $this->companyRepository->find($id);
+        if (!$this->user || !$this->user->is_admin) {
+            toastr()->error('You are not authorized to access this action');
+
+            return redirect()->route('company.index');
+        } elseif (!$company) {
+            toastr()->error('Company not exists');
+
+            return redirect()->route('company.index');
+        } else {
+            $company->users()->delete();
+            $company->delete();
+            toastr()->success('Company successfully deleted');
+
+            return redirect()->route('company.index');
+        }
+    }
 }
