@@ -19,4 +19,5 @@ Route::group(['namespace' => 'Auth'], function() {
 Route::group([ 'middleware' => ['auth']], function() {
     Route::get('/companies', 'CompanyController@index')->name('company.index');
     Route::post('/companies', 'CompanyController@store')->name('company.store');
+    Route::delete('/companies/{id}', 'CompanyController@destroy')->name('company.destroy');
 });

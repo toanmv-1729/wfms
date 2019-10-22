@@ -1,17 +1,21 @@
 @extends('layouts.app')
 
 @push('css')
+<style>
+    .page-wrapper {
+        padding-top: 0px;
+    }
+</style>
 @endpush
 
 @section('content')
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 col-8 align-self-center">
-            <h3 class="text-themecolor">Dashboard</h3>
-            {{-- <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                <li class="breadcrumb-item active">Dashboard3</li>
-            </ol> --}}
+            <button class="btn btn-block btn-info" type="button" data-toggle="modal" data-target="#createCompanyModal" style="width: 200px;">
+                <i class="mdi mdi-account-plus"></i>
+                <span>Create New Company</span>
+            </button>
         </div>
         <div class="col-md-7 col-4 align-self-center">
             <div class="d-flex m-t-10 justify-content-end">
@@ -105,9 +109,20 @@
                                         <button type="button" class="btn btn-sm btn-icon btn-success" data-toggle="tooltip" data-original-title="Edit" aria-describedby="tooltip190692">
                                             <i class="ti-pencil-alt" aria-hidden="true"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-icon btn-danger" data-toggle="tooltip" data-original-title="Delete" aria-describedby="tooltip190692">
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-icon btn-danger"
+                                            data-toggle="tooltip"
+                                            data-original-title="Delete"
+                                            aria-describedby="tooltip190692"
+                                            onclick="destroyCompany({{ $company->id }})"
+                                        >
                                             <i class="ti-trash" aria-hidden="true"></i>
                                         </button>
+                                        <form id="delete-form-{{ $company->id }}" action="{{ route('company.destroy', $company->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -115,56 +130,6 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="right-sidebar">
-        <div class="slimscrollright">
-            <div class="rpanel-title"> Service Panel <span><i class="ti-close right-side-toggle"></i></span> </div>
-            <div class="r-panel-body">
-                <ul id="themecolors" class="m-t-20">
-                    <li><b>With Light sidebar</b></li>
-                    <li><a href="javascript:void(0)" data-theme="default" class="default-theme">1</a></li>
-                    <li><a href="javascript:void(0)" data-theme="green" class="green-theme">2</a></li>
-                    <li><a href="javascript:void(0)" data-theme="red" class="red-theme">3</a></li>
-                    <li><a href="javascript:void(0)" data-theme="blue" class="blue-theme working">4</a></li>
-                    <li><a href="javascript:void(0)" data-theme="purple" class="purple-theme">5</a></li>
-                    <li><a href="javascript:void(0)" data-theme="megna" class="megna-theme">6</a></li>
-                    <li class="d-block m-t-30"><b>With Dark sidebar</b></li>
-                    <li><a href="javascript:void(0)" data-theme="default-dark" class="default-dark-theme">7</a></li>
-                    <li><a href="javascript:void(0)" data-theme="green-dark" class="green-dark-theme">8</a></li>
-                    <li><a href="javascript:void(0)" data-theme="red-dark" class="red-dark-theme">9</a></li>
-                    <li><a href="javascript:void(0)" data-theme="blue-dark" class="blue-dark-theme">10</a></li>
-                    <li><a href="javascript:void(0)" data-theme="purple-dark" class="purple-dark-theme">11</a></li>
-                    <li><a href="javascript:void(0)" data-theme="megna-dark" class="megna-dark-theme ">12</a></li>
-                </ul>
-                <ul class="m-t-20 chatonline">
-                    <li><b>Chat option</b></li>
-                    <li>
-                        <a href="javascript:void(0)"><img src="../assets/images/users/1.jpg" alt="user-img" class="img-circle"> <span>Varun Dhavan <small class="text-success">online</small></span></a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)"><img src="../assets/images/users/2.jpg" alt="user-img" class="img-circle"> <span>Genelia Deshmukh <small class="text-warning">Away</small></span></a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)"><img src="../assets/images/users/3.jpg" alt="user-img" class="img-circle"> <span>Ritesh Deshmukh <small class="text-danger">Busy</small></span></a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)"><img src="../assets/images/users/4.jpg" alt="user-img" class="img-circle"> <span>Arijit Sinh <small class="text-muted">Offline</small></span></a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)"><img src="../assets/images/users/5.jpg" alt="user-img" class="img-circle"> <span>Govinda Star <small class="text-success">online</small></span></a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)"><img src="../assets/images/users/6.jpg" alt="user-img" class="img-circle"> <span>John Abraham<small class="text-success">online</small></span></a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)"><img src="../assets/images/users/7.jpg" alt="user-img" class="img-circle"> <span>Hritik Roshan<small class="text-success">online</small></span></a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)"><img src="../assets/images/users/8.jpg" alt="user-img" class="img-circle"> <span>Pwandeep rajan <small class="text-success">online</small></span></a>
-                    </li>
-                </ul>
             </div>
         </div>
     </div>
@@ -235,5 +200,39 @@
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
     });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.26.11/dist/sweetalert2.all.min.js"></script>
+    <script type="text/javascript">
+    function destroyCompany(id){
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+        })
+        swalWithBootstrapButtons({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                event.preventDefault();
+                document.getElementById('delete-form-'+id).submit();
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons(
+                    'Cancelled',
+                    'Your data is safe :)',
+                    'error'
+                )
+            }
+        })
+    }
     </script>
 @endpush
