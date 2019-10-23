@@ -18,8 +18,8 @@ class Company extends Model
         return $this->hasMany(User::class);
     }
 
-    public function userCompany()
+    public function media()
     {
-        return $this->users()->where('user_type', 'company')->first();
+        return $this->morphMany(Media::class, 'mediable');
     }
 }

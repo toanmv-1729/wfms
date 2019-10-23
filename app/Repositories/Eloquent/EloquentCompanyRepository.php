@@ -14,6 +14,6 @@ class EloquentCompanyRepository extends EloquentRepository implements CompanyRep
 
     public function getAllWithUsers($columns = ['*'])
     {
-        return $this->model->with(['users', 'users.media'])->get($columns);
+        return $this->model->with(['users', 'media'])->get($columns);
     }
 }

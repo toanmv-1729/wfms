@@ -101,14 +101,14 @@
                                     <td>{{ $company->users[0]->name }}</td>
                                     <td>{{ $company->users[0]->email }}</td>
                                     <td>
-                                        <img src="{{ asset(storage_url($company->users[0]->media[0]->preview_path ?? null)) }}" alt="Company Image">
+                                        <img src="{{ asset(storage_url($company->media[0]->preview_path ?? null)) }}" style="width: 100%;" alt="Company Image">
                                     </td>
                                     <td>{{ $company->users[0]->last_login_time ?? '-' }}</td>
                                     <td>{{ $company->users->count() }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-sm btn-icon btn-success" data-toggle="tooltip" data-original-title="Edit" aria-describedby="tooltip190692">
+                                        {{-- <button type="button" class="btn btn-sm btn-icon btn-success" data-toggle="tooltip" data-original-title="Edit" aria-describedby="tooltip190692">
                                             <i class="ti-pencil-alt" aria-hidden="true"></i>
-                                        </button>
+                                        </button> --}}
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-icon btn-danger"
