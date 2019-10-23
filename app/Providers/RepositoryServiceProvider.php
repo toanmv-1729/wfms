@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Eloquent\EloquentUserRepository;
+use App\Repositories\Eloquent\EloquentRoleRepository;
 use App\Repositories\Eloquent\EloquentCompanyRepository;
 
 use App\Contracts\Repositories\UserRepository;
+use App\Contracts\Repositories\RoleRepository;
 use App\Contracts\Repositories\CompanyRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -18,6 +20,7 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     protected $repositories = [
         UserRepository::class => EloquentUserRepository::class,
+        RoleRepository::class => EloquentRoleRepository::class,
         CompanyRepository::class => EloquentCompanyRepository::class,
     ];
 
