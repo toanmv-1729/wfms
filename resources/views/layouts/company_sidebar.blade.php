@@ -19,14 +19,17 @@
                     </ul>
                 </li>
                 <li>
-                    <a class="has-arrow" href="{{ route('staff.index') }}" aria-expanded="false">
+                    <a class="has-arrow" href="{{ route('roles.index') }}" aria-expanded="false">
                         <i class="mdi mdi-settings"></i>
                         <span class="hide-menu">Roles Management </span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
                         <li>
-                            <a href="index.html">
-                                <i class="mdi mdi-account-settings-variant"></i> Create New Role
+                            <a href="{{ route('roles.index') }}">
+                                <i class="mdi mdi-account-settings-variant"></i> List Roles
+                            </a>
+                            <a href="{{ route('roles.create') }}">
+                                <i class="mdi mdi-database-plus"></i> Create New Role
                             </a>
                         </li>
                     </ul>
