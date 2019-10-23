@@ -38,7 +38,7 @@ class CompanyService
                 'company_id' => $company->id,
             ]);
             try {
-                $this->uploadCompanyImage($userCompany, $data['image']);
+                $this->uploadCompanyImage($company, $data['image']);
                 DB::commit();
             } catch (Exception $exception) {
                 app(ExceptionHandler::class)->report($exception);
@@ -61,20 +61,20 @@ class CompanyService
     }
 
     /**
-     * @param $user
+     * @param $company
      * @param \Illuminate\Http\UploadedFile $backgroundImage
      * @return null|mixed
      */
-    public function uploadCompanyImage($user, $backgroundImage)
+    public function uploadCompanyImage($company, $backgroundImage)
     {
-        $fileName = sprintf('%s-%s', ContentsHelper::getUniqueContentName($user->id), $backgroundImage->hashName());
+        $fileName = sprintf('%s-%s', ContentsHelper::getUniqueContentName($company->id), $backgroundImage->hashName());
         $content = ContentsHelper::storeImageWithPreview(
             $backgroundImage,
             self::IMAGE_DIRECTORY,
             $fileName
         );
 
-        $media = $user->media()->create([
+        $media = $company->media()->create([
             'name' => $backgroundImage->getClientOriginalName(),
             'path' => array_get($content, 'originalContentUrl'),
             'extension' => $backgroundImage->getClientOriginalExtension(),

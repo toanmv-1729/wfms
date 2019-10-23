@@ -27,9 +27,10 @@ class CompanyController extends Controller
 
     public function index()
     {
+        $user = $this->user;
         $companies = $this->companyRepository->getAllWithUsers();
 
-        return view('companies.index', compact('companies'));
+        return view('companies.index', compact('companies', 'user'));
     }
 
     public function store(StoreRequest $request, CompanyService $companyService)
