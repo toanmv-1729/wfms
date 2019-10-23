@@ -32,7 +32,10 @@
     <div id="main-wrapper">
         @include('layouts.header')
 
-        @if(!auth()->user()->is_admin)
+        @if (auth()->user()->is_admin)
+        @elseif(!auth()->user()->is_admin && auth()->user()->user_type === config('user.type.company'))
+            @include('layouts.company_sidebar')
+        @else
             @include('layouts.sidebar')
         @endif
 
