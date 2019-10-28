@@ -10,7 +10,7 @@
         <div class="col-md-5 col-8 align-self-center">
             <h3 class="text-themecolor m-b-0 m-t-0">Create New Role</h3>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('staff.index') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('staffs.index') }}">Home</a></li>
                 <li class="breadcrumb-item active">Create New Role</li>
             </ol>
         </div>
