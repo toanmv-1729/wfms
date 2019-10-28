@@ -29,7 +29,13 @@
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $role->name }}</td>
                                     <td>
-                                        <span class="label label-rounded label-success">TODO</span>
+                                        @if($role->permissions->count())
+                                        @foreach($role->permissions as $permission)
+                                            <span class="label label-rounded label-success">{{ $permission->name }}</span>
+                                        @endforeach
+                                        @else
+                                            <span class="label label-rounded label-warning">NONE</span>
+                                        @endif
                                     </td>
                                     <td>
                                         @if ($role->is_default)
@@ -50,14 +56,9 @@
                                             data-toggle="tooltip"
                                             data-original-title="Delete"
                                             aria-describedby="tooltip190692"
-                                            onclick="destroyRole({{ $role->id }})"
                                         >
                                             <i class="ti-trash" aria-hidden="true"></i>
                                         </button>
-                                        <form id="delete-form-{{ $role->id }}" action="{{ route('roles.destroy', $role->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
                                         @else
                                         <button
                                             type="button"
@@ -65,6 +66,7 @@
                                             data-toggle="tooltip"
                                             data-original-title="Edit"
                                             aria-describedby="tooltip190692"
+                                            onclick="window.location.href='{{ route('roles.edit', $role->id) }}'"
                                         >
                                             <i class="ti-pencil-alt" aria-hidden="true"></i>
                                         </button>
@@ -156,8 +158,9 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.26.11/dist/sweetalert2.all.min.js"></script>
+
     <script type="text/javascript">
-    function destroyRole(id){
+    function destroyRole(id) {
         const swalWithBootstrapButtons = swal.mixin({
             confirmButtonClass: 'btn btn-success',
             cancelButtonClass: 'btn btn-danger',
