@@ -23,9 +23,6 @@ Route::group(['middleware' => ['auth', 'isAdmin']], function() {
 });
 
 Route::group(['middleware' => ['auth', 'isCompany']], function() {
-    Route::get('/staffs', 'StaffController@index')->name('staff.index');
-    Route::post('/staffs', 'StaffController@store')->name('staff.store');
-    Route::delete('/staffs/{id}', 'StaffController@destroy')->name('staff.destroy');
-
+    Route::resource('staffs', 'StaffController');
     Route::resource('roles', 'RoleController');
 });
