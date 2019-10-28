@@ -22,14 +22,22 @@
                     <h4 class="m-b-0 text-white">Create New Role Form</h4>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('roles.store') }}">
+                    <form method="POST" action="{{ route('roles.update', $role->id) }}">
                         @csrf
+                        @method('PUT')
                         <div class="form-body">
                             <div class="row p-t-20">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Name</label>
-                                        <input type="text" id="firstName" name="name" class="form-control" placeholder="Please Input Role's Name">
+                                        <input
+                                            type="text"
+                                            id="firstName"
+                                            name="name"
+                                            class="form-control"
+                                            placeholder="Please Input Role's Name"
+                                            value="{{ $role->name }}"
+                                        >
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -37,7 +45,13 @@
                                         <label class="control-label">Permissions</label>
                                         <select class="select2 m-b-10 select2-multiple" name="permissions[]" style="width: 100%" multiple="multiple" data-placeholder="Choose Permissions...">
                                             @foreach($permissions as $permission)
-                                            <option value="{{ $permission->id }}">{{ $permission->name }}</option>
+                                                <option
+                                                    @foreach($role->permissions as $rolePermission)
+                                                        {{ $rolePermission->id === $permission->id ? 'selected' : ''}}
+                                                    @endforeach
+                                                    value="{{ $permission->id }}">
+                                                    {{ $permission->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
