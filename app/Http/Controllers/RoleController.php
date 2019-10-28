@@ -34,8 +34,23 @@ class RoleController extends Controller
         return view('roles.index', compact('user', 'roles'));
     }
 
+    public function create()
+    {
+        $user = $this->user;
+
+        return view('roles.create', compact('user'));
+    }
+
     public function store(StoreRequest $request)
     {
+        $role = $this->roleRepository->create([
+            'user_id' => $this->user->id,
+            'name' => $request->name,
+        ]);
+        $role->permissions()->attach($request->permissions);
+        toastr()->success('Role Successfully Created');
+
+        return redirect()->route('roles.index');
     }
 
     public function update()
