@@ -8,10 +8,10 @@
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 col-8 align-self-center">
-            <h3 class="text-themecolor m-b-0 m-t-0">Create New Role</h3>
+            <h3 class="text-themecolor m-b-0 m-t-0">Edit Role: {{ $role->name }}</h3>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('staffs.index') }}">Home</a></li>
-                <li class="breadcrumb-item active">Create New Role</li>
+                <li class="breadcrumb-item active">Edit Role: {{ $role->name }}</li>
             </ol>
         </div>
     </div>
@@ -19,7 +19,7 @@
         <div class="col-lg-12">
             <div class="card card-outline-info">
                 <div class="card-header">
-                    <h4 class="m-b-0 text-white">Create New Role Form</h4>
+                    <h4 class="m-b-0 text-white">Edit Role Form</h4>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('roles.update', $role->id) }}">

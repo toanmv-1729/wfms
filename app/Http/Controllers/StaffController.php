@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\Staff\StoreRequest;
+use App\Http\Requests\Staff\UpdateRequest;
 use App\Contracts\Repositories\UserRepository;
 use App\Contracts\Repositories\RoleRepository;
 
@@ -59,11 +60,31 @@ class StaffController extends Controller
         return redirect()->route('staffs.index');
     }
 
-    public function update()
+    public function edit($id)
     {
+        $user = $this->user;
+        $staff = $this->userRepository->findOrFail($id);
+        $roles = $this->roleRepository->getByUserId($user->id);
+
+        return view('staffs.edit', compact('user', 'staff', 'roles'));
+    }
+
+    public function update(UpdateRequest $request, $id)
+    {
+        $staff = $this->userRepository->findOrFail($id);
+        $staff->roles()->sync($request->roles);
+        toastr()->success('Staff Successfully Updated');
+
+        return redirect()->route('staffs.index');
     }
 
     public function destroy(Request $request, $id)
     {
+        $staff = $this->userRepository->findOrFail($id);
+        $staff->roles()->detach();
+        $staff->delete();
+        toastr()->success('Staff Successfully Deleted');
+
+        return redirect()->route('staffs.index');
     }
 }
