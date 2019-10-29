@@ -43,7 +43,7 @@ class LoginController extends Controller
         if ($user->is_admin && $user->user_type === config('user.type.admin')) {
             return redirect()->route('company.index');
         } elseif ($user->user_type === config('user.type.company')) {
-            return redirect()->route('staff.index');
+            return redirect()->route('staffs.index');
         } else {
             dd('TODO');
         }

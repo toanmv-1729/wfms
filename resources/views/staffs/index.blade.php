@@ -58,7 +58,7 @@
                                             data-toggle="tooltip"
                                             data-original-title="Delete"
                                             aria-describedby="tooltip190692"
-                                            onclick="destroyRole({{ $staff->id }})"
+                                            onclick="destroyStaff({{ $staff->id }})"
                                         >
                                             <i class="ti-trash" aria-hidden="true"></i>
                                         </button>
