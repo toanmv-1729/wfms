@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'last_login_time',
         'is_admin',
         'user_type',
         'created_by',
@@ -57,5 +58,10 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class)->withPivot('role_id');
     }
 }

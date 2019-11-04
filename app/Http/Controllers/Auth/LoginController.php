@@ -40,12 +40,15 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+        $user->update([
+            'last_login_time' => now(),
+        ]);
         if ($user->is_admin && $user->user_type === config('user.type.admin')) {
             return redirect()->route('company.index');
         } elseif ($user->user_type === config('user.type.company')) {
             return redirect()->route('staffs.index');
         } else {
-            dd('TODO');
+            return redirect()->route('projects.index');
         }
     }
 

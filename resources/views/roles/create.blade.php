@@ -33,7 +33,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group has-danger">
+                                    <div class="form-group">
                                         <label class="control-label">Permissions</label>
                                         <select class="select2 m-b-10 select2-multiple" name="permissions[]" style="width: 100%" multiple="multiple" data-placeholder="Choose Permissions...">
                                             @foreach($permissions as $permission)

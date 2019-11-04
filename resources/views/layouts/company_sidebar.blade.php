@@ -34,6 +34,22 @@
                         </li>
                     </ul>
                 </li>
+                <li>
+                    <a class="has-arrow" href="{{ route('projects.index') }}" aria-expanded="true">
+                        <i class="mdi mdi-settings"></i>
+                        <span class="hide-menu">Projects Management </span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li>
+                            <a href="{{ route('projects.index') }}">
+                                <i class="mdi mdi-account-settings-variant"></i> List Projects
+                            </a>
+                            <a href="{{ route('projects.create') }}">
+                                <i class="mdi mdi-database-plus"></i> Create New Project
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </div>
