@@ -29,26 +29,24 @@ class StaffController extends Controller
 
     public function index()
     {
-        $user = $this->user;
-        $staffs = $this->userRepository->getStaffInCompany($user->company_id);
+        $staffs = $this->userRepository->getStaffInCompany($this->user->company_id);
 
-        return view('staffs.index', compact('user', 'staffs'));
+        return view('staffs.index', compact('staffs'));
     }
 
     public function create()
     {
-        $user = $this->user;
-        $roles = $this->roleRepository->getByUserId($user->id);
+        $roles = $this->roleRepository->getByUserId($this->user->id);
 
-        return view('staffs.create', compact('user', 'roles'));
+        return view('staffs.create', compact('roles'));
     }
 
     public function store(StoreRequest $request)
     {
         $user = $this->userRepository->create([
             'name' => $request->name,
-            'email' => $request->name,
-            'password' => bcrypt($request->name),
+            'email' => str_slug($request->name, '.'),
+            'password' => bcrypt(str_slug($request->name, '.')),
             'is_admin' => false,
             'user_type' => config('user.type.staff'),
             'created_by' => $this->user->id,
@@ -62,11 +60,10 @@ class StaffController extends Controller
 
     public function edit($id)
     {
-        $user = $this->user;
         $staff = $this->userRepository->findOrFail($id);
-        $roles = $this->roleRepository->getByUserId($user->id);
+        $roles = $this->roleRepository->getByUserId($this->user->id);
 
-        return view('staffs.edit', compact('user', 'staff', 'roles'));
+        return view('staffs.edit', compact('staff', 'roles'));
     }
 
     public function update(UpdateRequest $request, $id)

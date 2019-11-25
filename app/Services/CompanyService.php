@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Media;
 use App\Helpers\ContentsHelper;
 use App\Contracts\Repositories\UserRepository;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use App\Contracts\Repositories\CompanyRepository;
 
 class CompanyService

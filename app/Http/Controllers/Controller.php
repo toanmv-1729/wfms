@@ -20,6 +20,7 @@ class Controller extends BaseController
         $this->repository = $repository;
         $this->middleware(function ($request, $next) {
             $this->user = $request->user($this->getGuard());
+            view()->share('user', $this->user);
             return $next($request);
         });
     }

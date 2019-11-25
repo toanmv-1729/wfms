@@ -33,18 +33,16 @@ class RoleController extends Controller
 
     public function index()
     {
-        $user = $this->user;
-        $roles = $this->roleRepository->getByUserId($user->id);
+        $roles = $this->roleRepository->getByUserId($this->user->id);
 
-        return view('roles.index', compact('user', 'roles'));
+        return view('roles.index', compact('roles'));
     }
 
     public function create()
     {
-        $user = $this->user;
         $permissions = $this->permissionRepository->all(['id', 'name']);
 
-        return view('roles.create', compact('user', 'permissions'));
+        return view('roles.create', compact('permissions'));
     }
 
     public function store(StoreRequest $request)
@@ -61,11 +59,10 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-        $user = $this->user;
         $role = $this->roleRepository->findOrFail($id);
         $permissions = $this->permissionRepository->all(['id', 'name']);
 
-        return view('roles.edit', compact('user', 'role', 'permissions'));
+        return view('roles.edit', compact('role', 'permissions'));
     }
 
     public function update(UpdateRequest $request, $id)
