@@ -23,4 +23,13 @@ class Project extends Model
     {
         return $this->morphMany(Media::class, 'mediable');
     }
+
+    public function getProjectManager()
+    {
+        return $this->users()
+            ->withPivot('role_id')
+            ->join('roles', 'project_user.role_id', '=', 'roles.id')
+            ->where('roles.name', 'Product Owner')
+            ->first();
+    }
 }
