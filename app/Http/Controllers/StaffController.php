@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\Staff\StoreRequest;
 use App\Http\Requests\Staff\UpdateRequest;
-use App\Contracts\Repositories\UserRepository;
 use App\Contracts\Repositories\RoleRepository;
+use App\Contracts\Repositories\UserRepository;
+use App\Contracts\Repositories\ProjectRepository;
 
 class StaffController extends Controller
 {
-    protected $userRepository;
     protected $roleRepository;
+    protected $userRepository;
+    protected $projectRepository;
 
     /**
      * Create a new controller instance.
@@ -19,12 +21,14 @@ class StaffController extends Controller
      * @return void
      */
     public function __construct(
+        RoleRepository $roleRepository,
         UserRepository $userRepository,
-        RoleRepository $roleRepository
+        ProjectRepository $projectRepository
     ) {
         parent::__construct();
-        $this->userRepository = $userRepository;
         $this->roleRepository = $roleRepository;
+        $this->userRepository = $userRepository;
+        $this->projectRepository = $projectRepository;
     }
 
     public function index()
@@ -83,5 +87,29 @@ class StaffController extends Controller
         toastr()->success('Staff Successfully Deleted');
 
         return redirect()->route('staffs.index');
+    }
+
+    public function getMyProjects()
+    {
+        $projects = $this->user
+            ->projects()
+            ->with('media')
+            ->withCount('users')
+            ->paginate(8);
+
+        return view('projects.index', compact('projects'));
+    }
+
+    public function getProjectOverview($slug)
+    {
+        $project = $this->projectRepository->getProjectInfo($slug);
+        $roles = [];
+        foreach ($project->users as $user) {
+            $roleName = $this->roleRepository->findOrFail($user->pivot->role_id)->name;
+            $roles[$roleName] = $roles[$roleName] ?? [];
+            array_push($roles[$roleName], $user);
+        }
+
+        return view('projects.overview', compact('project', 'roles'));
     }
 }

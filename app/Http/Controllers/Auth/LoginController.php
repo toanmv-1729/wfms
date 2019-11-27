@@ -48,7 +48,7 @@ class LoginController extends Controller
         } elseif ($user->user_type === config('user.type.company')) {
             return redirect()->route('staffs.index');
         } else {
-            return redirect()->route('projects.index');
+            return redirect()->route('staffs.my_projects');
         }
     }
 

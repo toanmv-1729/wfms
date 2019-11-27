@@ -9,6 +9,7 @@ class Project extends Model
     protected $fillable = [
         'company_id',
         'name',
+        'slug',
         'description',
         'root_folder_link',
         'repository_link',

@@ -25,8 +25,10 @@ Route::group(['middleware' => ['auth', 'isAdmin']], function() {
 Route::group(['middleware' => ['auth', 'isCompany']], function() {
     Route::resource('staffs', 'StaffController');
     Route::resource('roles', 'RoleController');
+    Route::resource('projects', 'ProjectController');
 });
 
 Route::group(['middleware' => ['auth']], function() {
-    Route::resource('projects', 'ProjectController');
+    Route::get('/my-projects', 'StaffController@getMyProjects')->name('staffs.my_projects');
+    Route::get('/my-projects/{slug}', 'StaffController@getProjectOverview')->name('staffs.my_projects.overview');
 });

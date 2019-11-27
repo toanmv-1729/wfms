@@ -1,1 +1,1 @@
-<footer class="footer"> © 2017 Material Pro Admin by wrappixel.com </footer>
+<footer class="footer"> © 2019 Work Flow Management System Platform </footer>
