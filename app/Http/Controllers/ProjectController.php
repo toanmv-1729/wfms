@@ -34,7 +34,6 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        // TODO paginate projects
         $projects = $this->projectRepository->getInCompany($this->user->company_id);
 
         return view('projects.index', compact('projects'));
