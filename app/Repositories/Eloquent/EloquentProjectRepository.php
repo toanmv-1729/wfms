@@ -18,12 +18,13 @@ class EloquentProjectRepository extends EloquentRepository implements ProjectRep
      * @param array $columns
      * @return Collection
      */
-    public function getInCompany($companyId, $columns = ['*'])
+    public function getInCompany($companyId, $itemPerPage = 1, $columns = ['*'])
     {
         return $this->model
+            ->select($columns)
             ->with('media')
             ->withCount('users')
             ->where('company_id', $companyId)
-            ->get($columns);
+            ->paginate($itemPerPage);
     }
 }

@@ -3,8 +3,12 @@
 @push('css')
     <link href="{{ asset('vendor/plugins/Magnific-Popup-master/dist/magnific-popup.css') }}" rel="stylesheet">
     <style>
-        .test {
+        .project-basic-info {
             margin: 10px 0px -10px auto;
+        }
+        .project-pagination {
+            margin: 0 auto;
+            width: 100px;
         }
     </style>
 @endpush
@@ -23,7 +27,7 @@
                     </div>
                     <div class="el-card-content">
                         <h3 class="box-title">{{ $project->name }}</h3>
-                        <div class="test">
+                        <div class="project-basic-info">
                             <p>Project Manager: {{ $project->getProjectManager()->name }}</p>
                             <p>Contributors: {{ $project->users_count }}</p>
                         </div>
@@ -32,6 +36,9 @@
             </div>
         </div>
         @endforeach
+    </div>
+    <div class="project-pagination">
+        {{ $projects->links() }}
     </div>
 </div>
 @endsection
