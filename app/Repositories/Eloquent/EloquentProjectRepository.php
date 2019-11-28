@@ -15,10 +15,11 @@ class EloquentProjectRepository extends EloquentRepository implements ProjectRep
     /**
      * Get all projects in company
      * @param int $companyId
+     * @param int $itemPerPage
      * @param array $columns
      * @return Collection
      */
-    public function getInCompany($companyId, $itemPerPage = 1, $columns = ['*'])
+    public function getInCompany($companyId, $itemPerPage = 8, $columns = ['*'])
     {
         return $this->model
             ->select($columns)
@@ -26,5 +27,20 @@ class EloquentProjectRepository extends EloquentRepository implements ProjectRep
             ->withCount('users')
             ->where('company_id', $companyId)
             ->paginate($itemPerPage);
+    }
+
+    /**
+     * Get project infomation
+     * @param string $slug
+     * @param array $columns
+     * @return Object
+     */
+    public function getProjectInfo($slug, $columns = ['*'])
+    {
+        return $this->model
+            ->select($columns)
+            ->with('users')
+            ->where('slug', $slug)
+            ->firstOrFail();
     }
 }
