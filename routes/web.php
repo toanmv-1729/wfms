@@ -26,8 +26,8 @@ Route::group(['middleware' => ['auth', 'isCompany']], function() {
     Route::resource('staffs', 'StaffController');
     Route::resource('roles', 'RoleController');
     Route::resource('projects', 'ProjectController');
-    Route::resource('teams', 'TeamController');
-    Route::resource('versions', 'VersionController');
+    Route::post('/teams', 'TeamController@store')->name('team.store');
+    Route::post('/versions', 'VersionController@store')->name('version.store');
 });
 
 Route::group(['middleware' => ['auth']], function() {

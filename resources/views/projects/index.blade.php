@@ -23,7 +23,6 @@
             <div class="card">
                 <div class="el-card-item">
                     <div class="el-card-avatar el-overlay-1">
-                        @if(\Auth::user()->user_type === 'staff')
                         <a href="{{ route('staffs.my_projects.overview', $project->slug) }}">
                             <img
                                 src="{{ asset(storage_url($project->media[0]->preview_path ?? '../img/default-project.jpg')) }}"
@@ -31,13 +30,6 @@
                                 alt="img"
                             />
                         </a>
-                        @else
-                            <img
-                                src="{{ asset(storage_url($project->media[0]->preview_path ?? '../img/default-project.jpg')) }}"
-                                style="height: 180px;"
-                                alt="img"
-                            />
-                        @endif
                     </div>
                     <div class="el-card-content">
                         <h3 class="box-title">{{ $project->name }}</h3>
