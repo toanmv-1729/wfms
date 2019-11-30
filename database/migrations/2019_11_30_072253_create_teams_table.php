@@ -15,6 +15,7 @@ class CreateTeamsTable extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('project_id')->nullable();
             $table->string('name');
             $table->softDeletes();
