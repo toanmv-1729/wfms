@@ -26,9 +26,12 @@ Route::group(['middleware' => ['auth', 'isCompany']], function() {
     Route::resource('staffs', 'StaffController');
     Route::resource('roles', 'RoleController');
     Route::resource('projects', 'ProjectController');
+    Route::resource('teams', 'TeamController');
+    Route::resource('versions', 'VersionController');
 });
 
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/my-projects', 'StaffController@getMyProjects')->name('staffs.my_projects');
     Route::get('/my-projects/{slug}', 'StaffController@getProjectOverview')->name('staffs.my_projects.overview');
+    Route::resource('tickets', 'TicketController');
 });

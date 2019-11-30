@@ -69,7 +69,7 @@
                     <div class="row m-t-30">
                         @foreach($roles as $roleName => $roleHasUsers)
                         <div class="col-md-4 p-r-40">
-                            <h5 class="card-subtitle">{{ $roleName }}</h5>
+                            <h6 class="card-subtitle">{{ $roleName }}</h6>
                             <div class="members-list-border">
                             @foreach($roleHasUsers as $key => $user)
                                 @if ($key === count($roleHasUsers) - 1)
