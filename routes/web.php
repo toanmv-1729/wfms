@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth', 'isCompany']], function() {
 
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/my-projects', 'StaffController@getMyProjects')->name('staffs.my_projects');
-    Route::get('/my-projects/{slug}', 'StaffController@getProjectOverview')->name('staffs.my_projects.overview');
-    Route::resource('tickets', 'TicketController');
+    Route::get('/my-projects/{slug}/overview', 'StaffController@getProjectOverview')->name('staffs.my_projects.overview');
+
+    Route::get('my-projects/{slug}/tickets/create', 'TicketController@create')->name('tickets.create');
 });

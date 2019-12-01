@@ -3,7 +3,7 @@
         <div class="navbar-header">
             <a
                 class="navbar-brand"
-                @if ($user->user_type === 'admin')
+                @if (\Auth::user()->user_type === 'admin')
                     href="{{ route('company.index') }}"
                 @else
                     href="{{ route('staffs.index') }}"
@@ -41,7 +41,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img
-                            src="{{ $user->media->count() ? asset(storage_url($user->media[0]->preview_path)) : '/img/default_avatar.jpg'}}"
+                            src="{{ \Auth::user()->media->count() ? asset(storage_url(\Auth::user()->media[0]->preview_path)) : '/img/default_avatar.jpg'}}"
                             alt="avatar"
                             class="profile-pic"
                         />
@@ -52,14 +52,14 @@
                                 <div class="dw-user-box">
                                     <div class="u-img">
                                         <img
-                                            src="{{ $user->media->count() ? asset(storage_url($user->media[0]->preview_path)) : '/img/default_avatar.jpg'}}"
+                                            src="{{ \Auth::user()->media->count() ? asset(storage_url(\Auth::user()->media[0]->preview_path)) : '/img/default_avatar.jpg'}}"
                                             alt="avatar"
                                         >
                                     </div>
                                     <div class="u-text">
-                                        <h4 title="{{ $user->name }}">{{ str_limit($user->name, 15, '....') }}</h4>
-                                        <p title="{{ $user->email }}" class="text-muted">
-                                            {{ str_limit($user->email, 15, '...') }}
+                                        <h4 title="{{ \Auth::user()->name }}">{{ str_limit(\Auth::user()->name, 15, '....') }}</h4>
+                                        <p title="{{ \Auth::user()->email }}" class="text-muted">
+                                            {{ str_limit(\Auth::user()->email, 15, '...') }}
                                         </p>
                                         <a href="#" class="btn btn-rounded btn-danger btn-sm">
                                             <i class="ti-settings"></i> Account Setting

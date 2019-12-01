@@ -21,13 +21,16 @@ class CreateTicketsTable extends Migration
             $table->unsignedBigInteger('team_id')->nullable();
             $table->unsignedBigInteger('version_id')->nullable();
             $table->unsignedBigInteger('ticket_parent_id')->nullable();
+            $table->unsignedBigInteger('assignee_id')->nullable();
             $table->string('title');
             $table->text('description');
+            $table->integer('tracker');
             $table->integer('status');
             $table->integer('priority');
             $table->date('start_date');
             $table->date('due_date');
             $table->integer('estimated_time');
+            $table->integer('spend_time');
             $table->integer('progress');
 
             $table->softDeletes();
