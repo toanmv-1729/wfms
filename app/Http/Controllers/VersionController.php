@@ -42,7 +42,7 @@ class VersionController extends Controller
     public function store(StoreRequest $request, VersionService $versionService)
     {
         $result = $versionService->store($this->user, $request->all());
-        $result ? toastr()->success('Version Successfully Created') : toastr()->success('Version Created Error');
+        $result ? toastr()->success('Version Successfully Created') : toastr()->error('Version Created Error');
 
         return redirect()->route('staffs.my_projects.overview', $request->slug);
     }

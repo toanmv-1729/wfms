@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\TicketService;
+use App\Http\Requests\Ticket\StoreRequest;
 use App\Contracts\Repositories\TicketRepository;
 use App\Contracts\Repositories\ProjectRepository;
 
@@ -15,6 +17,7 @@ class TicketController extends Controller
         TicketRepository $ticketRepository,
         ProjectRepository $projectRepository
     ) {
+        parent::__construct();
         $this->ticketRepository = $ticketRepository;
         $this->projectRepository = $projectRepository;
     }
@@ -36,7 +39,7 @@ class TicketController extends Controller
      */
     public function create($slug)
     {
-        $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        $project = $this->projectRepository->getProjectInfo($slug);
 
         return view('tickets.create', compact('project'));
     }
@@ -44,12 +47,16 @@ class TicketController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Services\TicketService $ticketService
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request, TicketService $ticketService)
     {
-        //
+        $result = $ticketService->store($this->user, $request->all());
+        $result ? toastr()->success('Ticket Successfully Created') : toastr()->error('Ticket Created Error');
+
+        return redirect()->route('staffs.my_projects.overview', $request->project);
     }
 
     /**

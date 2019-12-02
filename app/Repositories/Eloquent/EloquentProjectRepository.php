@@ -39,7 +39,7 @@ class EloquentProjectRepository extends EloquentRepository implements ProjectRep
     {
         return $this->model
             ->select($columns)
-            ->with('users')
+            ->with(['users', 'tickets', 'teams', 'versions'])
             ->where('slug', $slug)
             ->firstOrFail();
     }
