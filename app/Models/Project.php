@@ -35,6 +35,11 @@ class Project extends Model
         return $this->hasMany(Version::class);
     }
 
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
     public function getProjectManager()
     {
         return $this->users()

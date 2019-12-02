@@ -16,13 +16,16 @@ class Ticket extends Model
         'team_id',
         'version_id',
         'ticket_parent_id',
+        'assignee_id',
         'title',
         'description',
+        'tracker',
         'status',
         'priority',
         'start_date',
         'due_date',
         'estimated_time',
+        'spend_time',
         'progress',
     ];
 

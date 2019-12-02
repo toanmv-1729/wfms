@@ -57,7 +57,7 @@ class TeamController extends Controller
             $team->users()->attach($request->users);
             DB::commit();
         } catch(Exception $exception) {
-            toastr()->success('Team Created Error');
+            toastr()->error('Team Created Error');
             Log::error($exception);
             DB::rollBack();
         }
