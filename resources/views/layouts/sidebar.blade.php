@@ -20,6 +20,18 @@
                     </a>
                 </li>
                 @endif
+                @if (Request::is('tickets/*'))
+                <li>
+                    <a class="{{ Request::is('my-projects/*/tickets/create') ? 'active' : '' }}" href="{{ route('tickets.create', $ticket->project->slug) }}">
+                        <i class="mdi mdi-credit-card-plus"></i>New Ticket
+                    </a>
+                </li>
+                <li>
+                    <a class="{{ Request::is('my-projects/*/overview') ? 'active' : '' }}" href="{{ route('staffs.my_projects.overview', $ticket->project->slug) }}">
+                        <i class="mdi mdi-file-find"></i>Overview
+                    </a>
+                </li>
+                @endif
 
                 @if (Request::is('my-projects/*/tickets'))
                 <li>
@@ -64,6 +76,18 @@
                 @endif
 
                 @if (Request::is('my-projects/*'))
+                <li>
+                    <a class="{{ Request::is('teams') ? 'active' : '' }}" href="#team">
+                        <i class="mdi mdi-github-box"></i>Teams
+                    </a>
+                </li>
+                <li>
+                    <a class="{{ Request::is('versions') ? 'active' : '' }}" href="#version">
+                        <i class="mdi mdi-git"></i>Versions
+                    </a>
+                </li>
+                @endif
+                @if (Request::is('tickets/*'))
                 <li>
                     <a class="{{ Request::is('teams') ? 'active' : '' }}" href="#team">
                         <i class="mdi mdi-github-box"></i>Teams

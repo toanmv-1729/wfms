@@ -30,7 +30,7 @@ class CreateTicketsTable extends Migration
             $table->date('start_date');
             $table->date('due_date');
             $table->integer('estimated_time');
-            $table->integer('spend_time');
+            $table->integer('spend_time')->nullable();
             $table->integer('progress');
 
             $table->softDeletes();

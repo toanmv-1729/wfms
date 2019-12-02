@@ -62,12 +62,19 @@ class TicketController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $ticket = $this->ticketRepository->findOrFail($id);
+        $relationTickets = $this->ticketRepository->getRelationTickets(
+            $ticket->project->id,
+            $id,
+            ['id', 'title', 'tracker']
+        );
+
+        return view('tickets.show', compact('ticket', 'relationTickets'));
     }
 
     /**

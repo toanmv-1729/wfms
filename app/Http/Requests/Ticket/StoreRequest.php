@@ -36,6 +36,7 @@ class StoreRequest extends FormRequest
             'priority' => 'required|integer|in:1,2,3,4,5',
             'pid' => 'required|integer|in:' . $project->id,
             'parent' => [
+                'nullable',
                 'integer',
                 Rule::in($ticketIds),
             ],
