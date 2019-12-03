@@ -54,17 +54,18 @@
                             <label class="form-label">Tracker: </label>&nbsp;&nbsp;
                             <select class="select2 form-control select-tracker" name="tracker">
                                 @foreach(config('ticket.tracker') as $keyTracker => $tracker)
-                                    <option value="{{ $keyTracker+1 }}">{{ $tracker['name'] }}</option>
+                                    <option value="{{ $keyTracker }}">{{ $tracker['name'] }}</option>
                                 @endforeach
                             </select>
                             <label class="form-label m-l-30">Priority: </label>&nbsp;
                             <select class="select2 form-control select-priority" name="priority">
                                 @foreach(config('ticket.priority') as $keyPriority => $priority)
-                                    <option value="{{ $keyPriority+1 }}">{{ $priority['name'] }}</option>
+                                    <option value="{{ $keyPriority }}">{{ $priority['name'] }}</option>
                                 @endforeach
                             </select>
                             <label class="form-label m-l-30">Ticket Parent: </label>&nbsp;
                             <select class="select2 form-control select-priority" name="parent">
+                                <option selected=""></option>
                                 @foreach($project->tickets as $ticket)
                                     <option value="{{ $ticket->id }}">{{ $ticket->id }}</option>
                                 @endforeach
@@ -84,7 +85,7 @@
                             <label class="form-label">Status: </label>&nbsp;&nbsp;
                             <select class="select2 form-control select-status" name="status">
                                 @foreach(config('ticket.status') as $keyStatus => $status)
-                                    <option value="{{ $keyStatus+1 }}">{{ $status['name'] }}</option>
+                                    <option value="{{ $keyStatus }}">{{ $status['name'] }}</option>
                                 @endforeach
                             </select>
                             <label class="form-label m-l-30">Assignee: </label>&nbsp;

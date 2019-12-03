@@ -11,4 +11,19 @@ class EloquentTicketRepository extends EloquentRepository implements TicketRepos
     {
         parent::__construct($model);
     }
+
+    /**
+     * get relation ticket
+     * @param int $projectId
+     * @param int $id
+     * @param array $columns
+     * @return Collection
+     */
+    public function getRelationTickets($projectId, $id, $columns = ['*'])
+    {
+        return $this->model
+            ->where('project_id', $projectId)
+            ->where('id', '<>', $id)
+            ->get($columns);
+    }
 }
