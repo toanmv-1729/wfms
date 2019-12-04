@@ -107,7 +107,7 @@
                         </div>
                         <div class="col-4">
                             <div class="progress" style="margin-top: 4px; width: 200px;">
-                                <div class="progress-bar bg-info progress-bar-striped" style="width: {{ $ticket->progress }}%; height:15px;" role="progressbar">{{ $ticket->progress ? $ticket->progress . '%' : '' }}</div>
+                                <div class="progress-bar bg-success progress-bar-striped" style="width: {{ $ticket->progress }}%; height:15px;" role="progressbar">{{ $ticket->progress ? $ticket->progress . '%' : '' }}</div>
                             </div>
                         </div>
                         <div class="col-2">
@@ -144,7 +144,7 @@
                     <div style="color: #000000;">
                         <div class="row">
                             <label class="sub-ticket">Sub Ticket: </label>
-                            <a href="#" style="position: absolute; right: 50px;">Add <i class="mdi mdi-plus"></i></a>
+                            <a href="{{ route('tickets.create_sub_ticket', ['slug' => $ticket->project->slug, 'id' => $ticket->id]) }}" style="position: absolute; right: 50px;">Add <i class="mdi mdi-plus"></i></a>
                         </div>
                         @foreach($ticket->tickets as $subTicket)
                         <div>
