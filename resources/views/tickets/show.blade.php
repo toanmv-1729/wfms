@@ -88,7 +88,7 @@
                             <label class="label-item">Priority: </label>
                         </div>
                         <div class="col-4">
-                            <label class="label-status">{{ config('ticket.priority')[$ticket->status]['name'] }}</label>
+                            <label class="label-status">{{ config('ticket.priority')[$ticket->priority]['name'] }}</label>
                         </div>
                         <div class="col-2">
                             <label class="label-item">Due date: </label>
