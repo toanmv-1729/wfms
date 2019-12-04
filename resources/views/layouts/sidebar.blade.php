@@ -8,19 +8,19 @@
                     </a>
                 </li>
 
-                @if (Request::is('my-projects/*'))
+                @if (!empty(request()->slug))
                 <li>
-                    <a class="{{ Request::is('my-projects/*/tickets/create') ? 'active' : '' }}" href="{{ route('tickets.create', request()->slug) }}">
+                    <a class="{{ Request::is('*/tickets/create') ? 'active' : '' }}" href="{{ route('tickets.create', request()->slug) }}">
                         <i class="mdi mdi-credit-card-plus"></i>New Ticket
                     </a>
                 </li>
                 <li>
-                    <a class="{{ Request::is('my-projects/*/overview') ? 'active' : '' }}" href="{{ route('staffs.my_projects.overview', request()->slug) }}">
+                    <a class="{{ Request::is('*/overview') ? 'active' : '' }}" href="{{ route('staffs.my_projects.overview', request()->slug) }}">
                         <i class="mdi mdi-file-find"></i>Overview
                     </a>
                 </li>
                 @endif
-                @if (Request::is('tickets/*'))
+                @if (!empty($ticket) && empty(request()->slug))
                 <li>
                     <a class="{{ Request::is('my-projects/*/tickets/create') ? 'active' : '' }}" href="{{ route('tickets.create', $ticket->project->slug) }}">
                         <i class="mdi mdi-credit-card-plus"></i>New Ticket
@@ -33,15 +33,16 @@
                 </li>
                 @endif
 
-                @if (Request::is('my-projects/*/tickets'))
+                @if (!empty(request()->slug) || !empty($ticket))
                 <li>
-                    <a class="{{ Request::is('my-projects/*/tickets') ? 'active' : '' }}" href="#ticket1">
+                    {{ \Log::info($ticket) }}
+                    <a class="{{ Request::is('*/tickets') ? 'active' : '' }}" href="{{ route('tickets.index', request()->slug ?? $ticket->project->slug) }}">
                         <i class="mdi mdi-comment-alert"></i>Tickets
                     </a>
                 </li>
                 @else
                 <li>
-                    <a class="{{ Request::is('tickets') ? 'active' : '' }}" href="#ticket2">
+                    <a class="{{ Request::is('tickets') ? 'active' : '' }}" href="{{ route('tickets.all') }}">
                         <i class="mdi mdi-comment-alert"></i>Tickets
                     </a>
                 </li>
@@ -75,19 +76,7 @@
                 </li>
                 @endif
 
-                @if (Request::is('my-projects/*'))
-                <li>
-                    <a class="{{ Request::is('teams') ? 'active' : '' }}" href="#team">
-                        <i class="mdi mdi-github-box"></i>Teams
-                    </a>
-                </li>
-                <li>
-                    <a class="{{ Request::is('versions') ? 'active' : '' }}" href="#version">
-                        <i class="mdi mdi-git"></i>Versions
-                    </a>
-                </li>
-                @endif
-                @if (Request::is('tickets/*'))
+                @if (!empty(request()->slug) || !empty($ticket))
                 <li>
                     <a class="{{ Request::is('teams') ? 'active' : '' }}" href="#team">
                         <i class="mdi mdi-github-box"></i>Teams

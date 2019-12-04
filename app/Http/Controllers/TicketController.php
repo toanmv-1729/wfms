@@ -33,9 +33,24 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($slug)
     {
-        //
+        $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        $tickets = $this->ticketRepository->getByAttributes([
+            'project_id' => $project->id,
+            'assignee_id' => $this->user->id,
+        ]);
+
+        return view('tickets.index', compact('tickets'));
+    }
+
+    public function all()
+    {
+        $tickets = $this->ticketRepository->getByAttributes([
+            'assignee_id' => $this->user->id,
+        ]);
+
+        return view('tickets.index', compact('tickets'));
     }
 
     /**

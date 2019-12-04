@@ -39,4 +39,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/tickets/store', 'TicketController@store')->name('tickets.store');
     Route::get('/tickets/{id}', 'TicketController@show')->name('tickets.show');
     Route::post('/tickets/addRelationTicket', 'TicketController@addRelationTicket')->name('tickets.add_relation_ticket');
+    Route::get('/{slug}/tickets', 'TicketController@index')->name('tickets.index');
+    Route::get('/tickets', 'TicketController@all')->name('tickets.all');
+    Route::get('/tickets/edit/{id}', 'TicketController@edit')->name('tickets.edit');
+    Route::post('/tickets/{id}', 'TicketController@destroy')->name('tickets.destroy');
 });
