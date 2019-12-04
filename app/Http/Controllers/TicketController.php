@@ -50,6 +50,14 @@ class TicketController extends Controller
         return view('tickets.create', compact('project'));
     }
 
+    public function createSubTicket($slug, $id)
+    {
+        $project = $this->projectRepository->getProjectInfo($slug);
+        $ticketParent = $this->ticketRepository->findOrFail($id, ['id', 'title']);
+
+        return view('tickets.create', compact('project', 'ticketParent'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *

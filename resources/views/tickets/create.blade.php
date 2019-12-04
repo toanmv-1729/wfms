@@ -64,12 +64,18 @@
                                 @endforeach
                             </select>
                             <label class="form-label m-l-30">Ticket Parent: </label>&nbsp;
+                            @if (!empty($ticketParent))
+                            <select class="select2 form-control select-priority" name="parent" disabled="true">
+                                <option selected="" value="{{ $ticketParent->id }}">#{{ $ticketParent->id }}: {{ str_limit($ticketParent->title, 20) }}</option>
+                            </select>
+                            @else
                             <select class="select2 form-control select-priority" name="parent">
                                 <option selected=""></option>
                                 @foreach($project->tickets as $ticket)
-                                    <option value="{{ $ticket->id }}">{{ $ticket->id }}</option>
+                                    <option value="{{ $ticket->id }}">#{{ $ticket->id }}: {{ str_limit($ticket->title, 20) }}</option>
                                 @endforeach
                             </select>
+                            @endif
                         </div>
                         <input type="hidden" value="{{ $project->id }}" name="pid">
                         <input type="hidden" value="{{ $project->slug }}" name="project">
