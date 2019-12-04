@@ -158,14 +158,20 @@
                             <label class="sub-ticket">Relation Ticket: </label>
                             <a href="#addRelationTicket" style="position: absolute; right: 50px;" data-toggle="modal" data-target="#addRelationTicket">Add <i class="mdi mdi-plus"></i></a>
                         </div>
+                        @foreach($ticketRelations as $ticketRelation)
+                        <div>
+                            <a href="{{ route('tickets.show', $ticketRelation->id) }}">{{ config('ticket.tracker')[$ticketRelation->tracker]['name'] }}#{{ $ticketRelation->id }}</a>{{' : ' . $ticketRelation->title }}
+                        </div>
+                        @endforeach
                         <div class="modal fade" id="addRelationTicket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-body">
-                                        <form class="form-horizontal form-material" method="POST" action="{{ route('tickets.store') }}">
+                                        <form class="form-horizontal form-material" method="POST" action="{{ route('tickets.add_relation_ticket') }}">
                                             @csrf
                                             <div class="form-group">
                                                 <label class="m-b-20">Add Relation Ticket</label>
+                                                <input type="hidden" name="tid" value="{{ $ticket->id }}">
                                                 <select class="select2 m-b-10 select2-multiple" name="relation_tickets[]" style="width: 100%" multiple="multiple">
                                                     @foreach($relationTickets as $relationTicket)
                                                     <option value="{{ $relationTicket->id }}">{{ config('ticket.tracker')[$relationTicket->tracker]['name'] }}#{{ $relationTicket->id }}</option>

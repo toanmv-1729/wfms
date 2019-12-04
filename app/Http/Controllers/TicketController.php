@@ -3,23 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Services\TicketService;
 use App\Http\Requests\Ticket\StoreRequest;
 use App\Contracts\Repositories\TicketRepository;
 use App\Contracts\Repositories\ProjectRepository;
+use App\Http\Requests\Ticket\AddRelationTicketRequest;
+use App\Contracts\Repositories\TicketRelationRepository;
 
 class TicketController extends Controller
 {
     protected $ticketRepository;
     protected $projectRepository;
+    protected $ticketRelationRepository;
 
     public function __construct(
         TicketRepository $ticketRepository,
-        ProjectRepository $projectRepository
+        ProjectRepository $projectRepository,
+        TicketRelationRepository $ticketRelationRepository
     ) {
         parent::__construct();
         $this->ticketRepository = $ticketRepository;
         $this->projectRepository = $projectRepository;
+        $this->ticketRelationRepository = $ticketRelationRepository;
     }
 
     /**
@@ -74,7 +80,16 @@ class TicketController extends Controller
             ['id', 'title', 'tracker']
         );
 
-        return view('tickets.show', compact('ticket', 'relationTickets'));
+        $ticketRelationIds = array_merge(
+            $ticket->ticketRelations->pluck('ticket_relation_id')->toArray(),
+            $ticket->ticketRelationsFlip->pluck('ticket_id')->toArray()
+        );
+        $ticketRelations = $this->ticketRepository->findMany(
+            $ticketRelationIds,
+            ['id', 'title', 'tracker']
+        );
+
+        return view('tickets.show', compact('ticket', 'relationTickets', 'ticketRelations'));
     }
 
     /**
@@ -109,5 +124,18 @@ class TicketController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function addRelationTicket(AddRelationTicketRequest $request)
+    {
+        foreach ($request->relation_tickets as $relationTicketId) {
+            $this->ticketRelationRepository->create([
+                'ticket_id' => $request->tid,
+                'ticket_relation_id' => $relationTicketId,
+            ]);
+        }
+        toastr()->success('Relation Ticket Successfully');
+
+        return redirect()->route('tickets.show', $request->tid);
     }
 }

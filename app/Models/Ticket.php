@@ -68,4 +68,14 @@ class Ticket extends Model
     {
         return $this->hasMany(Ticket::class, 'ticket_parent_id', 'id');
     }
+
+    public function ticketRelations()
+    {
+        return $this->hasMany(TicketRelation::class);
+    }
+
+    public function ticketRelationsFlip()
+    {
+        return $this->hasMany(TicketRelation::class, 'ticket_relation_id');
+    }
 }

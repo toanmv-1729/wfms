@@ -32,6 +32,7 @@ class ProjectService
             $project = $this->projectRepository->create([
                 'company_id' => $user->company_id,
                 'name' => $data['name'],
+                'slug' => str_slug($data['name']),
                 'description' => $data['description'],
                 'root_folder_link' => $data['root_folder_link'],
                 'repository_link' => $data['repository_link'],

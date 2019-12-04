@@ -4,6 +4,7 @@ namespace App\Http\Requests\Project;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\CheckUniqueContributorsInProject;
+use App\Rules\CheckRequiredProductOwnerProject;
 
 class StoreRequest extends FormRequest
 {
@@ -33,9 +34,17 @@ class StoreRequest extends FormRequest
             'users' => [
                 'required',
                 new CheckUniqueContributorsInProject($this->users),
+                new CheckRequiredProductOwnerProject($this->user(), $this->users),
             ],
         ];
 
         return $rules;
+    }
+
+    public function messages()
+    {
+        return [
+            'users.required' => 'Product Owner cannot be blank!',
+        ];
     }
 }

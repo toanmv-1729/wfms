@@ -59,6 +59,17 @@ class CompanyService
                 'company_id' => $company->id,
             ]);
         }
+        $datas = [];
+        foreach (config('role.main_roles') as $value) {
+            array_push($datas, [
+                'user_id' => $userCompany->id,
+                'name' => $value,
+                'is_default' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+        $userCompany->roles()->insert($datas);
     }
 
     /**
