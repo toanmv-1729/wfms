@@ -37,4 +37,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/my-projects/{slug}/tickets/create', 'TicketController@create')->name('tickets.create');
     Route::post('/tickets/store', 'TicketController@store')->name('tickets.store');
     Route::get('/tickets/{id}', 'TicketController@show')->name('tickets.show');
+    Route::post('/tickets/addRelationTicket', 'TicketController@addRelationTicket')->name('tickets.add_relation_ticket');
 });
