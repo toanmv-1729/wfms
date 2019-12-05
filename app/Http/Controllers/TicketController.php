@@ -45,7 +45,7 @@ class TicketController extends Controller
 
     public function all()
     {
-        $projectIds = $this->user->projects()->pluck('id')->toArray();
+        $projectIds = $this->user->projects->pluck('id')->toArray();
         $tickets = $this->ticketRepository->getByProjectIds($projectIds);
 
         return view('tickets.index', compact('tickets'));
