@@ -12,4 +12,12 @@ interface TicketRepository extends Repository
      * @return Collection
      */
     public function getRelationTickets($projectId, $id, $columns = ['*']);
+
+    /**
+     * Get by projectIds
+     * @param array $projectIds
+     * @param array $columns
+     * @return Collection
+     */
+    public function getByProjectIds(array $projectIds, $columns = ['*']);
 }

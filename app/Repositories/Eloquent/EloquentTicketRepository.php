@@ -26,4 +26,17 @@ class EloquentTicketRepository extends EloquentRepository implements TicketRepos
             ->where('id', '<>', $id)
             ->get($columns);
     }
+
+    /**
+     * Get by projectIds
+     * @param array $projectIds
+     * @param array $columns
+     * @return Collection
+     */
+    public function getByProjectIds(array $projectIds, $columns = ['*'])
+    {
+        return $this->model
+            ->whereIn('project_id', $projectIds)
+            ->get($columns);
+    }
 }
