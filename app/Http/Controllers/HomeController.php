@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        //
+        parent::__construct();
     }
 
     /**
@@ -23,6 +23,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard.index');
+        $this->user->update([
+            'last_login_time' => now(),
+        ]);
+        if ($this->user->is_admin && $this->user->user_type === config('user.type.admin')) {
+            return redirect()->route('company.index');
+        } elseif ($this->user->user_type === config('user.type.company')) {
+            return redirect()->route('staffs.index');
+        } else {
+            return redirect()->route('staffs.my_projects');
+        }
     }
 }

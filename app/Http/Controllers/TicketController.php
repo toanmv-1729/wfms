@@ -38,7 +38,6 @@ class TicketController extends Controller
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
         $tickets = $this->ticketRepository->getByAttributes([
             'project_id' => $project->id,
-            'assignee_id' => $this->user->id,
         ]);
 
         return view('tickets.index', compact('tickets'));
@@ -46,9 +45,8 @@ class TicketController extends Controller
 
     public function all()
     {
-        $tickets = $this->ticketRepository->getByAttributes([
-            'assignee_id' => $this->user->id,
-        ]);
+        $projectIds = $this->user->projects()->pluck('id')->toArray();
+        $tickets = $this->ticketRepository->getByProjectIds($projectIds);
 
         return view('tickets.index', compact('tickets'));
     }

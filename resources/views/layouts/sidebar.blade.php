@@ -35,7 +35,6 @@
 
                 @if (!empty(request()->slug) || !empty($ticket))
                 <li>
-                    {{ \Log::info($ticket) }}
                     <a class="{{ Request::is('*/tickets') ? 'active' : '' }}" href="{{ route('tickets.index', request()->slug ?? $ticket->project->slug) }}">
                         <i class="mdi mdi-comment-alert"></i>Tickets
                     </a>

@@ -81,11 +81,11 @@
                         <input type="hidden" value="{{ $project->slug }}" name="project">
                         <div class="form-group">
                             <label class="form-label">Title: </label>
-                            <input type="text" name="title" class="form-control form-control-line" placeholder="">
+                            <input type="text" name="title" value="{{ old('title') }}" class="form-control form-control-line" placeholder="">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Description: </label>
-                            <textarea id="mymce" name="description" class="form-control form-control-line"></textarea>
+                            <textarea id="mymce" name="description"  value="{{ old('description') }}"  class="form-control form-control-line"></textarea>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Status: </label>&nbsp;&nbsp;
@@ -115,15 +115,15 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Start Date: </label>&nbsp;&nbsp;
-                            <input type="text" name="start_date" class="form-control select-start-date" value="{{ now()->toDateString() }}" id="mstartdate">
+                            <input type="text" name="start_date" value="{{ old('start_date') }}" class="form-control select-start-date" value="{{ now()->toDateString() }}" id="mstartdate">
                             <label class="form-label" style="margin-left: 30px;">Due Date: </label>&nbsp;&nbsp;
-                            <input type="text" name="due_date" class="form-control select-due-date" value="{{ now()->toDateString() }}" id="mduedate">
+                            <input type="text" name="due_date" value="{{ old('due_date') }}" class="form-control select-due-date" value="{{ now()->toDateString() }}" id="mduedate">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Estimated Time (hours): </label>&nbsp;&nbsp;&nbsp;
-                            <input type="text" name="estimated_time" class="form-control form-control-line" style="width: 300px;">
+                            <input type="text" name="estimated_time" value="{{ old('estimated_time') }}" class="form-control form-control-line" style="width: 300px;">
                             <label class="form-label" style="margin-left: 30px;">Spend Time (hours): </label>&nbsp;&nbsp;&nbsp;
-                            <input type="text" name="spend_time" class="form-control form-control-line" style="width: 230px;">
+                            <input type="text" name="spend_time" value="{{ old('spend_time') }}" class="form-control form-control-line" style="width: 230px;">
                             <label class="form-label" style="margin-left: 10px;">% Done: </label>
                             <select class="select2 form-control select-progress" name="progress">
                                 <option value="{{ 0 }}">0 %</option>
