@@ -5,6 +5,7 @@ namespace App\Services;
 use DB;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Ticket;
 use App\Contracts\Repositories\TicketRepository;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 
@@ -45,6 +46,43 @@ class TicketService
                 'estimated_time' => array_get($data, 'estimated_time'),
                 'spend_time' => array_get($data, 'spend_time'),
                 'progress' => array_get($data, 'progress'),
+            ]);
+        } catch (Exception $exception) {
+            app(ExceptionHandler::class)->report($exception);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Update Ticket
+     * @param User $user
+     * @param Ticket $ticket
+     * @param array $data
+     * @return Boolean
+     */
+    public function update(User $user, Ticket $ticket, $data)
+    {
+        try {
+            $ticket->update([
+                'project_id' => array_get($data, 'pid') ?? $ticket->project_id,
+                'user_id' => $user->id ?? $ticket->user_id,
+                'company_id' => $user->company_id ?? $ticket->company_id,
+                'team_id' => array_get($data, 'team') ?? $ticket->team_id,
+                'version_id' => array_get($data, 'version') ?? $ticket->version_id,
+                'ticket_parent_id' => array_get($data, 'parent') ?? $ticket->ticket_parent_id,
+                'assignee_id' => array_get($data, 'assignee') ?? $ticket->assignee_id,
+                'title' => array_get($data, 'title') ?? $ticket->title,
+                'description' => array_get($data, 'description') ?? $ticket->description,
+                'tracker' => array_get($data, 'tracker') ?? $ticket->tracker,
+                'status' => array_get($data, 'status') ?? $ticket->status,
+                'priority' => array_get($data, 'priority') ?? $ticket->priority,
+                'start_date' => array_get($data, 'start_date') ?? $ticket->start_date,
+                'due_date' => array_get($data, 'due_date') ?? $ticket->due_date,
+                'estimated_time' => array_get($data, 'estimated_time') ?? $ticket->estimated_time,
+                'spend_time' => array_get($data, 'spend_time') ?? $ticket->spend_time,
+                'progress' => array_get($data, 'progress') ?? $ticket->progress,
             ]);
         } catch (Exception $exception) {
             app(ExceptionHandler::class)->report($exception);

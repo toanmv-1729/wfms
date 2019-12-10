@@ -121,7 +121,9 @@ class TicketController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ticket = $this->ticketRepository->findOrFail($id);
+
+        return view('tickets.edit', compact('ticket'));
     }
 
     /**
@@ -131,9 +133,13 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreRequest $request, $id, TicketService $ticketService)
     {
-        //
+        $ticket = $this->ticketRepository->findOrFail($id);
+        $result = $ticketService->update($this->user, $ticket, $request->all());
+        $result ? toastr()->success('Ticket Successfully Updated') : toastr()->error('Ticket Updated Error');
+
+        return redirect()->route('tickets.show', $id);
     }
 
     /**
@@ -144,7 +150,12 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ticket = $this->ticketRepository->findOrFail($id);
+        $slug = $ticket->project->slug;
+        $result = $ticket->delete();
+        $result ? toastr()->success('Ticket Successfully Deleted') : toastr()->error('Ticket Deleted Error');
+
+        return redirect()->route('tickets.index', $slug);
     }
 
     public function addRelationTicket(AddRelationTicketRequest $request)

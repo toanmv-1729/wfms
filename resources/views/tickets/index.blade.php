@@ -47,7 +47,6 @@
                                     <th>Due date</th>
                                     <th>Estimated time</th>
                                     <th>% Done</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -71,32 +70,6 @@
                                         <div class="progress" style="margin-top: 4px; width: 80px;">
                                             <div class="progress-bar bg-success progress-bar-striped" style="width: {{ $ticketInfo->progress }}%; height:15px;" role="progressbar"></div>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <button
-                                            type="button"
-                                            class="btn btn-sm btn-icon btn-success"
-                                            data-toggle="tooltip"
-                                            data-original-title="Edit"
-                                            aria-describedby="tooltip190692"
-                                            onclick="window.location.href='{{ route('tickets.edit', $ticketInfo->id) }}'"
-                                        >
-                                            <i class="ti-pencil-alt" aria-hidden="true"></i>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            class="btn btn-sm btn-icon btn-danger"
-                                            data-toggle="tooltip"
-                                            data-original-title="Delete"
-                                            aria-describedby="tooltip190692"
-                                            onclick="destroyTicket({{ $ticketInfo->id }})"
-                                        >
-                                            <i class="ti-trash" aria-hidden="true"></i>
-                                        </button>
-                                        <form id="delete-form-{{ $ticketInfo->id }}" action="{{ route('tickets.destroy', $ticketInfo->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -165,39 +138,5 @@
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ]
         });
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.26.11/dist/sweetalert2.all.min.js"></script>
-    <script type="text/javascript">
-    function destroyTicket(id) {
-        const swalWithBootstrapButtons = swal.mixin({
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false,
-        })
-        swalWithBootstrapButtons({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                event.preventDefault();
-                document.getElementById('delete-form-'+id).submit();
-            } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons(
-                    'Cancelled',
-                    'Your data is safe :)',
-                    'error'
-                )
-            }
-        })
-    }
     </script>
 @endpush
