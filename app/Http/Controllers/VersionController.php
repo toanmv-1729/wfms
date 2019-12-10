@@ -5,12 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\VersionService;
 use App\Http\Requests\Version\StoreRequest;
+use App\Contracts\Repositories\ProjectRepository;
+use App\Contracts\Repositories\VersionRepository;
 
 class VersionController extends Controller
 {
-    public function __construct()
-    {
+    protected $projectRepository;
+    protected $versionRepository;
+
+    public function __construct(
+        ProjectRepository $projectRepository,
+        VersionRepository $versionRepository
+    ) {
         parent::__construct();
+        $this->projectRepository = $projectRepository;
+        $this->versionRepository = $versionRepository;
     }
 
     /**
@@ -18,9 +27,14 @@ class VersionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($slug)
     {
-        //
+        $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        $versions = $this->versionRepository->getByAttributes([
+            'project_id' => $project->id,
+        ]);
+
+        return view('versions.index', compact('versions', 'project'));
     }
 
     /**
