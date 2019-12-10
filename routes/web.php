@@ -43,5 +43,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/{slug}/tickets', 'TicketController@index')->name('tickets.index');
     Route::get('/tickets', 'TicketController@all')->name('tickets.all');
     Route::get('/tickets/edit/{id}', 'TicketController@edit')->name('tickets.edit');
-    Route::post('/tickets/{id}', 'TicketController@destroy')->name('tickets.destroy');
+    Route::put('/tickets/{id}', 'TicketController@update')->name('tickets.update');
+    Route::delete('/tickets/{id}', 'TicketController@destroy')->name('tickets.destroy');
 });
