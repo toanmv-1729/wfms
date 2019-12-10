@@ -7,16 +7,20 @@ use Log;
 use Illuminate\Http\Request;
 use App\Http\Requests\Team\StoreRequest;
 use App\Contracts\Repositories\TeamRepository;
+use App\Contracts\Repositories\ProjectRepository;
 
 class TeamController extends Controller
 {
     protected $teamRepository;
+    protected $projectRepository;
 
     public function __construct(
-        TeamRepository $teamRepository
+        TeamRepository $teamRepository,
+        ProjectRepository $projectRepository
     ) {
         parent::__construct();
         $this->teamRepository = $teamRepository;
+        $this->projectRepository = $projectRepository;
     }
 
     /**
@@ -24,9 +28,12 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($slug)
     {
-        //
+        $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        $teams = $this->teamRepository->getByAttributesWithRelation(['project_id' => $project->id], ['users']);
+
+        return view('teams.index', compact('teams', 'project'));
     }
 
     /**
@@ -63,7 +70,7 @@ class TeamController extends Controller
         }
         toastr()->success('Team Successfully Created');
 
-        return redirect()->route('staffs.my_projects.overview', $request->slug);
+        return redirect()->route('teams.index', $team->project->slug);
     }
 
     /**
@@ -95,9 +102,25 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreRequest $request, $id)
     {
-        //
+        $team = $this->teamRepository->findOrFail($id);
+        $slug = $team->project->slug;
+        DB::beginTransaction();
+        try {
+            $team->update([
+                'name' => $request->name,
+            ]);
+            $team->users()->sync($request->users);
+            DB::commit();
+        } catch(Exception $exception) {
+            toastr()->error('Team Updated Error');
+            Log::error($exception);
+            DB::rollBack();
+        }
+        toastr()->success('Team Successfully Updated');
+
+        return redirect()->route('teams.index', $slug);
     }
 
     /**
@@ -108,6 +131,20 @@ class TeamController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $team = $this->teamRepository->findOrFail($id);
+        $slug = $team->project->slug;
+        DB::beginTransaction();
+        try {
+            $team->users()->detach();
+            $team->delete();
+            DB::commit();
+        } catch(Exception $exception) {
+            toastr()->error('Team Deleted Error');
+            Log::error($exception);
+            DB::rollBack();
+        }
+        toastr()->success('Team Successfully Deleted');
+
+        return redirect()->route('teams.index', $slug);
     }
 }

@@ -179,4 +179,29 @@ abstract class EloquentRepository implements Repository
     {
         return $this->model->findOrFail($id, $columns);
     }
+
+    /**
+     * Get multiple records matching the attributes.
+     *
+     * @param  array  $attributes
+     * @param  array  $withRelation
+     * @param  null|string $orderBy
+     * @param  string $sortOrder
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function getByAttributesWithRelation(
+        array $attributes,
+        array $withRelation = [],
+        $orderBy = null,
+        $sortOrder = 'asc'
+    ) {
+        $query = $this->model->newQuery();
+        if ($orderBy !== null) {
+            $query->orderBy($orderBy, $sortOrder);
+        }
+        return $query
+            ->where($attributes)
+            ->with($withRelation)
+            ->get();
+    }
 }

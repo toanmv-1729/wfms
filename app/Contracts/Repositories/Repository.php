@@ -106,11 +106,27 @@ interface Repository
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function findMany($ids, $columns = ['*']);
-    
+
     /**
      * @param $id
      * @param array $columns
      * @return mixed
      */
     public function findOrFail($id, $columns = ['*']);
+
+    /**
+     * Get multiple records matching the attributes.
+     *
+     * @param  array  $attributes
+     * @param  array  $withRelation
+     * @param  null|string $orderBy
+     * @param  string $sortOrder
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function getByAttributesWithRelation(
+        array $attributes,
+        array $withRelation = [],
+        $orderBy = null,
+        $sortOrder = 'asc'
+    );
 }
