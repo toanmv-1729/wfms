@@ -26,8 +26,7 @@ Route::group(['middleware' => ['auth', 'isCompany']], function() {
     Route::resource('staffs', 'StaffController');
     Route::resource('roles', 'RoleController');
     Route::resource('projects', 'ProjectController');
-    Route::post('/teams', 'TeamController@store')->name('team.store');
-    Route::post('/versions', 'VersionController@store')->name('version.store');
+    Route::post('/versions', 'VersionController@store')->name('versions.store');
 });
 
 Route::group(['middleware' => ['auth']], function() {
@@ -45,4 +44,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/tickets/edit/{id}', 'TicketController@edit')->name('tickets.edit');
     Route::put('/tickets/{id}', 'TicketController@update')->name('tickets.update');
     Route::delete('/tickets/{id}', 'TicketController@destroy')->name('tickets.destroy');
+
+    Route::get('{slug}/teams', 'TeamController@index')->name('teams.index');
+    Route::post('/teams', 'TeamController@store')->name('teams.store');
+    Route::put('/teams/{id}', 'TeamController@update')->name('teams.update');
+    Route::delete('/teams/{id}', 'TeamController@destroy')->name('teams.destroy');
+
+    Route::get('{slug}/versions', 'VersionController@index')->name('versions.index');
 });

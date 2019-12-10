@@ -77,12 +77,12 @@
 
                 @if (!empty(request()->slug) || !empty($ticket))
                 <li>
-                    <a class="{{ Request::is('teams') ? 'active' : '' }}" href="#team">
+                    <a class="{{ Request::is('*/teams') ? 'active' : '' }}" href="{{ route('teams.index', request()->slug ?? $ticket->project->slug) }}">
                         <i class="mdi mdi-github-box"></i>Teams
                     </a>
                 </li>
                 <li>
-                    <a class="{{ Request::is('versions') ? 'active' : '' }}" href="#version">
+                    <a class="{{ Request::is('*/versions') ? 'active' : '' }}" href="{{ route('versions.index', request()->slug ?? $ticket->project->slug) }}">
                         <i class="mdi mdi-git"></i>Versions
                     </a>
                 </li>
