@@ -30,9 +30,9 @@ class VersionController extends Controller
     public function index($slug)
     {
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
-        $versions = $this->versionRepository->getByAttributes([
+        $versions = $this->versionRepository->getByAttributesWithRelation([
             'project_id' => $project->id,
-        ]);
+        ], ['tickets', 'tasks', 'bugs', 'features', 'ticketsClosed', 'tasksClosed', 'bugsClosed', 'featuresClosed']);
 
         return view('versions.index', compact('versions', 'project'));
     }
@@ -58,7 +58,7 @@ class VersionController extends Controller
         $result = $versionService->store($this->user, $request->all());
         $result ? toastr()->success('Version Successfully Created') : toastr()->error('Version Created Error');
 
-        return redirect()->route('staffs.my_projects.overview', $request->slug);
+        return redirect()->route('versions.index', $request->slug);
     }
 
     /**
@@ -90,9 +90,13 @@ class VersionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreRequest $request, $id, VersionService $versionService)
     {
-        //
+        $version = $this->versionRepository->findOrFail($id);
+        $result = $versionService->update($this->user, $version, $request->all());
+        $result ? toastr()->success('Version Successfully Updated') : toastr()->error('Version Updated Error');
+
+        return redirect()->route('versions.index', $request->slug);
     }
 
     /**
@@ -103,6 +107,11 @@ class VersionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $version = $this->versionRepository->findOrFail($id);
+        $slug = optional($version->project)->slug;
+        $result = $version->delete();
+        $result ? toastr()->success('Version Successfully Deleted') : toastr()->error('Version Deleted Error');
+
+        return redirect()->route('versions.index', $slug);
     }
 }
