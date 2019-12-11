@@ -1,7 +1,15 @@
 @extends('layouts.app')
 
 @push('css')
-    <link href="{{ asset('vendor/plugins/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('vendor/plugins/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        .label-open {
+            background-color: #155724;
+        }
+        .label-closed {
+            background-color: #ffb22b;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -12,7 +20,7 @@
         </div>
         <div class="row col-md-7 col-4 align-self-center">
             <div class="col-12 d-flex justify-content-end">
-                <button class="btn btn-block btn-info" type="button" data-toggle="modal" data-target="#createTeamModal" style="width: auto">
+                <button class="btn btn-block btn-info" type="button" data-toggle="modal" data-target="#createVersionModal" style="width: auto">
                     <i class="mdi mdi-account-multiple-plus"></i>
                     <span>Create New Version</span>
                 </button>
@@ -20,6 +28,194 @@
         </div>
     </div>
     <div class="row">
+        <div class="modal fade bs-example-modal-lg" id="createVersionModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel2">{{ $project->name }} New Version</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal form-material" enctype="multipart/form-data" method="POST" action="{{ route('versions.store') }}">
+                            @csrf
+                            <div class="form-group">
+                                <input type="hidden" name="project" value="{{ $project->id }}">
+                                <input type="hidden" name="slug" value="{{ $project->slug }}">
+                                <div class="col-md-12 m-b-20">
+                                    <label for="recipient-name" class="control-label">Name:</label>
+                                    <input type="text" name="name" class="form-control" placeholder="Version Name">
+                                </div>
+                                <div class="col-md-12 m-b-20">
+                                    <label class="form-label">Goal: </label>
+                                    <textarea id="mymce" name="description" class="form-control form-control-line">{{ old('description') }}</textarea>
+                                </div>
+                                <div class="col-md-12 m-b-20">
+                                    <label for="recipient-name" class="control-label">Version Range: </label>
+                                    <input
+                                        class="form-control input-daterange-datepicker"
+                                        type="text"
+                                        name="daterange"
+                                        value="{{ now()->format('m/d/Y') }} - {{ now()->format('m/d/Y') }}"
+                                    />
+                                </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @foreach($versions as $version)
+        <div class="modal fade bs-example-modal-lg" id="editVersionModal{{ $version->id }}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ $project->name }} New Version</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal form-material" enctype="multipart/form-data" method="POST" action="{{ route('versions.update', $version->id) }}">
+                            @method('PUT')
+                            @csrf
+                            <div class="form-group">
+                                <input type="hidden" name="project" value="{{ $project->id }}">
+                                <input type="hidden" name="slug" value="{{ $project->slug }}">
+                                <div class="col-md-12 m-b-20">
+                                    <label for="recipient-name" class="control-label">Name:</label>
+                                    <input type="text" name="name" class="form-control" placeholder="Version Name" value="{{ $version->name }}">
+                                </div>
+                                <div class="col-md-12 m-b-20">
+                                    <label class="form-label">Goal: </label>
+                                    <textarea id="mymce" name="description" class="form-control form-control-line">
+                                        {{ $version->description ?? old('description') }}
+                                    </textarea>
+                                </div>
+                                <div class="col-md-12 m-b-20">
+                                    <label for="recipient-name" class="control-label">Version Range: </label>
+                                    <input
+                                        class="form-control input-daterange-datepicker"
+                                        type="text"
+                                        name="daterange"
+                                        value="{{ date_create($version->start_date)->format('m/d/Y') }} - {{ date_create($version->due_date)->format('m/d/Y') }}"
+                                    />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade bs-example-modal-lg" id="showVersionModal{{ $version->id }}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel2">{{ $version->name }}</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Version Statistics</h3>
+                        <div class="row m-t-20">
+                            <!-- Column -->
+                            <div class="col-md-6 col-lg-3 col-xlg-3">
+                                <div class="card card-inverse card-dark">
+                                    <div class="box bg-inverse text-center">
+                                        <h1 class="font-light text-white">{{ $version->tickets->count() }}</h1>
+                                        <h6 class="text-white">Total Tickets</h6>
+                                        @if (!$version->tickets->count() || !$version->ticketsClosed->count())
+                                        <div class="progress-bar bg-warning progress-bar-striped" style="width: {{1}}%; height:15px;" role="progressbar"></div>
+                                        @else
+                                        <div
+                                            class="progress-bar bg-success progress-bar-striped"
+                                            style="width: {{ number_format($version->ticketsClosed->count()/$version->tickets->count() * 100) }}%; height:15px;"
+                                            role="progressbar"
+                                        ></div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Column -->
+                            <div class="col-md-6 col-lg-3 col-xlg-3">
+                                <div class="card card-inverse card-primary">
+                                    <div class="box bg-info text-center">
+                                        <h1 class="font-light text-white">{{ $version->tasks->count() }}</h1>
+                                        <h6 class="text-white">Task</h6>
+                                        @if (!$version->tasks->count() || !$version->tasksClosed->count())
+                                        <div class="progress-bar bg-warning progress-bar-striped" style="width: {{1}}%; height:15px;" role="progressbar"></div>
+                                        @else
+                                        <div
+                                            class="progress-bar bg-success progress-bar-striped"
+                                            style="width: {{ number_format($version->tasksClosed->count()/$version->tasks->count() * 100) }}%; height:15px;"
+                                            role="progressbar"
+                                        ></div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Column -->
+                            <div class="col-md-6 col-lg-3 col-xlg-3">
+                                <div class="card card-inverse card-danger">
+                                    <div class="box text-center">
+                                        <h1 class="font-light text-white">{{ $version->bugs->count() }}</h1>
+                                        <h6 class="text-white">Bug</h6>
+                                        @if (!$version->bugs->count() || !$version->bugsClosed->count())
+                                        <div class="progress-bar bg-warning progress-bar-striped" style="width: {{1}}%; height:15px;" role="progressbar"></div>
+                                        @else
+                                        <div
+                                            class="progress-bar bg-success progress-bar-striped"
+                                            style="width: {{ number_format($version->bugsClosed->count()/$version->bugs->count() * 100) }}%; height:15px;"
+                                            role="progressbar"
+                                        ></div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Column -->
+                            <div class="col-md-6 col-lg-3 col-xlg-3">
+                                <div class="card card-inverse card-dark">
+                                    <div class="box bg-primary text-center">
+                                        <h1 class="font-light text-white">{{ $version->features->count() }}</h1>
+                                        <h6 class="text-white">Feature</h6>
+                                        @if (!$version->features->count() || !$version->featuresClosed->count())
+                                        <div class="progress-bar bg-warning progress-bar-striped" style="width: {{1}}%; height:15px;" role="progressbar"></div>
+                                        @else
+                                        <div
+                                            class="progress-bar bg-success progress-bar-striped"
+                                            style="width: {{ number_format($version->featuresClosed->count()/$version->features->count() * 100) }}%; height:15px;"
+                                            role="progressbar"
+                                        ></div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if ($version->description)
+                        <h3>Goals Of Version</h3>
+                        {!! $version->description !!}
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
@@ -43,18 +239,22 @@
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $version->name }}</td>
-                                    <td>TODO</td>
+                                    <td>{{ $version->tickets->count() }}</td>
                                     <td>{{ $version->start_date }}</td>
                                     <td>{{ $version->due_date }}</td>
-                                    <td>TODO</td>
+                                    <td>
+                                        <span class="label label-rounded {{ $version->status ? 'label-open' : 'label-closed' }}">
+                                            {{ $version->status ? 'Open' : 'Closed' }}
+                                        </span>
+                                    </td>
                                     <td>
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-icon btn-primary"
-                                            data-original-title="Show"
                                             aria-describedby="tooltip190692"
                                             data-toggle="modal"
-                                            data-target="#editTeamModal{{$version->id}}"
+                                            data-original-title="123123123"
+                                            data-target="#showVersionModal{{$version->id}}"
                                         >
                                             <i class="ti-eye" aria-hidden="true"></i>
                                         </button>
@@ -64,7 +264,7 @@
                                             data-original-title="Edit"
                                             aria-describedby="tooltip190692"
                                             data-toggle="modal"
-                                            data-target="#editTeamModal{{$version->id}}"
+                                            data-target="#editVersionModal{{$version->id}}"
                                         >
                                             <i class="ti-pencil-alt" aria-hidden="true"></i>
                                         </button>
@@ -105,6 +305,34 @@
     <script src="{{ asset('vendor/js/dataTables/vfs_fonts.js') }}"></script>
     <script src="{{ asset('vendor/js/dataTables/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('vendor/js/dataTables/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('vendor/plugins/tinymce/tinymce.min.js') }}" type="text/javascript"></script>
+
+    <script src="{{ asset('vendor/plugins/moment/moment.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/plugins/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <script>
+        $('.input-daterange-datepicker').daterangepicker({
+            buttonClasses: ['btn', 'btn-sm'],
+            applyClass: 'btn-danger',
+            cancelClass: 'btn-inverse'
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            if ($("#mymce").length > 0) {
+                tinymce.init({
+                    selector: "textarea#mymce",
+                    theme: "modern",
+                    height: 180,
+                    plugins: [
+                        "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+                        "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                        "save table contextmenu directionality emoticons template paste textcolor"
+                    ],
+                    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview media fullpage | forecolor backcolor",
+                });
+            }
+        });
+    </script>
     <script>
     $(document).ready(function() {
         $('#myTable').DataTable();

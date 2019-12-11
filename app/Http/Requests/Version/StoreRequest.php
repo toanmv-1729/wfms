@@ -26,6 +26,7 @@ class StoreRequest extends FormRequest
         return [
             'project' => 'required',
             'name' => 'required|string|max:20',
+            'description' => 'string',
             'slug' => 'required|exists:projects,slug',
             'daterange' => 'required|string',
         ];

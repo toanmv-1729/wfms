@@ -13,6 +13,8 @@ class Version extends Model
         'user_id',
         'project_id',
         'name',
+        'description',
+        'status',
         'start_date',
         'due_date',
     ];
@@ -25,5 +27,45 @@ class Version extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
+    public function ticketsClosed()
+    {
+        return $this->hasMany(Ticket::class)->where('status', 6);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Ticket::class)->where('tracker', 1);
+    }
+
+    public function tasksClosed()
+    {
+        return $this->hasMany(Ticket::class)->where('tracker', 1)->where('status', 6);
+    }
+
+    public function bugs()
+    {
+        return $this->hasMany(Ticket::class)->where('tracker', 2);
+    }
+
+    public function bugsClosed()
+    {
+        return $this->hasMany(Ticket::class)->where('tracker', 2)->where('status', 6);
+    }
+
+    public function features()
+    {
+        return $this->hasMany(Ticket::class)->where('tracker', 3);
+    }
+
+    public function featuresClosed()
+    {
+        return $this->hasMany(Ticket::class)->where('tracker', 3)->where('status', 6);
     }
 }
