@@ -1,5 +1,9 @@
 @extends('auth.layouts.app')
 
+@push('css')
+    @toastr_css
+@endpush
+
 @section('content')
 <section id="wrapper">
     <div class="login-register" style="background-image:url({{ asset('img/login-register.jpg') }});">
@@ -38,3 +42,18 @@
     </div>
 </section>
 @endsection
+
+@push('js')
+    @toastr_js
+    @toastr_render
+    <script>
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error('{{ $error }}','Error',{
+                    closeButton:true,
+                    progressBar:true,
+                });
+            @endforeach
+        @endif
+    </script>
+@endpush

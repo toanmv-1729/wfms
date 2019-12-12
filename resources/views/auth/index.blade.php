@@ -1,5 +1,9 @@
 @extends('auth.layouts.app')
 
+@push('css')
+    @toastr_css
+@endpush
+
 @section('content')
 <section id="wrapper">
     <div class="login-register" style="background-image:url({{ asset('img/login-register.jpg') }});">
@@ -50,3 +54,8 @@
     </div>
 </section>
 @endsection
+
+@push('js')
+    @toastr_js
+    @toastr_render
+@endpush
