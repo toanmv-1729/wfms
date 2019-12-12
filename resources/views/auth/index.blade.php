@@ -6,7 +6,10 @@
 
 @section('content')
 <section id="wrapper">
-    <div class="login-register" style="background-image:url({{ asset('img/login-register.jpg') }});">
+    <div
+        class="login-register"
+        style="background-image:url({{ env('APP_ENV') === 'production' ? secure_asset('img/login-register.jpg') : asset('img/login-register.jpg') }});"
+    >
         <div class="login-box card">
         <div class="card-body">
             <form class="form-horizontal form-material" id="loginform" method="POST" action="{{ route('login') }}">
