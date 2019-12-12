@@ -10,6 +10,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon.png') }}">
     <title>Work Flow Management System 2019</title>
     <link href="{{ asset('vendor/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    @toastr_css
     @stack('css')
     <link href="{{ asset('vendor/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/css/colors/blue.css') }}" id="theme" rel="stylesheet">
@@ -22,10 +23,12 @@
         </svg>
     </div>
     @yield('content')
-    
+
     <script src="{{ asset('vendor/plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/plugins/bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ asset('vendor/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+    @toastr_js
+    @toastr_render
     @stack('js')
     <script src="{{ asset('vendor/js/jquery.slimscroll.js') }}"></script>
     <script src="{{ asset('vendor/js/waves.js') }}"></script>
