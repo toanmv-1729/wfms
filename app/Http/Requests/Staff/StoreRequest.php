@@ -25,6 +25,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => 'bail|required',
+            'email' => 'bail|required|email|unique:users,email',
             'roles' => 'bail|array',
         ];
     }

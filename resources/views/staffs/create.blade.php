@@ -29,13 +29,19 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Name</label>
-                                        <input type="text" id="firstName" name="name" class="form-control" placeholder="Input Staff's Name">
+                                        <input type="text" name="name" class="form-control" placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Email</label>
+                                        <input type="text" name="email" class="form-control" placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group has-danger">
                                         <label class="control-label">Roles</label>
-                                        <select class="select2 m-b-10 select2-multiple" name="roles[]" style="width: 100%" multiple="multiple" data-placeholder="Choose Roles...">
+                                        <select class="select2 m-b-10 select2-multiple" name="roles[]" style="width: 100%" multiple="multiple" data-placeholder="Roles...">
                                             @foreach($roles as $role)
                                             <option value="{{ $role->id }}">{{ $role->name }}</option>
                                             @endforeach

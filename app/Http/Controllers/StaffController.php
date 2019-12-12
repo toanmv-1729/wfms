@@ -8,6 +8,7 @@ use App\Http\Requests\Staff\UpdateRequest;
 use App\Contracts\Repositories\RoleRepository;
 use App\Contracts\Repositories\UserRepository;
 use App\Contracts\Repositories\ProjectRepository;
+use App\Notifications\SendAccountInfomationNotification;
 
 class StaffController extends Controller
 {
@@ -47,15 +48,19 @@ class StaffController extends Controller
 
     public function store(StoreRequest $request)
     {
+        $password = str_random(12);
         $user = $this->userRepository->create([
             'name' => $request->name,
-            'email' => str_slug($request->name, '.'),
-            'password' => bcrypt(str_slug($request->name, '.')),
+            'email' => $request->email,
+            'password' => bcrypt(str_random(12)),
             'is_admin' => false,
             'user_type' => config('user.type.staff'),
             'created_by' => $this->user->id,
             'company_id' => $this->user->company_id,
         ]);
+        if ($user) {
+            $user->notify(new SendAccountInfomationNotification($user->email, $password));
+        }
         $user->roles()->attach($request->roles);
         toastr()->success('Staff Successfully Created');
 
@@ -82,6 +87,9 @@ class StaffController extends Controller
     public function destroy(Request $request, $id)
     {
         $staff = $this->userRepository->findOrFail($id);
+        $staff->update([
+            'email' => now()->format('YmdHis') . $staff->email,
+        ]);
         $staff->roles()->detach();
         $staff->delete();
         toastr()->success('Staff Successfully Deleted');

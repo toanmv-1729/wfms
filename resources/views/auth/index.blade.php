@@ -34,7 +34,7 @@
                             <input id="remember" type="checkbox" class="form-check-input" name="remember" {{ old('remember') ? 'checked' : '' }}>
                             <label for="remember"> Remember me </label>
                         </div>
-                        <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right">
+                        <a href="{{ route('password.request') }}" class="text-dark pull-right">
                             <i class="fa fa-lock m-r-5"></i> Forgot password?
                         </a>
                     </div>
@@ -42,36 +42,6 @@
                 <div class="form-group text-center m-t-20">
                     <div class="col-xs-12">
                         <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Log In</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
-                        <div class="social">
-                            <a href="javascript:void(0)" class="btn  btn-facebook" data-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" class="fa fa-facebook"></i> </a>
-                            <a href="javascript:void(0)" class="btn btn-googleplus" data-toggle="tooltip" title="Login with Google"> <i aria-hidden="true" class="fa fa-google-plus"></i> </a>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <form class="form-horizontal" id="recoverform">
-                <div class="form-group ">
-                    <div class="col-xs-12">
-                        <div >
-                            <a href="javascript:void(0)" id="to-login">
-                                <i class="fa fa-long-arrow-left"></i>
-                            </a>
-                            <h3>Recover Password</h3>
-                        </div>
-                        <p class="text-muted">Enter your Email and instructions will be sent to you! </p>
-                    </div>
-                </div>
-                <div class="form-group ">
-                    <div class="col-xs-12">
-                        <input class="form-control" type="text" required="" placeholder="Email"> </div>
-                </div>
-                <div class="form-group text-center m-t-20">
-                    <div class="col-xs-12">
-                        <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Reset</button>
                     </div>
                 </div>
             </form>

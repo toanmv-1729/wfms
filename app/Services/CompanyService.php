@@ -9,6 +9,7 @@ use App\Helpers\ContentsHelper;
 use App\Contracts\Repositories\UserRepository;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use App\Contracts\Repositories\CompanyRepository;
+use App\Notifications\SendAccountInfomationNotification;
 
 class CompanyService
 {
@@ -24,6 +25,7 @@ class CompanyService
 
     public function storeCompanyAndUser(User $user, $data)
     {
+        $password = str_random(12);
         if (isset($data['image'])) {
             DB::beginTransaction();
             $company = $this->companyRepository->create([
@@ -31,8 +33,8 @@ class CompanyService
             ]);
             $userCompany = $this->userRepository->create([
                 'name' => $data['name'],
-                'email' => $data['name'],
-                'password' => bcrypt($data['name']),
+                'email' => $data['email'],
+                'password' => bcrypt($password),
                 'is_admin' => false,
                 'user_type' => 'company',
                 'created_by' => $user->id,
@@ -46,18 +48,28 @@ class CompanyService
                 DB::rollBack();
             }
         } else {
-            $company = $this->companyRepository->create([
-                'name' => $data['name'],
-            ]);
-            $userCompany = $this->userRepository->create([
-                'name' => $data['name'],
-                'email' => $data['name'],
-                'password' => bcrypt($data['name']),
-                'is_admin' => false,
-                'user_type' => 'company',
-                'created_by' => $user->id,
-                'company_id' => $company->id,
-            ]);
+            try {
+                DB::beginTransaction();
+                $company = $this->companyRepository->create([
+                    'name' => $data['name'],
+                ]);
+                $userCompany = $this->userRepository->create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'password' => bcrypt($password),
+                    'is_admin' => false,
+                    'user_type' => 'company',
+                    'created_by' => $user->id,
+                    'company_id' => $company->id,
+                ]);
+                DB::commit();
+            } catch (Exception $exception) {
+                app(ExceptionHandler::class)->report($exception);
+                DB::rollBack();
+            }
+        }
+        if ($userCompany) {
+            $userCompany->notify(new SendAccountInfomationNotification($userCompany->email, $password));
         }
         $datas = [];
         foreach (config('role.main_roles') as $value) {

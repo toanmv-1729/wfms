@@ -57,7 +57,12 @@ class CompanyController extends Controller
 
             return redirect()->route('company.index');
         } else {
-            $company->users()->delete();
+            foreach($company->users as $user) {
+                $user->update([
+                    'email' => now()->format('YmdHis') . $user->email,
+                ]);
+                $user->delete();
+            }
             $company->delete();
             toastr()->success('Company successfully deleted');
 
