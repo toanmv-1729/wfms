@@ -55,7 +55,11 @@
                             <div class="form-group">
                                 <div class="col-md-12 m-b-20">
                                     <label for="recipient-name" class="control-label">Name:</label>
-                                    <input type="text" name="name" class="form-control" placeholder="Company Name">
+                                    <input type="text" name="name" class="form-control" placeholder="Name">
+                                </div>
+                                <div class="col-md-12 m-b-20">
+                                    <label for="recipient-name" class="control-label">Email:</label>
+                                    <input type="text" name="email" class="form-control" placeholder="Email">
                                 </div>
                                 <div class="col-md-12 m-b-20">
                                     <label for="recipient-name" class="control-label">Image: </label>
@@ -106,9 +110,6 @@
                                     <td>{{ $company->users[0]->last_login_time ?? '-' }}</td>
                                     <td>{{ $company->users->count() }}</td>
                                     <td>
-                                        {{-- <button type="button" class="btn btn-sm btn-icon btn-success" data-toggle="tooltip" data-original-title="Edit" aria-describedby="tooltip190692">
-                                            <i class="ti-pencil-alt" aria-hidden="true"></i>
-                                        </button> --}}
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-icon btn-danger"

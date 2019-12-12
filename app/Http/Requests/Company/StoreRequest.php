@@ -27,8 +27,9 @@ class StoreRequest extends FormRequest
             'name' => [
                 'required',
                 'max:' . config('validations.max_length_company_name'),
-                'regex:' . config('validations.regex_company_username')
+                'string',
             ],
+            'email' => 'required|email|unique:users,email',
             'image' => 'required|image',
         ];
     }
