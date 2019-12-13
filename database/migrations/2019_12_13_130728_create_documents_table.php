@@ -17,11 +17,11 @@ class CreateDocumentsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('project_id')->nullable();
-            $table->integer('parent_id');
+            $table->integer('parent_id')->nullable();
             $table->string('name');
-            $table->string('uuid');
-            $table->integer('type');
-            $table->integer('link')->nullable();
+            $table->string('uuid')->nullable();
+            $table->integer('type')->default(0);
+            $table->string('link')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

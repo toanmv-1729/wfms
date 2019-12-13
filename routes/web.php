@@ -55,4 +55,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::delete('/versions/{id}', 'VersionController@destroy')->name('versions.destroy');
 
     Route::get('{slug}/documents', 'DocumentController@index')->name('documents.index');
+    Route::post('/documents', 'DocumentController@store')->name('documents.store');
 });
