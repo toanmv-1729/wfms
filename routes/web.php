@@ -31,7 +31,7 @@ Route::group(['middleware' => ['auth', 'isCompany']], function() {
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/my-projects', 'StaffController@getMyProjects')->name('staffs.my_projects');
-    Route::get('/my-projects/{slug}/overview', 'StaffController@getProjectOverview')->name('staffs.my_projects.overview');
+    Route::get('/{slug}/overview', 'StaffController@getProjectOverview')->name('staffs.my_projects.overview');
 
     Route::get('/{slug}/tickets/create', 'TicketController@create')->name('tickets.create');
     Route::get('/{slug}/tickets/{id}/create-sub-ticket', 'TicketController@createSubTicket')->name('tickets.create_sub_ticket');
@@ -53,4 +53,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/versions', 'VersionController@store')->name('versions.store');
     Route::put('/versions/{id}', 'VersionController@update')->name('versions.update');
     Route::delete('/versions/{id}', 'VersionController@destroy')->name('versions.destroy');
+
+    Route::get('{slug}/documents', 'DocumentController@index')->name('documents.index');
 });

@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\Auth;
+use App\Models\Traits\BelongsToUser;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Traits\Relations\BelongsToUser;
 
 class Media extends Model
 {
     use BelongsToUser;
-    
+
     const TYPE_IMAGE = 'image';
     const TYPE_VIDEO = 'video';
     const TYPE_FILE = 'file';

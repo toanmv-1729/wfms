@@ -10,6 +10,7 @@ use App\Repositories\Eloquent\EloquentTicketRepository;
 use App\Repositories\Eloquent\EloquentProjectRepository;
 use App\Repositories\Eloquent\EloquentVersionRepository;
 use App\Repositories\Eloquent\EloquentCompanyRepository;
+use App\Repositories\Eloquent\EloquentDocumentRepository;
 use App\Repositories\Eloquent\EloquentPermissionRepository;
 use App\Repositories\Eloquent\EloquentTicketHistoryRepository;
 use App\Repositories\Eloquent\EloquentTicketRelationRepository;
@@ -21,6 +22,7 @@ use App\Contracts\Repositories\TicketRepository;
 use App\Contracts\Repositories\ProjectRepository;
 use App\Contracts\Repositories\VersionRepository;
 use App\Contracts\Repositories\CompanyRepository;
+use App\Contracts\Repositories\DocumentRepository;
 use App\Contracts\Repositories\PermissionRepository;
 use App\Contracts\Repositories\TicketHistoryRepository;
 use App\Contracts\Repositories\TicketRelationRepository;
@@ -40,6 +42,7 @@ class RepositoryServiceProvider extends ServiceProvider
         ProjectRepository::class => EloquentProjectRepository::class,
         VersionRepository::class => EloquentVersionRepository::class,
         CompanyRepository::class => EloquentCompanyRepository::class,
+        DocumentRepository::class => EloquentDocumentRepository::class,
         PermissionRepository::class => EloquentPermissionRepository::class,
         TicketHistoryRepository::class => EloquentTicketHistoryRepository::class,
         TicketRelationRepository::class => EloquentTicketRelationRepository::class,
