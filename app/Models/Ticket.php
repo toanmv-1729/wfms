@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Traits\BelongsToUser;
 
 class Ticket extends Model
 {
-    use SoftDeletes;
+    use BelongsToUser, SoftDeletes;
 
     protected $fillable = [
         'project_id',
@@ -32,11 +33,6 @@ class Ticket extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 
     public function company()

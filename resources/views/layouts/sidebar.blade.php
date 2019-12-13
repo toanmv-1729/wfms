@@ -86,6 +86,11 @@
                         <i class="mdi mdi-git"></i>Versions
                     </a>
                 </li>
+                <li>
+                    <a class="{{ Request::is('*/documents') ? 'active' : '' }}" href="{{ route('documents.index', request()->slug ?? $ticket->project->slug) }}">
+                        <i class="mdi mdi-github-box"></i>Documents
+                    </a>
+                </li>
                 @endif
             </ul>
         </nav>
