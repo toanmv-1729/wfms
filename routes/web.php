@@ -57,4 +57,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('{slug}/documents', 'DocumentController@index')->name('documents.index');
     Route::get('{slug}/documents/folder/{uuid}', 'DocumentController@indexChild')->name('documents.child');
     Route::post('/documents', 'DocumentController@store')->name('documents.store');
+    Route::put('/documents/{id}', 'DocumentController@update')->name('documents.update');
+    Route::delete('/documents/{id}', 'DocumentController@destroy')->name('documents.destroy');
 });

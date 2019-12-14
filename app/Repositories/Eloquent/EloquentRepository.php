@@ -204,4 +204,14 @@ abstract class EloquentRepository implements Repository
             ->with($withRelation)
             ->get();
     }
+
+    /**
+     * Delete Many
+     * @param array $ids
+     * @return Boolean
+     */
+    public function deleteMany(array $ids)
+    {
+        return $this->model->whereIn('id', $ids)->delete();
+    }
 }

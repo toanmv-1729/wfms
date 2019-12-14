@@ -129,4 +129,11 @@ interface Repository
         $orderBy = null,
         $sortOrder = 'asc'
     );
+
+    /**
+     * Delete Many
+     * @param array $ids
+     * @return Boolean
+     */
+    public function deleteMany(array $ids);
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
 use Illuminate\Http\Request;
 use App\Http\Requests\Document\StoreRequest;
 use App\Contracts\Repositories\ProjectRepository;
@@ -126,9 +127,18 @@ class DocumentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreRequest $request, $id)
     {
-        //
+        $document = $this->documentRepository->findOrFail($id);
+        $document->update([
+            'name' => $request->name ?? $document->name,
+            'link' => $request->link ?? $document->link,
+        ]);
+        toastr()->success('Document Successfully Created');
+
+        return $request->parent ?
+            redirect()->route('documents.child', ['slug' => $request->slug, 'uuid' => $request->parent]) :
+            redirect()->route('documents.index', $request->slug);
     }
 
     /**
@@ -139,6 +149,27 @@ class DocumentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $document = $this->documentRepository->findOrFail($id);
+        $childrenIds = $this->documentRepository
+            ->getByAttributes(['parent_id' => $id])
+            ->pluck('id')
+            ->toArray();
+        $i = 0;
+        while (count($childrenIds)) {
+            $i++;
+            $countBreak = count($childrenIds);
+            $newChildrenIds = Document::whereIn('parent_id', $childrenIds)->pluck('id')->toArray();
+            $childrenIds = array_unique(array_merge($childrenIds, $newChildrenIds));
+            if ($countBreak == count($childrenIds) || $i == 10) break;
+        }
+        $slug = $document->project->slug;
+        $uuid = optional($this->documentRepository->find($document->parent_id))->uuid;
+        $this->documentRepository->deleteMany($childrenIds);
+        $document->delete();
+        toastr()->success('Document Successfully Created');
+
+        return $uuid ?
+            redirect()->route('documents.child', ['slug' => $slug, 'uuid' => $uuid]) :
+            redirect()->route('documents.index', $slug);
     }
 }
