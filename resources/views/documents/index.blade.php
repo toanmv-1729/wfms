@@ -2,16 +2,66 @@
 
 @push('css')
     <link href="{{ asset('vendor/plugins/icheck/skins/all.css') }}" rel="stylesheet">
+    <style>
+        .mn--height {
+            min-height: 650px;
+        }
+        .fs--70 {
+            font-size: 70px;
+        }
+        .fs--100 {
+            font-size: 70px;
+            margin-left: 160px;
+        }
+        .doc-item {
+            border: 1px solid;
+            border-color: #d7dfe3;
+            border-radius: 10px;
+        }
+        .doc-item:hover {
+            background-color: #f2f2f2;
+        }
+        .doc-name {
+            display: inline;
+            font-size: 20px;
+        }
+        .btn-custom-edit {
+            margin-top: 3px;
+            position: absolute;
+            right: 70px;
+        }
+        .btn-custom-delete {
+            margin-top: 3px;
+            position: absolute;
+            right: 30px;
+        }
+    </style>
 @endpush
 
 @section('content')
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 col-8 align-self-center">
-            <h3 class="text-themecolor m-b-0 m-t-0">Treeview</h3>
+            <h3 class="text-themecolor m-b-0 m-t-0">{{$project->name}} Documents</h3>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                <li class="breadcrumb-item active">Treeview</li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('staffs.my_projects.overview', $project->slug) }}">Home</a>
+                </li>
+                @if (request()->uuid)
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('documents.index', $project->slug) }}">Root</a>
+                    </li>
+                @foreach($breadcrumbDocuments as $breadcrumbDocument)
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('documents.child', ['slug' => $project->slug, 'uuid' => $breadcrumbDocument->uuid]) }}">
+                            {{ $breadcrumbDocument->name }}
+                        </a>
+                    </li>
+                @endforeach
+                    <li class="breadcrumb-item">{{ $currentDocument->name }}</li>
+                @else
+                    <li class="breadcrumb-item">Root</li>
+                @endif
             </ol>
         </div>
         <div class="row col-md-7 col-4 align-self-center">
@@ -62,7 +112,71 @@
                 </div>
             </div>
         </div>
-        <h3>Document</h3>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body {{ $documents->count() ? '' : 'mn--height' }}">
+                    <div class="row">
+                        @foreach($documents as $document)
+                            @if ($document->type === 0)
+                            <div class="col-4 m-t-20 m-b-30" ondblclick="redirectChildFolder('{{ route('documents.child', ['slug' => $project->slug, 'uuid' => $document->uuid]) }}')">
+                                <div class="doc-item">
+                                    <span class="fa fa-folder fs--70 m-l-10">
+                                        <p class="doc-name">{{ str_limit($document->name, 20) }}</p>
+                                    </span>
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-icon btn-success btn-custom-edit"
+                                        data-toggle="modal"
+                                        aria-describedby="tooltip190692"
+                                    >
+                                        <i class="ti-pencil-alt" aria-hidden="true"></i>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-icon btn-danger btn-custom-delete"
+                                        data-toggle="tooltip"
+                                        aria-describedby="tooltip190692"
+                                    >
+                                        <i class="ti-trash" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="row">
+                        @foreach($documents as $document)
+                            @if ($document->type !== 0)
+                            <div class="col-4 m-t-20 m-b-30" ondblclick="redirectFile('{{ $document->link }}')">
+                                <div class="doc-item">
+                                    <span class="fa fa-file fs--100 m-t-20"></span>
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-icon btn-success btn-custom-edit"
+                                        data-toggle="modal"
+                                        aria-describedby="tooltip190692"
+                                    >
+                                        <i class="ti-pencil-alt" aria-hidden="true"></i>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-icon btn-danger btn-custom-delete"
+                                        data-toggle="tooltip"
+                                        aria-describedby="tooltip190692"
+                                    >
+                                        <i class="ti-trash" aria-hidden="true"></i>
+                                    </button>
+                                    <p class="m-t-10 m-b-20" style="font-size: 20px; text-align: center;">
+                                        {{ str_limit($document->name, 20) }}
+                                    </p>
+                                </div>
+                            </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
@@ -79,5 +193,13 @@
                 element.style.display = "none";
             }
         });
+    </script>
+    <script>
+        function redirectChildFolder(urlFolder) {
+            window.location.replace(urlFolder);
+        }
+        function redirectFile(urlFile) {
+            window.open(urlFile);
+        }
     </script>
 @endpush

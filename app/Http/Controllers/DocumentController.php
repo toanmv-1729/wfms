@@ -29,8 +29,27 @@ class DocumentController extends Controller
     public function index($slug)
     {
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        $documents = $this->documentRepository->getRootItemsInProject($project->id);
 
-        return view('documents.index', compact('project'));
+        return view('documents.index', compact('project', 'documents'));
+    }
+
+    public function indexChild($slug, $uuid)
+    {
+        $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        $currentDocument = $this->documentRepository->findByAttributes(['uuid' => $uuid]);
+        $documents = $this->documentRepository->getChildDocuments($project->id, $currentDocument->id);
+
+        $parentIds = [];
+        $parentDocument = $currentDocument;
+        while ($parentDocument && $parentDocument->parent_id) {
+            array_push($parentIds, $parentDocument->parent_id);
+            $parentDocument = $this->documentRepository->find($parentDocument->parent_id);
+        }
+
+        $breadcrumbDocuments = $this->documentRepository->getBreadcrumbDocuments($parentIds);
+
+        return view('documents.index', compact('project', 'documents', 'currentDocument', 'breadcrumbDocuments'));
     }
 
     /**
@@ -52,10 +71,15 @@ class DocumentController extends Controller
     public function store(StoreRequest $request)
     {
         try {
+            if ($request->parent) {
+                $parentId = $this->documentRepository->findByAttributes([
+                    'uuid' => $request->parent
+                ])->id;
+            }
             $document = $this->documentRepository->create([
                 'user_id' => $this->user->id,
                 'project_id' => $request->project,
-                'parent_id' => $request->parent,
+                'parent_id' => $request->parent ? $parentId : null,
                 'name' => $request->name,
                 'type' => $request->type ? config('document.type.file') : config('document.type.folder'),
                 'link' => $request->link,
@@ -68,7 +92,9 @@ class DocumentController extends Controller
         }
         toastr()->success('Document Successfully Created');
 
-        return redirect()->route('documents.index', $request->slug);
+        return $request->parent ?
+            redirect()->route('documents.child', ['slug' => $request->slug, 'uuid' => $request->parent]) :
+            redirect()->route('documents.index', $request->slug);
     }
 
     /**

@@ -30,7 +30,7 @@ class StoreRequest extends FormRequest
                 new CheckValidDataInProjectsTable($this->project, $this->slug),
             ],
             'slug' => 'required|exists:projects,slug',
-            'name' => 'required|string|max:14',
+            'name' => 'required|string|max:40',
             'parent' => 'nullable|exists:documents,uuid',
             'link' => 'required_if:type,on|nullable|string',
         ];
