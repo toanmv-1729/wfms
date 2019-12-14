@@ -133,7 +133,7 @@
                             <label class="form-label">Estimated Time (hours): </label>&nbsp;&nbsp;&nbsp;
                             <input type="text" name="estimated_time" value="{{ $ticket->estimated_time }}" class="form-control form-control-line" style="width: 300px;">
                             <label class="form-label" style="margin-left: 30px;">Spend Time (hours): </label>&nbsp;&nbsp;&nbsp;
-                            <input type="text" name="spend_time" value="{{ $ticket->spend_time }}" class="form-control form-control-line" style="width: 230px;">
+                            <input type="text" name="spend_time" class="form-control form-control-line" style="width: 230px;">
                             <label class="form-label" style="margin-left: 10px;">% Done: </label>
                             <select class="select2 form-control select-progress" name="progress">
                                 @foreach (config('ticket.progress') as $progress)

@@ -61,15 +61,15 @@
                 </li>
                 @endif
 
-                @if (Request::is('my-projects/*/spend-time'))
+                @if (!empty(request()->slug) || !empty($ticket))
                 <li>
-                    <a class="{{ Request::is('my-projects/*/spend-time') ? 'active' : '' }}" href="#spendtime1">
+                    <a class="{{ Request::is('*/spend-times') ? 'active' : '' }}" href="{{ route('spend_times.index', request()->slug ?? $ticket->project->slug) }}">
                         <i class="mdi mdi-timetable"></i>Spend Time
                     </a>
                 </li>
                 @else
                 <li>
-                    <a class="{{ Request::is('spend-time') ? 'active' : '' }}" href="#spendtime2">
+                    <a class="{{ Request::is('spend-times') ? 'active' : '' }}" href="{{ route('spend_times.all') }}">
                         <i class="mdi mdi-timetable"></i>Spend Time
                     </a>
                 </li>
@@ -88,7 +88,7 @@
                 </li>
                 <li>
                     <a class="{{ Request::is('*/documents') ? 'active' : '' }}" href="{{ route('documents.index', request()->slug ?? $ticket->project->slug) }}">
-                        <i class="mdi mdi-github-box"></i>Documents
+                        <i class="mdi mdi-file-document"></i>Documents
                     </a>
                 </li>
                 @endif

@@ -23,8 +23,8 @@ Route::group(['middleware' => ['auth', 'isAdmin']], function() {
 });
 
 Route::group(['middleware' => ['auth', 'isCompany']], function() {
-    Route::resource('staffs', 'StaffController');
     Route::resource('roles', 'RoleController');
+    Route::resource('staffs', 'StaffController');
     Route::resource('projects', 'ProjectController');
 });
 
@@ -33,30 +33,33 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/my-projects', 'StaffController@getMyProjects')->name('staffs.my_projects');
     Route::get('/{slug}/overview', 'StaffController@getProjectOverview')->name('staffs.my_projects.overview');
 
-    Route::get('/{slug}/tickets/create', 'TicketController@create')->name('tickets.create');
-    Route::get('/{slug}/tickets/{id}/create-sub-ticket', 'TicketController@createSubTicket')->name('tickets.create_sub_ticket');
-    Route::post('/tickets/store', 'TicketController@store')->name('tickets.store');
-    Route::get('/tickets/{id}', 'TicketController@show')->name('tickets.show');
-    Route::post('/tickets/addRelationTicket', 'TicketController@addRelationTicket')->name('tickets.add_relation_ticket');
-    Route::get('/{slug}/tickets', 'TicketController@index')->name('tickets.index');
     Route::get('/tickets', 'TicketController@all')->name('tickets.all');
+    Route::get('/tickets/{id}', 'TicketController@show')->name('tickets.show');
     Route::get('/tickets/edit/{id}', 'TicketController@edit')->name('tickets.edit');
+    Route::post('/tickets/store', 'TicketController@store')->name('tickets.store');
+    Route::get('/{slug}/tickets', 'TicketController@index')->name('tickets.index');
     Route::put('/tickets/{id}', 'TicketController@update')->name('tickets.update');
     Route::delete('/tickets/{id}', 'TicketController@destroy')->name('tickets.destroy');
+    Route::get('/{slug}/tickets/create', 'TicketController@create')->name('tickets.create');
+    Route::post('/tickets/addRelationTicket', 'TicketController@addRelationTicket')->name('tickets.add_relation_ticket');
+    Route::get('/{slug}/tickets/{id}/create-sub-ticket', 'TicketController@createSubTicket')->name('tickets.create_sub_ticket');
 
-    Route::get('{slug}/teams', 'TeamController@index')->name('teams.index');
     Route::post('/teams', 'TeamController@store')->name('teams.store');
+    Route::get('{slug}/teams', 'TeamController@index')->name('teams.index');
     Route::put('/teams/{id}', 'TeamController@update')->name('teams.update');
     Route::delete('/teams/{id}', 'TeamController@destroy')->name('teams.destroy');
 
-    Route::get('{slug}/versions', 'VersionController@index')->name('versions.index');
     Route::post('/versions', 'VersionController@store')->name('versions.store');
+    Route::get('{slug}/versions', 'VersionController@index')->name('versions.index');
     Route::put('/versions/{id}', 'VersionController@update')->name('versions.update');
     Route::delete('/versions/{id}', 'VersionController@destroy')->name('versions.destroy');
 
-    Route::get('{slug}/documents', 'DocumentController@index')->name('documents.index');
-    Route::get('{slug}/documents/folder/{uuid}', 'DocumentController@indexChild')->name('documents.child');
     Route::post('/documents', 'DocumentController@store')->name('documents.store');
+    Route::get('{slug}/documents', 'DocumentController@index')->name('documents.index');
     Route::put('/documents/{id}', 'DocumentController@update')->name('documents.update');
     Route::delete('/documents/{id}', 'DocumentController@destroy')->name('documents.destroy');
+    Route::get('{slug}/documents/folder/{uuid}', 'DocumentController@indexChild')->name('documents.child');
+
+    Route::get('/spend-times', 'SpendTimeController@all')->name('spend_times.all');
+    Route::get('{slug}/spend-times', 'SpendTimeController@index')->name('spend_times.index');
 });
