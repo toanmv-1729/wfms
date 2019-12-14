@@ -112,6 +112,49 @@
                 </div>
             </div>
         </div>
+        @foreach($documents as $document)
+        <div class="modal fade" id="editDocumentModal{{ $document->id }}" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit {{ $document->name }}</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal form-material" enctype="multipart/form-data" method="POST" action="{{ route('documents.update', $document->id) }}">
+                            @csrf
+                            @method('PUT')
+                            <div class="form-group">
+                                <input type="hidden" name="project" value="{{ $project->id }}">
+                                <input type="hidden" name="slug" value="{{ $project->slug }}">
+                                <input type="hidden" name="parent" value="{{ request()->uuid }}">
+                                <div class="col-md-12 m-b-20">
+                                    <label for="recipient-name" class="control-label">Name:</label>
+                                    <input type="text" name="name" class="form-control" value="{{ $document->name }}">
+                                </div>
+                                @if ($document->type)
+                                <div class="col-md-12 m-b-20">
+                                    <input type="checkbox" class="check" disabled checked>
+                                    <label> File</label>
+                                </div>
+                                <div class="col-md-12 m-b-20" id="link">
+                                    <label for="recipient-name" class="control-label">Link:</label>
+                                    <input type="text" name="link" class="form-control" value="{{ $document->link }}">
+                                </div>
+                                @endif
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
         <div class="col-12">
             <div class="card">
                 <div class="card-body {{ $documents->count() ? '' : 'mn--height' }}">
@@ -127,6 +170,7 @@
                                         type="button"
                                         class="btn btn-sm btn-icon btn-success btn-custom-edit"
                                         data-toggle="modal"
+                                        data-target="#editDocumentModal{{$document->id}}"
                                         aria-describedby="tooltip190692"
                                     >
                                         <i class="ti-pencil-alt" aria-hidden="true"></i>
@@ -135,10 +179,16 @@
                                         type="button"
                                         class="btn btn-sm btn-icon btn-danger btn-custom-delete"
                                         data-toggle="tooltip"
+                                        data-original-title="Delete"
                                         aria-describedby="tooltip190692"
+                                        onclick="destroyDocument({{ $document->id }})"
                                     >
                                         <i class="ti-trash" aria-hidden="true"></i>
                                     </button>
+                                    <form id="delete-form-{{ $document->id }}" action="{{ route('documents.destroy', $document->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
                                 </div>
                             </div>
                             @endif
@@ -154,6 +204,7 @@
                                         type="button"
                                         class="btn btn-sm btn-icon btn-success btn-custom-edit"
                                         data-toggle="modal"
+                                        data-target="#editDocumentModal{{$document->id}}"
                                         aria-describedby="tooltip190692"
                                     >
                                         <i class="ti-pencil-alt" aria-hidden="true"></i>
@@ -162,10 +213,16 @@
                                         type="button"
                                         class="btn btn-sm btn-icon btn-danger btn-custom-delete"
                                         data-toggle="tooltip"
+                                        data-original-title="Delete"
                                         aria-describedby="tooltip190692"
+                                        onclick="destroyDocument({{ $document->id }})"
                                     >
                                         <i class="ti-trash" aria-hidden="true"></i>
                                     </button>
+                                    <form id="delete-form-{{ $document->id }}" action="{{ route('documents.destroy', $document->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
                                     <p class="m-t-10 m-b-20" style="font-size: 20px; text-align: center;">
                                         {{ str_limit($document->name, 20) }}
                                     </p>
@@ -201,5 +258,38 @@
         function redirectFile(urlFile) {
             window.open(urlFile);
         }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.26.11/dist/sweetalert2.all.min.js"></script>
+    <script type="text/javascript">
+    function destroyDocument(id) {
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+        })
+        swalWithBootstrapButtons({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                event.preventDefault();
+                document.getElementById('delete-form-'+id).submit();
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons(
+                    'Cancelled',
+                    'Your data is safe :)',
+                    'error'
+                )
+            }
+        })
+    }
     </script>
 @endpush
