@@ -11,4 +11,17 @@ class EloquentSampleDescriptionRepository extends EloquentRepository implements 
     {
         parent::__construct($model);
     }
+
+    /**
+     * Update Status all sample in project
+     * @param int $projectId
+     * @return Boolean
+     */
+    public function updateStatus(int $projectId)
+    {
+    	return $this->model
+    		->where('project_id', $projectId)
+    		->where('status', 1)
+    		->update(['status' => 0]);
+    }
 }

@@ -63,5 +63,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/spend-times', 'SpendTimeController@all')->name('spend_times.all');
     Route::get('{slug}/spend-times', 'SpendTimeController@index')->name('spend_times.index');
 
-    Route::get('/sample-descriptions', 'SampleDescriptionController@index')->name('sample_descriptions.index');
+    Route::post('/sample-descriptions', 'SampleDescriptionController@store')->name('sample_descriptions.store');
+    Route::get('{slug}/sample-descriptions', 'SampleDescriptionController@index')->name('sample_descriptions.index');
+    Route::put('/sample-descriptions/{id}', 'SampleDescriptionController@update')->name('sample_descriptions.update');
+    Route::delete('/sample-descriptions/{id}', 'SampleDescriptionController@destroy')->name('sample_descriptions.destroy');
 });

@@ -91,6 +91,11 @@
                         <i class="mdi mdi-file-document"></i>Documents
                     </a>
                 </li>
+                <li>
+                    <a class="{{ Request::is('*/sample-descriptions') ? 'active' : '' }}" href="{{ route('sample_descriptions.index', request()->slug ?? $ticket->project->slug) }}">
+                        <i class="mdi mdi-book-open"></i>Samples
+                    </a>
+                </li>
                 @endif
             </ul>
         </nav>
