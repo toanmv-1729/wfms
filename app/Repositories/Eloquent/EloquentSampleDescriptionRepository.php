@@ -19,9 +19,22 @@ class EloquentSampleDescriptionRepository extends EloquentRepository implements 
      */
     public function updateStatus(int $projectId)
     {
-    	return $this->model
-    		->where('project_id', $projectId)
-    		->where('status', 1)
-    		->update(['status' => 0]);
+        return $this->model
+            ->where('project_id', $projectId)
+            ->where('status', 1)
+            ->update(['status' => 0]);
+    }
+
+    /**
+     * Find Sample Active Apply In Project
+     * @param int $projectId
+     * @return Collection
+     */
+    public function findActiveSampleInProject(int $projectId)
+    {
+        return $this->model
+            ->where('project_id', $projectId)
+            ->where('status', 1)
+            ->first();
     }
 }
