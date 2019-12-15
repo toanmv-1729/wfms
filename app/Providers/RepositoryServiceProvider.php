@@ -15,6 +15,7 @@ use App\Repositories\Eloquent\EloquentPermissionRepository;
 use App\Repositories\Eloquent\EloquentSpendTimeRepository;
 use App\Repositories\Eloquent\EloquentTicketHistoryRepository;
 use App\Repositories\Eloquent\EloquentTicketRelationRepository;
+use App\Repositories\Eloquent\EloquentSampleDescriptionRepository;
 
 use App\Contracts\Repositories\RoleRepository;
 use App\Contracts\Repositories\UserRepository;
@@ -28,6 +29,7 @@ use App\Contracts\Repositories\PermissionRepository;
 use App\Contracts\Repositories\SpendTimeRepository;
 use App\Contracts\Repositories\TicketHistoryRepository;
 use App\Contracts\Repositories\TicketRelationRepository;
+use App\Contracts\Repositories\SampleDescriptionRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -49,6 +51,7 @@ class RepositoryServiceProvider extends ServiceProvider
         SpendTimeRepository::class => EloquentSpendTimeRepository::class,
         TicketHistoryRepository::class => EloquentTicketHistoryRepository::class,
         TicketRelationRepository::class => EloquentTicketRelationRepository::class,
+        SampleDescriptionRepository::class => EloquentSampleDescriptionRepository::class,
     ];
 
     /**

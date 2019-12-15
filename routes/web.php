@@ -62,4 +62,6 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('/spend-times', 'SpendTimeController@all')->name('spend_times.all');
     Route::get('{slug}/spend-times', 'SpendTimeController@index')->name('spend_times.index');
+
+    Route::get('/sample-descriptions', 'SampleDescriptionController@index')->name('sample_descriptions.index');
 });

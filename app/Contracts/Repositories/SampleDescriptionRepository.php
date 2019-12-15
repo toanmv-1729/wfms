@@ -2,7 +2,7 @@
 
 namespace App\Contracts\Repositories;
 
-interface SpendTimeRepository extends Repository
+interface SampleDescriptionRepository extends Repository
 {
     //
 }
