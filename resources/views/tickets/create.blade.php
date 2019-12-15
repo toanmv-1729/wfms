@@ -85,7 +85,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Description: </label>
-                            <textarea id="mymce" name="description"  value="{{ old('description') }}"  class="form-control form-control-line"></textarea>
+                            <textarea id="mymce" name="description" class="form-control form-control-line">{{ $sample->description ?? old('description') }}</textarea>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Status: </label>&nbsp;&nbsp;

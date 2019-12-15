@@ -10,22 +10,26 @@ use App\Contracts\Repositories\TicketRepository;
 use App\Contracts\Repositories\ProjectRepository;
 use App\Http\Requests\Ticket\AddRelationTicketRequest;
 use App\Contracts\Repositories\TicketRelationRepository;
+use App\Contracts\Repositories\SampleDescriptionRepository;
 
 class TicketController extends Controller
 {
     protected $ticketRepository;
     protected $projectRepository;
     protected $ticketRelationRepository;
+    protected $sampleDescriptionRepository;
 
     public function __construct(
         TicketRepository $ticketRepository,
         ProjectRepository $projectRepository,
-        TicketRelationRepository $ticketRelationRepository
+        TicketRelationRepository $ticketRelationRepository,
+        SampleDescriptionRepository $sampleDescriptionRepository
     ) {
         parent::__construct();
         $this->ticketRepository = $ticketRepository;
         $this->projectRepository = $projectRepository;
         $this->ticketRelationRepository = $ticketRelationRepository;
+        $this->sampleDescriptionRepository = $sampleDescriptionRepository;
     }
 
     /**
@@ -59,16 +63,18 @@ class TicketController extends Controller
     public function create($slug)
     {
         $project = $this->projectRepository->getProjectInfo($slug);
+        $sample = $this->sampleDescriptionRepository->findActiveSampleInProject($project->id);
 
-        return view('tickets.create', compact('project'));
+        return view('tickets.create', compact('project', 'sample'));
     }
 
     public function createSubTicket($slug, $id)
     {
         $project = $this->projectRepository->getProjectInfo($slug);
         $ticketParent = $this->ticketRepository->findOrFail($id, ['id', 'title']);
+        $sample = $this->sampleDescriptionRepository->findActiveSampleInProject($project->id);
 
-        return view('tickets.create', compact('project', 'ticketParent'));
+        return view('tickets.create', compact('project', 'ticketParent', 'sample'));
     }
 
     /**
