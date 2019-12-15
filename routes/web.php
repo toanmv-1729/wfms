@@ -29,6 +29,10 @@ Route::group(['middleware' => ['auth', 'isCompany']], function() {
 });
 
 Route::group(['middleware' => ['auth']], function() {
+    Route::get('/profile', 'UserController@getProfile')->name('users.profile');
+    Route::put('/profile/{id}', 'UserController@updateProfile')->name('users.update.profile');
+    Route::post('/update-password', 'UserController@updatePassword')->name('users.update.password');
+
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/my-projects', 'StaffController@getMyProjects')->name('staffs.my_projects');
     Route::get('/{slug}/overview', 'StaffController@getProjectOverview')->name('staffs.my_projects.overview');
