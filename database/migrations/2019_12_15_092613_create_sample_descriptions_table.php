@@ -17,7 +17,7 @@ class CreateSampleDescriptionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('project_id')->nullable();
-            $table->name('name');
+            $table->string('name');
             $table->text('description');
             $table->integer('status')->default(0);
             $table->softDeletes();
