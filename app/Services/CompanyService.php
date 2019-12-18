@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use DB;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Media;
 use App\Helpers\ContentsHelper;
@@ -71,17 +72,16 @@ class CompanyService
         if ($userCompany) {
             $userCompany->notify(new SendAccountInfomationNotification($userCompany->email, $password));
         }
-        $datas = [];
         foreach (config('role.main_roles') as $value) {
-            array_push($datas, [
+            Role::create([
                 'user_id' => $userCompany->id,
+                'company_id' => $userCompany->company_id,
                 'name' => $value,
                 'is_default' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
         }
-        $userCompany->roles()->insert($datas);
     }
 
     /**

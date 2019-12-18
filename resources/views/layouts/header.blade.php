@@ -5,8 +5,10 @@
                 class="navbar-brand"
                 @if (\Auth::user()->user_type === 'admin')
                     href="{{ route('company.index') }}"
-                @else
+                @elseif(\Auth::user()->user_type === 'company')
                     href="{{ route('staffs.index') }}"
+                @else
+                    href="{{ route('staffs.my_projects') }}"
                 @endif
             >
                 <img src="{{ asset('img/logo-icon.png') }}" alt="homepage" class="dark-logo" />
@@ -44,6 +46,7 @@
                             src="{{ \Auth::user()->media->count() ? asset(storage_url(\Auth::user()->media[0]->preview_path)) : '/img/default_avatar.jpg'}}"
                             alt="avatar"
                             class="profile-pic"
+                            style="height: 30px;"
                         />
                     </a>
                     <div class="dropdown-menu dropdown-menu-right scale-up">

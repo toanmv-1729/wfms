@@ -23,12 +23,19 @@ Route::group(['middleware' => ['auth', 'isAdmin']], function() {
 });
 
 Route::group(['middleware' => ['auth', 'isCompany']], function() {
-    Route::resource('roles', 'RoleController');
+    Route::get('/roles/create', 'RoleController@create')->name('roles.create');
+    Route::get('/roles/{id}/edit', 'RoleController@edit')->name('roles.edit');
+    Route::post('/roles', 'RoleController@store')->name('roles.store');
+    Route::put('/roles/{id}', 'RoleController@update')->name('roles.update');
+    Route::delete('/roles/{id}', 'RoleController@destroy')->name('roles.destroy');
+
     Route::resource('staffs', 'StaffController');
     Route::resource('projects', 'ProjectController');
 });
 
 Route::group(['middleware' => ['auth']], function() {
+    Route::get('/roles', 'RoleController@index')->name('roles.index');
+
     Route::get('/profile', 'UserController@getProfile')->name('users.profile');
     Route::put('/profile/{id}', 'UserController@updateProfile')->name('users.update.profile');
     Route::post('/update-password', 'UserController@updatePassword')->name('users.update.password');
