@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 /**
@@ -26,5 +27,20 @@ function storage_url($path)
     }
     if (config('filesystems.default') === 'local' || config('filesystems.default') === 'public') {
         return app('filesystem')->url($path);
+    }
+}
+
+/**
+ * @param User $user
+ * @return array
+ */
+if (!function_exists('has_permissions')) {
+    function has_permissions(User $user)
+    {
+        if ($user->roles->count()) {
+            return $user->roles[0]->permissions->pluck('name')->toArray();
+        } else {
+            return [];
+        }
     }
 }

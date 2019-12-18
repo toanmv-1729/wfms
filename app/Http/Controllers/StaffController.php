@@ -34,6 +34,7 @@ class StaffController extends Controller
 
     public function index()
     {
+        $this->authorize('staffs.index');
         $staffs = $this->userRepository->getStaffInCompany($this->user->company_id);
 
         return view('staffs.index', compact('staffs'));
@@ -41,6 +42,7 @@ class StaffController extends Controller
 
     public function create()
     {
+        $this->authorize('staffs.create');
         $roles = $this->roleRepository->getByCompanyId($this->user->company_id);
 
         return view('staffs.create', compact('roles'));
@@ -48,6 +50,7 @@ class StaffController extends Controller
 
     public function store(StoreRequest $request)
     {
+        $this->authorize('staffs.store');
         $password = str_random(12);
         $user = $this->userRepository->create([
             'name' => $request->name,
@@ -69,6 +72,7 @@ class StaffController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('staffs.edit');
         $staff = $this->userRepository->findOrFail($id);
         $roles = $this->roleRepository->getByCompanyId($this->user->company_id);
 
@@ -77,6 +81,7 @@ class StaffController extends Controller
 
     public function update(UpdateRequest $request, $id)
     {
+        $this->authorize('staffs.update');
         $staff = $this->userRepository->findOrFail($id);
         $staff->roles()->sync($request->roles);
         toastr()->success('Staff Successfully Updated');
@@ -86,6 +91,7 @@ class StaffController extends Controller
 
     public function destroy(Request $request, $id)
     {
+        $this->authorize('staffs.destroy');
         $staff = $this->userRepository->findOrFail($id);
         $staff->update([
             'email' => now()->format('YmdHis') . $staff->email,
@@ -99,6 +105,7 @@ class StaffController extends Controller
 
     public function getMyProjects()
     {
+        $this->authorize('staffs.getMyProjects');
         $projects = $this->user
             ->projects()
             ->with('media')
@@ -110,6 +117,7 @@ class StaffController extends Controller
 
     public function getProjectOverview($slug)
     {
+        $this->authorize('staffs.getProjectOverview');
         $project = $this->projectRepository->getProjectInfo($slug);
         $roles = [];
         foreach ($project->users as $user) {

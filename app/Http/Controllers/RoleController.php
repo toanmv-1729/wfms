@@ -33,6 +33,7 @@ class RoleController extends Controller
 
     public function index()
     {
+        $this->authorize('roles.index');
         $roles = $this->roleRepository->getByCompanyId($this->user->company_id);
 
         return view('roles.index', compact('roles'));
@@ -40,6 +41,7 @@ class RoleController extends Controller
 
     public function create()
     {
+        $this->authorize('roles.create');
         $permissions = $this->permissionRepository->all(['id', 'name']);
 
         return view('roles.create', compact('permissions'));
@@ -47,6 +49,7 @@ class RoleController extends Controller
 
     public function store(StoreRequest $request)
     {
+        $this->authorize('roles.store');
         $role = $this->roleRepository->create([
             'user_id' => $this->user->id,
             'company_id' => $this->user->company_id,
@@ -60,6 +63,7 @@ class RoleController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('roles.edit');
         $role = $this->roleRepository->findOrFail($id);
         $permissions = $this->permissionRepository->all(['id', 'name']);
 
@@ -68,6 +72,7 @@ class RoleController extends Controller
 
     public function update(UpdateRequest $request, $id)
     {
+        $this->authorize('roles.update');
         $role = $this->roleRepository->findOrFail($id);
         $role->update([
             'name' => $request->name,
@@ -80,6 +85,7 @@ class RoleController extends Controller
 
     public function destroy(Request $request, $id)
     {
+        $this->authorize('roles.destroy');
         $role = $this->roleRepository->findOrFail($id);
         $role->permissions()->detach();
         $role->delete();
