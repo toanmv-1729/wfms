@@ -41,7 +41,7 @@ class StaffController extends Controller
 
     public function create()
     {
-        $roles = $this->roleRepository->getByUserId($this->user->id);
+        $roles = $this->roleRepository->getByCompanyId($this->user->company_id);
 
         return view('staffs.create', compact('roles'));
     }
@@ -70,7 +70,7 @@ class StaffController extends Controller
     public function edit($id)
     {
         $staff = $this->userRepository->findOrFail($id);
-        $roles = $this->roleRepository->getByUserId($this->user->id);
+        $roles = $this->roleRepository->getByCompanyId($this->user->company_id);
 
         return view('staffs.edit', compact('staff', 'roles'));
     }
