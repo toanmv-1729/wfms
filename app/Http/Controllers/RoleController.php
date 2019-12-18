@@ -33,7 +33,7 @@ class RoleController extends Controller
 
     public function index()
     {
-        $roles = $this->roleRepository->getByUserId($this->user->id);
+        $roles = $this->roleRepository->getByCompanyId($this->user->company_id);
 
         return view('roles.index', compact('roles'));
     }
@@ -49,6 +49,7 @@ class RoleController extends Controller
     {
         $role = $this->roleRepository->create([
             'user_id' => $this->user->id,
+            'company_id' => $this->user->company_id,
             'name' => $request->name,
         ]);
         $role->permissions()->attach($request->permissions);

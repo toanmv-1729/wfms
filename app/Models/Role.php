@@ -12,12 +12,18 @@ class Role extends Model
 
     protected $fillable = [
         'user_id',
+        'company_id',
         'name',
     ];
 
     public function permissions()
     {
         return $this->belongsToMany(Permission::class)->withTimestamps();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function users()

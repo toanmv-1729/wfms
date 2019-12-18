@@ -7,6 +7,13 @@
                         <i class="mdi mdi-database"></i>My Projects
                     </a>
                 </li>
+                @if (\Auth::user()->roles[0]->name === 'Scrum Master')
+                <li>
+                    <a class="{{ Request::is('roles') ? 'active' : '' }}" href="{{ route('roles.index') }}">
+                        <i class="mdi mdi-database"></i>Roles
+                    </a>
+                </li>
+                @endif
 
                 @if (!empty(request()->slug))
                 <li>

@@ -13,16 +13,16 @@ class EloquentRoleRepository extends EloquentRepository implements RoleRepositor
     }
 
     /**
-     * Get Role By User Id
-     * @param int $userId
+     * Get Role By Company Id
+     * @param int $companyId
      * @param array $columns
      * @return Collection
      */
-    public function getByUserId(int $userId, $columns = ['*'])
+    public function getByCompanyId(int $companyId, $columns = ['*'])
     {
         return $this->model
             ->with('permissions')
-            ->where('user_id', $userId)
+            ->where('company_id', $companyId)
             ->get($columns);
     }
 }
