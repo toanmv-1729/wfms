@@ -47,7 +47,7 @@ class ProjectController extends Controller
     public function create()
     {
         $description = "- What does the project do?\n- Project Objectives,...";
-        $roles = $this->roleRepository->getByUserId($this->user->id);
+        $roles = $this->roleRepository->getByCompanyId($this->user->company_id);
         $users = $this->userRepository->getStaffInCompany($this->user->company_id);
 
         return view('projects.create', compact('description', 'roles', 'users'));
