@@ -39,6 +39,7 @@ class TicketController extends Controller
      */
     public function index($slug)
     {
+        $this->authorize('tickets.index');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
         $tickets = $this->ticketRepository->getByAttributes([
             'project_id' => $project->id,
@@ -49,6 +50,7 @@ class TicketController extends Controller
 
     public function all()
     {
+        $this->authorize('tickets.all');
         $projectIds = $this->user->projects->pluck('id')->toArray();
         $tickets = $this->ticketRepository->getByProjectIds($projectIds);
 
@@ -62,6 +64,7 @@ class TicketController extends Controller
      */
     public function create($slug)
     {
+        $this->authorize('tickets.create');
         $project = $this->projectRepository->getProjectInfo($slug);
         $sample = $this->sampleDescriptionRepository->findActiveSampleInProject($project->id);
 
@@ -70,6 +73,7 @@ class TicketController extends Controller
 
     public function createSubTicket($slug, $id)
     {
+        $this->authorize('tickets.createSubTicket');
         $project = $this->projectRepository->getProjectInfo($slug);
         $ticketParent = $this->ticketRepository->findOrFail($id, ['id', 'title']);
         $sample = $this->sampleDescriptionRepository->findActiveSampleInProject($project->id);
@@ -86,6 +90,7 @@ class TicketController extends Controller
      */
     public function store(StoreRequest $request, TicketService $ticketService)
     {
+        $this->authorize('tickets.store');
         $result = $ticketService->store($this->user, $request->all());
         $result ? toastr()->success('Ticket Successfully Created') : toastr()->error('Ticket Created Error');
 
@@ -100,6 +105,7 @@ class TicketController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('tickets.show');
         $ticket = $this->ticketRepository->findOrFail($id);
         $relationTickets = $this->ticketRepository->getRelationTickets(
             $ticket->project->id,
@@ -127,6 +133,7 @@ class TicketController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('tickets.edit');
         $ticket = $this->ticketRepository->findOrFail($id);
 
         return view('tickets.edit', compact('ticket'));
@@ -141,6 +148,7 @@ class TicketController extends Controller
      */
     public function update(StoreRequest $request, $id, TicketService $ticketService)
     {
+        $this->authorize('tickets.update');
         $ticket = $this->ticketRepository->findOrFail($id);
         $result = $ticketService->update($this->user, $ticket, $request->all());
         $result ? toastr()->success('Ticket Successfully Updated') : toastr()->error('Ticket Updated Error');
@@ -156,6 +164,7 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('tickets.destroy');
         $ticket = $this->ticketRepository->findOrFail($id);
         $slug = $ticket->project->slug;
         $result = $ticket->delete();
@@ -166,6 +175,7 @@ class TicketController extends Controller
 
     public function addRelationTicket(AddRelationTicketRequest $request)
     {
+        $this->authorize('tickets.addRelationTicket');
         foreach ($request->relation_tickets as $relationTicketId) {
             $this->ticketRelationRepository->create([
                 'ticket_id' => $request->tid,

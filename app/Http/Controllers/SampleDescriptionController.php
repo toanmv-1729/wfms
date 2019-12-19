@@ -23,6 +23,7 @@ class SampleDescriptionController extends Controller
 
     public function index($slug)
     {
+        $this->authorize('samples.index');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
         $sampleDescriptions = $this->sampleDescriptionRepository->getByAttributesWithRelation([
             'project_id' => $project->id,
@@ -33,6 +34,7 @@ class SampleDescriptionController extends Controller
 
     public function store(StoreRequest $request)
     {
+        $this->authorize('samples.store');
         if ($request->status) {
             $this->sampleDescriptionRepository->updateStatus($request->project);
         }
@@ -50,6 +52,7 @@ class SampleDescriptionController extends Controller
 
     public function update(StoreRequest $request, $id)
     {
+        $this->authorize('samples.update');
         $sampleDescription = $this->sampleDescriptionRepository->findOrFail($id);
         if ($request->status && !$sampleDescription->status) {
             $this->sampleDescriptionRepository->updateStatus($request->project);
@@ -66,6 +69,7 @@ class SampleDescriptionController extends Controller
 
     public function destroy($id)
     {
+        $this->authorize('samples.destroy');
         $sampleDescription = $this->sampleDescriptionRepository->findOrFail($id);
         $slug = $sampleDescription->project->slug;
         $sampleDescription->delete();

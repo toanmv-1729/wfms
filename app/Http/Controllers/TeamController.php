@@ -30,20 +30,11 @@ class TeamController extends Controller
      */
     public function index($slug)
     {
+        $this->authorize('teams.index');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
         $teams = $this->teamRepository->getByAttributesWithRelation(['project_id' => $project->id], ['users']);
 
         return view('teams.index', compact('teams', 'project'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -54,6 +45,7 @@ class TeamController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        $this->authorize('teams.store');
         DB::beginTransaction();
         try {
             $team = $this->teamRepository->create([
@@ -74,28 +66,6 @@ class TeamController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -104,6 +74,7 @@ class TeamController extends Controller
      */
     public function update(StoreRequest $request, $id)
     {
+        $this->authorize('teams.update');
         $team = $this->teamRepository->findOrFail($id);
         $slug = $team->project->slug;
         DB::beginTransaction();
@@ -131,6 +102,7 @@ class TeamController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('teams.destroy');
         $team = $this->teamRepository->findOrFail($id);
         $slug = $team->project->slug;
         DB::beginTransaction();
