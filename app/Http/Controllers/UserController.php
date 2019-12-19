@@ -21,6 +21,7 @@ class UserController extends Controller
 
     public function getProfile()
     {
+        $this->authorize('users.getProfile');
         $user = $this->user;
 
         return view('users.profile', compact('user'));
@@ -28,6 +29,7 @@ class UserController extends Controller
 
     public function updateProfile(UpdateProfileRequest $request, $id, UserService $userService)
     {
+        $this->authorize('users.updateProfile');
         $user = $this->user;
         $result = ($user->id == $id) && $userService->updateProfile($user, $request->all());
         $result ? toastr()->success('Profile Successfully Updated') : toastr()->error('Profile Updated Error');
@@ -37,6 +39,7 @@ class UserController extends Controller
 
     public function updatePassword(Request $request)
     {
+        $this->authorize('users.updatePassword');
         $this->validate($request,[
             'old_password' => 'required',
             'password' => 'required|confirmed|min:8',

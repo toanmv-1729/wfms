@@ -15,7 +15,7 @@
                         <img src="{{ $user->media->count() ? asset(storage_url($user->media[0]->preview_path)) : '/img/default_avatar.jpg'}}" class="img-circle" width="150" height="150" id="output"/>
                         <h4 class="card-title m-t-10">{{ $user->name }}</h4>
                         <h6 class="card-subtitle">{{ $user->company->name }}</h6>
-                        <h6 class="card-subtitle">{{ $user->roles[0]->name }}</h6>
+                        <h6 class="card-subtitle">{{ $user->roles->count() ? $user->roles[0]->name : 'Company Account' }}</h6>
                     </center>
                 </div>
                 <div>

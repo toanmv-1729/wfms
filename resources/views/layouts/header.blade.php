@@ -64,9 +64,11 @@
                                         <p title="{{ \Auth::user()->email }}" class="text-muted">
                                             {{ str_limit(\Auth::user()->email, 15, '...') }}
                                         </p>
+                                        @if (\Auth::user()->user_type !== 'admin')
                                         <a href="{{ route('users.profile') }}" class="btn btn-rounded btn-danger btn-sm">
                                             <i class="ti-settings"></i> Account Setting
                                         </a>
+                                        @endif
                                     </div>
                                 </div>
                             </li>

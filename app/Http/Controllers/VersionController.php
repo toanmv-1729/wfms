@@ -29,22 +29,13 @@ class VersionController extends Controller
      */
     public function index($slug)
     {
+        $this->authorize('versions.index');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
         $versions = $this->versionRepository->getByAttributesWithRelation([
             'project_id' => $project->id,
         ], ['tickets', 'tasks', 'bugs', 'features', 'ticketsClosed', 'tasksClosed', 'bugsClosed', 'featuresClosed']);
 
         return view('versions.index', compact('versions', 'project'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -55,32 +46,11 @@ class VersionController extends Controller
      */
     public function store(StoreRequest $request, VersionService $versionService)
     {
+        $this->authorize('versions.store');
         $result = $versionService->store($this->user, $request->all());
         $result ? toastr()->success('Version Successfully Created') : toastr()->error('Version Created Error');
 
         return redirect()->route('versions.index', $request->slug);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -92,6 +62,7 @@ class VersionController extends Controller
      */
     public function update(StoreRequest $request, $id, VersionService $versionService)
     {
+        $this->authorize('versions.update');
         $version = $this->versionRepository->findOrFail($id);
         $result = $versionService->update($this->user, $version, $request->all());
         $result ? toastr()->success('Version Successfully Updated') : toastr()->error('Version Updated Error');
@@ -107,6 +78,7 @@ class VersionController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('versions.destroy');
         $version = $this->versionRepository->findOrFail($id);
         $slug = optional($version->project)->slug;
         $result = $version->delete();

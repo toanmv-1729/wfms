@@ -29,6 +29,7 @@ class DocumentController extends Controller
      */
     public function index($slug)
     {
+        $this->authorize('documents.index');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
         $documents = $this->documentRepository->getRootItemsInProject($project->id);
 
@@ -37,6 +38,7 @@ class DocumentController extends Controller
 
     public function indexChild($slug, $uuid)
     {
+        $this->authorize('documents.indexChild');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
         $currentDocument = $this->documentRepository->findByAttributes(['uuid' => $uuid]);
         $documents = $this->documentRepository->getChildDocuments($project->id, $currentDocument->id);
@@ -54,16 +56,6 @@ class DocumentController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -71,6 +63,7 @@ class DocumentController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        $this->authorize('documents.store');
         try {
             if ($request->parent) {
                 $parentId = $this->documentRepository->findByAttributes([
@@ -99,28 +92,6 @@ class DocumentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -129,6 +100,7 @@ class DocumentController extends Controller
      */
     public function update(StoreRequest $request, $id)
     {
+        $this->authorize('documents.update');
         $document = $this->documentRepository->findOrFail($id);
         $document->update([
             'name' => $request->name ?? $document->name,
@@ -149,6 +121,7 @@ class DocumentController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('documents.destroy');
         $document = $this->documentRepository->findOrFail($id);
         $childrenIds = $this->documentRepository
             ->getByAttributes(['parent_id' => $id])
