@@ -110,9 +110,10 @@ interface Repository
     /**
      * @param $id
      * @param array $columns
+     * @param array $with
      * @return mixed
      */
-    public function findOrFail($id, $columns = ['*']);
+    public function findOrFail($id, $columns = ['*'], $with = []);
 
     /**
      * Get multiple records matching the attributes.

@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Role;
+use App\Models\Ticket;
 use App\Observers\RoleObserver;
+use App\Observers\TicketObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,5 +28,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Role::observe(RoleObserver::class);
+        Ticket::observe(TicketObserver::class);
     }
 }

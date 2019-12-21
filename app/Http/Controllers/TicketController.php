@@ -8,6 +8,7 @@ use App\Services\TicketService;
 use App\Http\Requests\Ticket\StoreRequest;
 use App\Contracts\Repositories\TicketRepository;
 use App\Contracts\Repositories\ProjectRepository;
+use App\Contracts\Repositories\TicketHistoryRepository;
 use App\Http\Requests\Ticket\AddRelationTicketRequest;
 use App\Contracts\Repositories\TicketRelationRepository;
 use App\Contracts\Repositories\SampleDescriptionRepository;
@@ -16,18 +17,21 @@ class TicketController extends Controller
 {
     protected $ticketRepository;
     protected $projectRepository;
+    protected $ticketHistoryRepository;
     protected $ticketRelationRepository;
     protected $sampleDescriptionRepository;
 
     public function __construct(
         TicketRepository $ticketRepository,
         ProjectRepository $projectRepository,
+        TicketHistoryRepository $ticketHistoryRepository,
         TicketRelationRepository $ticketRelationRepository,
         SampleDescriptionRepository $sampleDescriptionRepository
     ) {
         parent::__construct();
         $this->ticketRepository = $ticketRepository;
         $this->projectRepository = $projectRepository;
+        $this->ticketHistoryRepository = $ticketHistoryRepository;
         $this->ticketRelationRepository = $ticketRelationRepository;
         $this->sampleDescriptionRepository = $sampleDescriptionRepository;
     }
@@ -107,12 +111,13 @@ class TicketController extends Controller
     {
         $this->authorize('tickets.show');
         $ticket = $this->ticketRepository->findOrFail($id);
+        $notInIds = $ticket->ticketRelations->pluck('ticket_relation_id')->toArray();
+        array_push($notInIds, $ticket->id);
         $relationTickets = $this->ticketRepository->getRelationTickets(
             $ticket->project->id,
-            $id,
+            $notInIds,
             ['id', 'title', 'tracker']
         );
-
         $ticketRelationIds = array_merge(
             $ticket->ticketRelations->pluck('ticket_relation_id')->toArray(),
             $ticket->ticketRelationsFlip->pluck('ticket_id')->toArray()
@@ -121,8 +126,9 @@ class TicketController extends Controller
             $ticketRelationIds,
             ['id', 'title', 'tracker']
         );
+        $ticketHistories = $this->ticketHistoryRepository->getList($id);
 
-        return view('tickets.show', compact('ticket', 'relationTickets', 'ticketRelations'));
+        return view('tickets.show', compact('ticket', 'relationTickets', 'ticketRelations', 'ticketHistories'));
     }
 
     /**

@@ -44,6 +44,12 @@
             font-weight: 500;
             margin-left: 15px;
         }
+        .history {
+            margin-bottom: 30px;
+        }
+        .history-owner-pic {
+            width: 45px;
+        }
     </style>
 @endpush
 
@@ -60,7 +66,7 @@
                 <div class="card-body">
                     <div class="col-12 header">
                         <img
-                            src="{{ $ticket->user->media->count() ? asset(storage_url(\Auth::user()->media[0]->preview_path)) : '/img/default_avatar.jpg'}}"
+                            src="{{ $ticket->user->media->count() ? asset(storage_url($ticket->user->media[0]->preview_path)) : '/img/default_avatar.jpg'}}"
                             alt="avatar"
                             class="ticket-owner-pic"
                         />
@@ -204,10 +210,35 @@
             </div>
         </div>
     </div>
+    <div>
+        <h4>History</h4>
+        <div class="history">
+            @foreach($ticketHistories as $ticketsHistory)
+                <hr>
+                <div class="header">
+                    <img
+                        src="{{ $ticketsHistory[0]->user->media->count() ? asset(storage_url($ticketsHistory[0]->user->media[0]->preview_path)) : '/img/default_avatar.jpg'}}"
+                        alt="avatar"
+                        class="history-owner-pic"
+                    />
+                    <h6>Updated By {{ $ticketsHistory[0]->user->name }}
+                        <a href="javascript:void(0)">{{ $ticketsHistory[0]->created_at->diffForHumans() }}</a>
+                    </h6>
+                </div>
+                <br>
+                @foreach($ticketsHistory as $ticketHistory)
+                    <p>{!! $ticketHistory->content !!}</p>
+                @endforeach
+            @endforeach
+        </div>
+    </div>
 </div>
 @endsection
 
 @push('js')
+<script>
+    $("strong").css("font-weight", "600");
+</script>
 <script src="{{ asset('vendor/plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
 <script>
     $(".select2").select2();
