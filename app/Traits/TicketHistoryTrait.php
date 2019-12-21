@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Carbon\Carbon;
 use App\Models\TicketHistory;
 use Illuminate\Database\Eloquent\Model;
 use App\Contracts\Repositories\UserRepository;
