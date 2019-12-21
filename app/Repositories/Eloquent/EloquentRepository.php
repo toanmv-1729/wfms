@@ -173,11 +173,12 @@ abstract class EloquentRepository implements Repository
     /**
      * @param $id
      * @param array $columns
+     * @param array $with
      * @return mixed
      */
-    public function findOrFail($id, $columns = ['*'])
+    public function findOrFail($id, $columns = ['*'], $with = [])
     {
-        return $this->model->findOrFail($id, $columns);
+        return $this->model->with($with)->findOrFail($id, $columns);
     }
 
     /**

@@ -74,4 +74,9 @@ class Ticket extends Model
     {
         return $this->hasMany(TicketRelation::class, 'ticket_relation_id');
     }
+
+    public function ticketHistories()
+    {
+        return $this->hasMany(TicketHistory::class);
+    }
 }

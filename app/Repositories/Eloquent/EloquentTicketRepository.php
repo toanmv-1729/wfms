@@ -15,15 +15,15 @@ class EloquentTicketRepository extends EloquentRepository implements TicketRepos
     /**
      * get relation ticket
      * @param int $projectId
-     * @param int $id
+     * @param array $notInIds
      * @param array $columns
      * @return Collection
      */
-    public function getRelationTickets($projectId, $id, $columns = ['*'])
+    public function getRelationTickets($projectId, $notInIds, $columns = ['*'])
     {
         return $this->model
             ->where('project_id', $projectId)
-            ->where('id', '<>', $id)
+            ->whereNotIn('id', $notInIds)
             ->get($columns);
     }
 
