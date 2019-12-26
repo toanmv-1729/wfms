@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @push('css')
+    <link href="{{ asset('vendor/plugins/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
         .important {
             background: #ffcccc;
@@ -18,6 +19,10 @@
         .over-date {
             color: #ff3333;
         }
+        .custom--filter {
+            position: absolute;
+            right: 8%;
+        }
     </style>
 @endpush
 
@@ -27,6 +32,66 @@
         <div class="col-md-5 col-8 align-self-center">
             <h3 class="text-themecolor m-b-0 m-t-0">Tickets</h3>
         </div>
+        @if (!empty(request()->slug))
+        <div class="custom--filter">
+            <h3 class="text-themecolor m-b-0 m-t-0">Custom Filter</h3>
+        </div>
+        <div style="position: absolute; right: 50px; margin-top: 3%;">
+            <form action="{{ route('tickets.index', $project->slug) }}" method="GET">
+                <label>Tracker: </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <select class="select2 select2-multiple" multiple="multiple" name="tracker[]" style="width: 150px;">
+                    @foreach(config('ticket.tracker') as $keyTracker => $tracker)
+                        <option value="{{ $keyTracker }}" {{ in_array($keyTracker, request()->tracker ?? []) ? 'selected' : '' }}>
+                            {{ $tracker['name'] }}
+                        </option>
+                    @endforeach
+                </select>
+                <br>
+                <br>
+                <label>Status: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <select class="select2 select2-multiple" multiple="multiple" name="status[]" style="width: 150px;">
+                    @foreach(config('ticket.status') as $keyStatus => $status)
+                        <option value="{{ $keyStatus }}" {{ in_array($keyStatus, request()->status ?? []) ? 'selected' : '' }}>
+                            {{ $status['name'] }}
+                        </option>
+                    @endforeach
+                </select>
+                <br>
+                <br>
+                <label>Priority: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <select class="select2 select2-multiple" multiple="multiple" name="priority[]" style="width: 150px;">
+                    @foreach(config('ticket.priority') as $keyPriority => $priority)
+                        <option value="{{ $keyPriority }}" {{ in_array($keyPriority, request()->priority ?? []) ? 'selected' : '' }}>
+                            {{ $priority['name'] }}
+                    </option>
+                    @endforeach
+                </select>
+                <br>
+                <br>
+                <label>Assignee: </label>&nbsp;
+                <select class="select2 select2-multiple" multiple="multiple" name="assignee[]" style="width: 150px;">
+                    @foreach($project->users as $user)
+                        <option value="{{ $user->id }}" {{ in_array($user->id, request()->assignee ?? []) ? 'selected' : '' }}>
+                            {{ $user->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <br>
+                <br>
+                <label>Version: </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <select class="select2 select2-multiple" multiple="multiple" name="version[]" style="width: 150px;">
+                    @foreach($project->versions as $version)
+                        <option value="{{ $version->id }}" {{ in_array($version->id, request()->version ?? []) ? 'selected' : '' }}>
+                            {{ $version->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <br>
+                <br>
+                <button type="submit">Filter</button>
+            </form>
+        </div>
+        @endif
     </div>
     <div class="row">
         <div class="col-12">
@@ -137,6 +202,12 @@
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ]
+        });
+    </script>
+    <script src="{{ asset('vendor/plugins/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function() {
+            $(".select2").select2();
         });
     </script>
 @endpush

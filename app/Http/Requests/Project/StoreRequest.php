@@ -30,7 +30,7 @@ class StoreRequest extends FormRequest
             'description' => 'required',
             'root_folder_link' => 'url|unique:projects',
             'repository_link' => 'url|unique:projects',
-            'image' => 'image',
+            'image' => 'image|max:1024',
             'users' => [
                 'required',
                 new CheckUniqueContributorsInProject($this->users),

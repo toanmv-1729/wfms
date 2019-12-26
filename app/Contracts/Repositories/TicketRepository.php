@@ -20,4 +20,13 @@ interface TicketRepository extends Repository
      * @return Collection
      */
     public function getByProjectIds(array $projectIds, $columns = ['*']);
+
+    /**
+     * Get by custom conditions filter
+     * @param int $projectId
+     * @param array $conditions
+     * @param array $columns
+     * @return [type]
+     */
+    public function getByCustomConditions($projectId, $conditions, $columns = ['*']);
 }
