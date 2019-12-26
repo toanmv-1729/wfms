@@ -36,7 +36,7 @@ class UpdateProfileRequest extends FormRequest
                 'regex:/(09|08|07|05|03)+([0-9]{8})/',
             ],
             'address' => 'nullable|string',
-            'avatar' => 'nullable|image',
+            'avatar' => 'nullable|image|max:1024',
         ];
     }
 }

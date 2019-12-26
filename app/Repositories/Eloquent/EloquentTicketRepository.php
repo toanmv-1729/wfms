@@ -39,4 +39,33 @@ class EloquentTicketRepository extends EloquentRepository implements TicketRepos
             ->whereIn('project_id', $projectIds)
             ->get($columns);
     }
+
+    /**
+     * Get by custom conditions filter
+     * @param int $projectId
+     * @param array $conditions
+     * @param array $columns
+     * @return [type]
+     */
+    public function getByCustomConditions($projectId, $conditions, $columns = ['*'])
+    {
+        return $this->model
+            ->where('project_id', $projectId)
+            ->when(array_get($conditions, 'tracker'), function ($query) use ($conditions) {
+                $query->whereIn('tracker', array_get($conditions, 'tracker'));
+            })
+            ->when(array_get($conditions, 'status'), function ($query) use ($conditions) {
+                $query->whereIn('status', array_get($conditions, 'status'));
+            })
+            ->when(array_get($conditions, 'priority'), function ($query) use ($conditions) {
+                $query->whereIn('priority', array_get($conditions, 'priority'));
+            })
+            ->when(array_get($conditions, 'assignee'), function ($query) use ($conditions) {
+                $query->whereIn('assignee_id', array_get($conditions, 'assignee'));
+            })
+            ->when(array_get($conditions, 'version'), function ($query) use ($conditions) {
+                $query->whereIn('version_id', array_get($conditions, 'version'));
+            })
+            ->get($columns);
+    }
 }
