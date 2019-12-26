@@ -10,6 +10,7 @@ class TicketHistory extends Model
     use BelongsToUser;
 
     protected $fillable = [
+        'project_id',
         'ticket_id',
         'user_id',
         'content',
@@ -19,5 +20,10 @@ class TicketHistory extends Model
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
     }
 }

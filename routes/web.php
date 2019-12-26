@@ -78,4 +78,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('{slug}/sample-descriptions', 'SampleDescriptionController@index')->name('sample_descriptions.index');
     Route::put('/sample-descriptions/{id}', 'SampleDescriptionController@update')->name('sample_descriptions.update');
     Route::delete('/sample-descriptions/{id}', 'SampleDescriptionController@destroy')->name('sample_descriptions.destroy');
+
+    Route::get('/activities', 'ActivityController@all')->name('activities.all');
+    Route::get('{slug}/activities', 'ActivityController@index')->name('activities.index');
 });

@@ -18,6 +18,7 @@ trait TracksHistoryTrait
         $table = $table ?: $model->getTable();
         // Allow for overriding of id if it's not the model id
         $id = $id ?: $model->id;
+        $projectId = $model->project_id ?? null;
         // Allow for customization of the history record if needed
         $func = $func ?: [$this, 'getHistoryBody'];
         $beforeUpdated = $model->getOriginal();
@@ -27,8 +28,9 @@ trait TracksHistoryTrait
                 $data = $this->convertData($beforeUpdated, $field, $value);
                 return call_user_func_array($func, $data);
              })
-             ->each(function ($fields) use ($table, $id) {
+             ->each(function ($fields) use ($table, $id, $projectId) {
                 TicketHistory::create([
+                    'project_id' => $projectId,
                     'ticket_id' => $id,
                     'user_id' => \Auth::user()->id,
                 ] + $fields);
@@ -71,8 +73,8 @@ trait TracksHistoryTrait
                 $field = '<strong>Title</strong>';
                 break;
             case 'description':
-                $newValue = $value;
-                $oldValue = array_get($beforeUpdated, 'description');
+                $newValue = '<a href="javascript:void(0)">See More...</a>';
+                $oldValue = '<a href="javascript:void(0)">See More...</a>';
                 $field = '<strong>Description</strong>';
                 break;
             case 'tracker':

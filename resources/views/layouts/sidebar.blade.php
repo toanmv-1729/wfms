@@ -56,14 +56,14 @@
 
                 @if (Request::is('my-projects/*/activities'))
                 <li>
-                    <a class="{{ Request::is('my-projects/*/activities') ? 'active' : '' }}" href="#activity1">
-                        <i class="mdi mdi-comment-text"></i>Activity
+                    <a class="{{ Request::is('*/activities') ? 'active' : '' }}" href="{{ route('activities.index', request()->slug ?? $ticket->project->slug) }}">
+                        <i class="mdi mdi-comment-text"></i>Activities
                     </a>
                 </li>
                 @else
                 <li>
-                    <a class="{{ Request::is('activities') ? 'active' : '' }}" href="#activity2">
-                        <i class="mdi mdi-comment-text"></i>Activity
+                    <a class="{{ Request::is('activities') ? 'active' : '' }}" href="{{ route('activities.all') }}">
+                        <i class="mdi mdi-comment-text"></i>Activities
                     </a>
                 </li>
                 @endif
@@ -71,13 +71,13 @@
                 @if (!empty(request()->slug) || !empty($ticket))
                 <li>
                     <a class="{{ Request::is('*/spend-times') ? 'active' : '' }}" href="{{ route('spend_times.index', request()->slug ?? $ticket->project->slug) }}">
-                        <i class="mdi mdi-timetable"></i>Spend Time
+                        <i class="mdi mdi-timetable"></i>Spend Times
                     </a>
                 </li>
                 @else
                 <li>
                     <a class="{{ Request::is('spend-times') ? 'active' : '' }}" href="{{ route('spend_times.all') }}">
-                        <i class="mdi mdi-timetable"></i>Spend Time
+                        <i class="mdi mdi-timetable"></i>Spend Times
                     </a>
                 </li>
                 @endif
