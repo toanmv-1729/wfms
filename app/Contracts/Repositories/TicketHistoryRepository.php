@@ -11,4 +11,12 @@ interface TicketHistoryRepository extends Repository
      * @return Collection
      */
     public function getList($id, $columns = ['*']);
+
+    /**
+     * Get Activities
+     * @param array $attributes
+     * @param array $columns
+     * @return Collection
+     */
+    public function getActivities($attributes = [], $columns = ['*']);
 }
