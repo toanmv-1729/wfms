@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @push('css')
-    <link href="{{ asset('vendor/css/upload-avatar.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
