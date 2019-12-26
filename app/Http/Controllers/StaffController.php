@@ -55,7 +55,7 @@ class StaffController extends Controller
         $user = $this->userRepository->create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt(str_random(12)),
+            'password' => bcrypt($password),
             'is_admin' => false,
             'user_type' => config('user.type.staff'),
             'created_by' => $this->user->id,
