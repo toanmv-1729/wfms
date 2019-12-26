@@ -31,9 +31,24 @@
                         <div class="col-md-6 col-lg-3 col-xlg-3">
                             <div class="card card-inverse card-dark">
                                 <div class="box bg-inverse text-center">
-                                    <h1 class="font-light text-white">2,064</h1>
+                                    <h1 class="font-light text-white">{{ $project->tickets->count() }}</h1>
                                     <h6 class="text-white">Total Tickets</h6>
-                                    <div class="progress-bar bg-success progress-bar-striped" style="width: 75%; height:15px;" role="progressbar">75%</div>
+                                    @if (!$project->tickets->count())
+                                        <h6 class="text-white">(Done: 0%)</h6>
+                                    @else
+                                        <h6 class="text-white">
+                                            (Done: {{ number_format($project->ticketsClosed->count()/$project->tickets->count() * 100) }}%)
+                                        </h6>
+                                    @endif
+                                    @if (!$project->tickets->count() || !$project->ticketsClosed->count())
+                                        <div class="progress-bar bg-warning progress-bar-striped" style="width: {{1}}%; height:15px;" role="progressbar"></div>
+                                    @else
+                                        <div
+                                            class="progress-bar bg-success progress-bar-striped"
+                                            style="width: {{ number_format($project->ticketsClosed->count()/$project->tickets->count() * 100) }}%; height:15px;"
+                                            role="progressbar">
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -41,9 +56,24 @@
                         <div class="col-md-6 col-lg-3 col-xlg-3">
                             <div class="card card-inverse card-primary">
                                 <div class="box bg-info text-center">
-                                    <h1 class="font-light text-white">1,738</h1>
+                                    <h1 class="font-light text-white">{{ $project->tasks->count() }}</h1>
                                     <h6 class="text-white">Task</h6>
-                                    <div class="progress-bar bg-success progress-bar-striped" style="width: {{100}}%; height:15px;" role="progressbar">100%</div>
+                                    @if (!$project->tasks->count())
+                                        <h6 class="text-white">(Done: 0%)</h6>
+                                    @else
+                                        <h6 class="text-white">
+                                            (Done: {{ number_format($project->tasksClosed->count()/$project->tasks->count() * 100) }}%)
+                                        </h6>
+                                    @endif
+                                    @if (!$project->tasks->count() || !$project->tasksClosed->count())
+                                        <div class="progress-bar bg-warning progress-bar-striped" style="width: {{1}}%; height:15px;" role="progressbar"></div>
+                                    @else
+                                        <div
+                                            class="progress-bar bg-success progress-bar-striped"
+                                            style="width: {{ number_format($project->tasksClosed->count()/$project->tasks->count() * 100) }}%; height:15px;"
+                                            role="progressbar"
+                                        ></div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -51,9 +81,24 @@
                         <div class="col-md-6 col-lg-3 col-xlg-3">
                             <div class="card card-inverse card-danger">
                                 <div class="box text-center">
-                                    <h1 class="font-light text-white">1100</h1>
+                                    <h1 class="font-light text-white">{{ $project->bugs->count() }}</h1>
                                     <h6 class="text-white">Bug</h6>
-                                    <div class="progress-bar bg-success progress-bar-striped" style="width: 75%; height:15px;" role="progressbar">75%</div>
+                                    @if (!$project->bugs->count())
+                                        <h6 class="text-white">(Done: 0%)</h6>
+                                    @else
+                                        <h6 class="text-white">
+                                            (Done: {{ number_format($project->bugsClosed->count()/$project->bugs->count() * 100) }}%)
+                                        </h6>
+                                    @endif
+                                    @if (!$project->bugs->count() || !$project->bugsClosed->count())
+                                        <div class="progress-bar bg-warning progress-bar-striped" style="width: {{1}}%; height:15px;" role="progressbar"></div>
+                                    @else
+                                        <div
+                                            class="progress-bar bg-success progress-bar-striped"
+                                            style="width: {{ number_format($project->bugsClosed->count()/$project->bugs->count() * 100) }}%; height:15px;"
+                                            role="progressbar"
+                                        ></div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -61,9 +106,24 @@
                         <div class="col-md-6 col-lg-3 col-xlg-3">
                             <div class="card card-inverse card-dark">
                                 <div class="box bg-primary text-center">
-                                    <h1 class="font-light text-white">964</h1>
+                                    <h1 class="font-light text-white">{{ $project->features->count() }}</h1>
                                     <h6 class="text-white">Feature</h6>
-                                    <div class="progress-bar bg-success progress-bar-striped" style="width: 75%; height:15px;" role="progressbar">75%</div>
+                                    @if (!$project->features->count())
+                                        <h6 class="text-white">(Done: 0%)</h6>
+                                    @else
+                                    <h6 class="text-white">
+                                        (Done: {{ number_format($project->featuresClosed->count()/$project->features->count() * 100) }}%)
+                                    </h6>
+                                    @endif
+                                    @if (!$project->features->count() || !$project->featuresClosed->count())
+                                        <div class="progress-bar bg-warning progress-bar-striped" style="width: {{1}}%; height:15px;" role="progressbar"></div>
+                                    @else
+                                        <div
+                                            class="progress-bar bg-success progress-bar-striped"
+                                            style="width: {{ number_format($project->featuresClosed->count()/$project->features->count() * 100) }}%; height:15px;"
+                                            role="progressbar"
+                                        ></div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -96,6 +156,26 @@
                             <p>- Repository link:
                                 <a href="{{ $project->repository_link }}">{{ $project->repository_link }}</a>
                             </p>
+                        </div>
+                    </div>
+                    <h4 class="card-title">Teams ({{ $project->teams->count() }})</h4>
+                    <div class="row m-t-30">
+                        <div class="col-md-4 p-r-40">
+                            @foreach($project->teams as $team)
+                            <p>- {{ $team->name }}: {{ $team->users->count() }} Members
+                                <a href="{{ route('teams.index', $project->slug) }}">(Detail...)</a>
+                            </p>
+                            @endforeach
+                        </div>
+                    </div>
+                    <h4 class="card-title">Versions ({{ $project->versions->count() }})</h4>
+                    <div class="row m-t-30">
+                        <div class="col-md-4 p-r-40">
+                            @foreach($project->versions as $version)
+                            <p>- {{ $version->name }}: From {{ date_format(date_create($version->start_date), 'd-m-Y') }} to {{ date_format(date_create($version->due_date), 'd-m-Y') }}
+                                <a href="{{ route('versions.index', $project->slug) }}">(Detail...)</a>
+                            </p>
+                            @endforeach
                         </div>
                     </div>
                 </div>
