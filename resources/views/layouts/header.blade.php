@@ -11,13 +11,13 @@
                     href="{{ route('staffs.my_projects') }}"
                 @endif
             >
-                <img src="{{ asset('img/logo-icon.png') }}" alt="homepage" class="dark-logo" />
-                <img src="{{ asset('img/logo-light-icon.png') }}" alt="homepage" class="light-logo" />
-                </b>
-                <span>
-                    <img src="{{ asset('img/logo-text.png') }}" alt="homepage" class="dark-logo" />
-                    <img src="{{ asset('img/logo-light-text.png') }}" class="light-logo" alt="homepage" />
-                </span>
+                @if (!Request::is('my-projects') && (!empty($project) || !empty($ticket)))
+                    <h3 style="color: #ffffff;">{{ $project->name ?? $ticket->project->name }}</h3>
+                @elseif (\Auth::user()->company)
+                    <h3 style="color: #ffffff;">{{ \Auth::user()->company->name }}</h3>
+                @else
+                    <img src="{{ asset('img/14-logo2015-05.jpg') }}" width="30%" alt="homepage"/>
+                @endif
             </a>
         </div>
         <div class="navbar-collapse">

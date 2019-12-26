@@ -121,9 +121,14 @@ class StaffController extends Controller
         $project = $this->projectRepository->getProjectInfo($slug);
         $roles = [];
         foreach ($project->users as $user) {
-            $roleName = $this->roleRepository->findOrFail($user->pivot->role_id)->name;
-            $roles[$roleName] = $roles[$roleName] ?? [];
-            array_push($roles[$roleName], $user);
+            $roleId = $user->pivot->role_id;
+            $roles[$roleId] = $roles[$roleId] ?? [];
+            array_push($roles[$roleId], $user);
+        }
+        $roleNames = $this->roleRepository->findMany(array_keys($roles))->pluck('id', 'name')->toArray();
+        foreach ($roleNames as $roleName => $value) {
+            $roles[$roleName] = $roles[$value];
+            unset($roles[$value]);
         }
 
         return view('projects.overview', compact('project', 'roles'));
