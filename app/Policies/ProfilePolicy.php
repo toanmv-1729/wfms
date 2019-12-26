@@ -21,7 +21,7 @@ class ProfilePolicy
 
     public function getProfile(User $user)
     {
-        return ($user->user_type == 'company') || in_array('profile-read', has_permissions($user));
+        return ($user->user_type == 'company') || in_array('profile-write', has_permissions($user));
     }
 
     public function updateProfile(User $user)
