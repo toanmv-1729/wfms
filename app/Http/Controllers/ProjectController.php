@@ -34,6 +34,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
+        $this->authorize('projects.index');
         $projects = $this->projectRepository->getInCompany($this->user->company_id);
 
         return view('projects.index', compact('projects'));
@@ -46,6 +47,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        $this->authorize('projects.create');
         $description = "- What does the project do?\n- Project Objectives,...";
         $roles = $this->roleRepository->getByCompanyId($this->user->company_id);
         $users = $this->userRepository->getStaffInCompany($this->user->company_id);
@@ -61,6 +63,7 @@ class ProjectController extends Controller
      */
     public function store(StoreRequest $request, ProjectService $projectService)
     {
+        $this->authorize('projects.store');
         $projectService->store($this->user, $request->all());
         toastr()->success('Project Successfully Created');
 
@@ -75,6 +78,7 @@ class ProjectController extends Controller
      */
     public function edit($slug)
     {
+        $this->authorize('projects.edit');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
         $description = "- What does the project do?\n- Project Objectives,...";
         $roles = $this->roleRepository->getByCompanyId($this->user->company_id);
@@ -92,6 +96,7 @@ class ProjectController extends Controller
      */
     public function update(StoreRequest $request, $id, ProjectService $projectService)
     {
+        $this->authorize('projects.update');
         $project = $this->projectRepository->findOrFail($id);
         $projectService->update($this->user, $project, $request->all());
         toastr()->success('Project Successfully Updated');

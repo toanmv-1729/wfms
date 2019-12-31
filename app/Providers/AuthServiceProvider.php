@@ -4,14 +4,16 @@ namespace App\Providers;
 
 use App\Models\Role;
 use App\Models\Staff;
-use App\Models\Ticket;
 use App\Models\Team;
+use App\Models\Ticket;
+use App\Models\Project;
 use App\Models\Version;
 
 use App\Policies\RolePolicy;
 use App\Policies\StaffPolicy;
-use App\Policies\TicketPolicy;
 use App\Policies\TeamPolicy;
+use App\Policies\TicketPolicy;
+use App\Policies\ProjectPolicy;
 use App\Policies\VersionPolicy;
 
 use Illuminate\Support\Facades\Gate;
@@ -28,8 +30,9 @@ class AuthServiceProvider extends ServiceProvider
         'App\Model' => 'App\Policies\ModelPolicy',
         Role::class => RolePolicy::class,
         Staff::class => StaffPolicy::class,
-        Ticket::class => TicketPolicy::class,
         Team::class => TeamPolicy::class,
+        Ticket::class => TicketPolicy::class,
+        Project::class => ProjectPolicy::class,
         Version::class => VersionPolicy::class,
     ];
 
@@ -48,6 +51,12 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('roles.create', 'App\Policies\RolePolicy@create');
         Gate::define('roles.update', 'App\Policies\RolePolicy@update');
         Gate::define('roles.destroy', 'App\Policies\RolePolicy@destroy');
+
+        Gate::define('projects.edit', 'App\Policies\ProjectPolicy@edit');
+        Gate::define('projects.store', 'App\Policies\ProjectPolicy@store');
+        Gate::define('projects.index', 'App\Policies\ProjectPolicy@index');
+        Gate::define('projects.create', 'App\Policies\ProjectPolicy@create');
+        Gate::define('projects.update', 'App\Policies\ProjectPolicy@update');
 
         Gate::define('staffs.edit', 'App\Policies\StaffPolicy@edit');
         Gate::define('staffs.store', 'App\Policies\StaffPolicy@store');
