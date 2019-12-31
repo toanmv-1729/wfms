@@ -5,6 +5,7 @@ namespace App\Services;
 use DB;
 use App\Models\User;
 use App\Models\Media;
+use App\Models\Project;
 use App\Helpers\ContentsHelper;
 use App\Contracts\Repositories\UserRepository;
 use App\Contracts\Repositories\ProjectRepository;
@@ -41,6 +42,32 @@ class ProjectService
                 $project->users()->attach($value, ['role_id' => $roleId]);
             }
             if (isset($data['image'])) {
+                $this->uploadProjectImage($project, $data['image']);
+            }
+            DB::commit();
+        } catch (Exception $exception) {
+            app(ExceptionHandler::class)->report($exception);
+            DB::rollBack();
+        }
+    }
+
+    public function update(User $user, Project $project, $data)
+    {
+        DB::beginTransaction();
+        try {
+            $project->update([
+                'name' => $data['name'],
+                'slug' => str_slug($data['name']),
+                'description' => $data['description'],
+                'root_folder_link' => $data['root_folder_link'],
+                'repository_link' => $data['repository_link'],
+            ]);
+            $project->users()->detach();
+            foreach ($data['users'] as $roleId => $value) {
+                $project->users()->attach($value, ['role_id' => $roleId]);
+            }
+            if (isset($data['image'])) {
+                $project->media()->delete();
                 $this->uploadProjectImage($project, $data['image']);
             }
             DB::commit();
