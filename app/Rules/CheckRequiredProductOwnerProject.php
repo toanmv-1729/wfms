@@ -17,7 +17,10 @@ class CheckRequiredProductOwnerProject implements Rule
      */
     public function __construct(User $user, $users)
     {
-        $this->user = $user;
+        $this->user = User::where([
+            'user_type' => 'company',
+            'company_id' => $user->company_id,
+        ])->first();
         $this->users = $users;
     }
 

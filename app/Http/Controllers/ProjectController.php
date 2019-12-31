@@ -68,25 +68,19 @@ class ProjectController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Project $project)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Project  $project
+     * @param  string $slug
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function edit($slug)
     {
-        //
+        $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        $description = "- What does the project do?\n- Project Objectives,...";
+        $roles = $this->roleRepository->getByCompanyId($this->user->company_id);
+        $users = $this->userRepository->getStaffInCompany($this->user->company_id);
+
+        return view('projects.edit', compact('project', 'description', 'roles', 'users'));
     }
 
     /**
@@ -96,19 +90,12 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(StoreRequest $request, $id, ProjectService $projectService)
     {
-        //
-    }
+        $project = $this->projectRepository->findOrFail($id);
+        $projectService->update($this->user, $project, $request->all());
+        toastr()->success('Project Successfully Updated');
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Project $project)
-    {
-        //
+        return redirect()->route('staffs.my_projects.overview', $project->slug);
     }
 }

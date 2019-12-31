@@ -20,6 +20,11 @@ class Project extends Model
         return $this->belongsToMany(User::class)->withPivot('role_id');
     }
 
+    public function positions($pivotId)
+    {
+        return $this->belongsToMany(User::class)->withPivot('role_id')->where('role_id', $pivotId);
+    }
+
     public function media()
     {
         return $this->morphMany(Media::class, 'mediable');

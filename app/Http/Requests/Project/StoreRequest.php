@@ -26,10 +26,10 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required|unique:projects',
+            'name' => 'required',
             'description' => 'required',
-            'root_folder_link' => 'url|unique:projects',
-            'repository_link' => 'url|unique:projects',
+            'root_folder_link' => 'url',
+            'repository_link' => 'url',
             'image' => 'image|max:1024',
             'users' => [
                 'required',

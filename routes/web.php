@@ -30,11 +30,17 @@ Route::group(['middleware' => ['auth', 'isCompany']], function() {
     Route::delete('/roles/{id}', 'RoleController@destroy')->name('roles.destroy');
 
     Route::resource('staffs', 'StaffController');
-    Route::resource('projects', 'ProjectController');
+
+    Route::get('/projects', 'ProjectController@index')->name('projects.index');
+    Route::post('/projects', 'ProjectController@store')->name('projects.store');
+    Route::get('/projects/create', 'ProjectController@create')->name('projects.create');
 });
 
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/roles', 'RoleController@index')->name('roles.index');
+
+    Route::put('/projects/{id}', 'ProjectController@update')->name('projects.update');
+    Route::get('/projects/{slug}/edit', 'ProjectController@edit')->name('projects.edit');
 
     Route::get('/profile', 'UserController@getProfile')->name('users.profile');
     Route::put('/profile/{id}', 'UserController@updateProfile')->name('users.update.profile');
