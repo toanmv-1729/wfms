@@ -18,4 +18,29 @@ class ProjectPolicy
     {
         //
     }
+
+    public function index(User $user)
+    {
+        return ($user->user_type == 'company');
+    }
+
+    public function create(User $user)
+    {
+        return ($user->user_type == 'company');
+    }
+
+    public function store(User $user)
+    {
+        return ($user->user_type == 'company');
+    }
+
+    public function edit(User $user)
+    {
+        return ($user->user_type == 'company') || in_array('project-write', has_permissions($user));
+    }
+
+    public function update(User $user)
+    {
+        return ($user->user_type == 'company') || in_array('project-write', has_permissions($user));
+    }
 }
