@@ -60,6 +60,7 @@
                                             <i class="ti-trash" aria-hidden="true"></i>
                                         </button>
                                         @else
+                                        @can('roles.edit')
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-icon btn-success"
@@ -70,6 +71,8 @@
                                         >
                                             <i class="ti-pencil-alt" aria-hidden="true"></i>
                                         </button>
+                                        @endcan
+                                        @can('roles.destroy')
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-icon btn-danger"
@@ -84,6 +87,7 @@
                                             @csrf
                                             @method('DELETE')
                                         </form>
+                                        @endcan
                                         @endif
                                     </td>
                                 </tr>
