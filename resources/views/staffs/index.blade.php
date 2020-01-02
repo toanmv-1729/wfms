@@ -42,6 +42,7 @@
                                     </td>
                                     <td>{{ $staff->last_login_time }}</td>
                                     <td>
+                                        @can('staffs.edit')
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-icon btn-success"
@@ -52,6 +53,8 @@
                                         >
                                             <i class="ti-pencil-alt" aria-hidden="true"></i>
                                         </button>
+                                        @endcan
+                                        @can('staffs.destroy')
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-icon btn-danger"
@@ -66,6 +69,7 @@
                                             @csrf
                                             @method('DELETE')
                                         </form>
+                                        @endcan
                                     </td>
                                 </tr>
                                 @endforeach

@@ -26,11 +26,13 @@
                 <div class="card-body">
                     <h4 class="card-title">Ticket List Tracking</h4>
                     <h6 class="card-subtitle">List of ticket open by customers</h6>
+                    @can('projects.edit')
                     <div>
                         <a href="{{ route('projects.edit', $project->slug) }}" style="position: absolute; right: 40px; top: 20px;">
                             <i class="mdi mdi-table-edit"></i> Edit
                         </a>
                     </div>
+                    @endcan
                     <div class="row m-t-40">
                         <!-- Column -->
                         <div class="col-md-6 col-lg-3 col-xlg-3">

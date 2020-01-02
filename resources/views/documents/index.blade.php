@@ -166,6 +166,7 @@
                                     <span class="fa fa-folder fs--70 m-l-10">
                                         <p class="doc-name">{{ str_limit($document->name, 20) }}</p>
                                     </span>
+                                    @can('documents.update')
                                     <button
                                         type="button"
                                         class="btn btn-sm btn-icon btn-success btn-custom-edit"
@@ -175,6 +176,8 @@
                                     >
                                         <i class="ti-pencil-alt" aria-hidden="true"></i>
                                     </button>
+                                    @endcan
+                                    @can('documents.destroy')
                                     <button
                                         type="button"
                                         class="btn btn-sm btn-icon btn-danger btn-custom-delete"
@@ -186,9 +189,10 @@
                                         <i class="ti-trash" aria-hidden="true"></i>
                                     </button>
                                     <form id="delete-form-{{ $document->id }}" action="{{ route('documents.destroy', $document->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                    @endcan
                                 </div>
                             </div>
                             @endif
@@ -200,6 +204,7 @@
                             <div class="col-4 m-t-20 m-b-30" ondblclick="redirectFile('{{ $document->link }}')">
                                 <div class="doc-item">
                                     <span class="fa fa-file fs--100 m-t-20"></span>
+                                    @can('documents.update')
                                     <button
                                         type="button"
                                         class="btn btn-sm btn-icon btn-success btn-custom-edit"
@@ -209,6 +214,8 @@
                                     >
                                         <i class="ti-pencil-alt" aria-hidden="true"></i>
                                     </button>
+                                    @endcan
+                                    @can('documents.destroy')
                                     <button
                                         type="button"
                                         class="btn btn-sm btn-icon btn-danger btn-custom-delete"
@@ -220,9 +227,10 @@
                                         <i class="ti-trash" aria-hidden="true"></i>
                                     </button>
                                     <form id="delete-form-{{ $document->id }}" action="{{ route('documents.destroy', $document->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                    @endcan
                                     <p class="m-t-10 m-b-20" style="font-size: 20px; text-align: center;">
                                         {{ str_limit($document->name, 20) }}
                                     </p>

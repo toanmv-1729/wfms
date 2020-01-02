@@ -72,9 +72,12 @@
                         />
                         <h4>{{ $ticket->title }}</h4>
                         <div>
+                            @can('tickets.edit')
                             <a href="{{ route('tickets.edit', $ticket->id) }}" style="position: absolute; right: 100px; top: 0px;">
                                 <i class="mdi mdi-table-edit"></i> Edit
                             </a>
+                            @endcan
+                            @can('tickets.destroy')
                             <a href="javascript:void(0)" onclick="destroyTicket({{ $ticket->id }})" style="color:red; position: absolute; right: 25px; top: 0px;">
                                 <i class="mdi mdi-delete-empty"></i> Delete
                             </a>
@@ -82,6 +85,7 @@
                                 @csrf
                                 @method('DELETE')
                             </form>
+                            @endcan
                         </div>
                         @if ($ticket->created_at == $ticket->updated_at)
                         <h6>Created by {{ $ticket->user->name }} about {{ $ticket->created_at->diffForHumans() }}.</h6>
