@@ -2,20 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Role;
-use App\Models\Staff;
-use App\Models\Team;
-use App\Models\Ticket;
-use App\Models\Project;
-use App\Models\Version;
-
-use App\Policies\RolePolicy;
-use App\Policies\StaffPolicy;
-use App\Policies\TeamPolicy;
-use App\Policies\TicketPolicy;
-use App\Policies\ProjectPolicy;
-use App\Policies\VersionPolicy;
-
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -28,12 +14,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
-        Role::class => RolePolicy::class,
-        Staff::class => StaffPolicy::class,
-        Team::class => TeamPolicy::class,
-        Ticket::class => TicketPolicy::class,
-        Project::class => ProjectPolicy::class,
-        Version::class => VersionPolicy::class,
     ];
 
     /**

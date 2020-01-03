@@ -31,6 +31,9 @@ class VersionController extends Controller
     {
         $this->authorize('versions.index');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        if (!in_array($project->id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $versions = $this->versionRepository->getByAttributesWithRelation([
             'project_id' => $project->id,
         ], ['tickets', 'tasks', 'bugs', 'features', 'ticketsClosed', 'tasksClosed', 'bugsClosed', 'featuresClosed']);
@@ -47,6 +50,9 @@ class VersionController extends Controller
     public function store(StoreRequest $request, VersionService $versionService)
     {
         $this->authorize('versions.store');
+        if (!in_array($request->project, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $result = $versionService->store($this->user, $request->all());
         $result ? toastr()->success('Version Successfully Created') : toastr()->error('Version Created Error');
 
@@ -64,6 +70,9 @@ class VersionController extends Controller
     {
         $this->authorize('versions.update');
         $version = $this->versionRepository->findOrFail($id);
+        if (!in_array($version->project_id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $result = $versionService->update($this->user, $version, $request->all());
         $result ? toastr()->success('Version Successfully Updated') : toastr()->error('Version Updated Error');
 
@@ -80,6 +89,9 @@ class VersionController extends Controller
     {
         $this->authorize('versions.destroy');
         $version = $this->versionRepository->findOrFail($id);
+        if (!in_array($version->project_id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $slug = optional($version->project)->slug;
         $result = $version->delete();
         $result ? toastr()->success('Version Successfully Deleted') : toastr()->error('Version Deleted Error');

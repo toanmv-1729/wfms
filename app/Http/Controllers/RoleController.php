@@ -65,6 +65,9 @@ class RoleController extends Controller
     {
         $this->authorize('roles.edit');
         $role = $this->roleRepository->findOrFail($id);
+        if ($this->user->id !== $role->user_id) {
+            return view('errors.403');
+        }
         $permissions = $this->permissionRepository->all(['id', 'name']);
 
         return view('roles.edit', compact('role', 'permissions'));
@@ -74,6 +77,9 @@ class RoleController extends Controller
     {
         $this->authorize('roles.update');
         $role = $this->roleRepository->findOrFail($id);
+        if ($this->user->id !== $role->user_id) {
+            return view('errors.403');
+        }
         $role->update([
             'name' => $request->name,
         ]);
@@ -87,6 +93,9 @@ class RoleController extends Controller
     {
         $this->authorize('roles.destroy');
         $role = $this->roleRepository->findOrFail($id);
+        if ($this->user->id !== $role->user_id) {
+            return view('errors.403');
+        }
         $role->permissions()->detach();
         $role->delete();
 

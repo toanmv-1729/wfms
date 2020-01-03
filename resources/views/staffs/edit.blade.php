@@ -34,6 +34,7 @@
                                             type="text"
                                             id="firstName"
                                             name="name"
+                                            disabled
                                             class="form-control"
                                             placeholder="Please Input Role's Name"
                                             value="{{ $staff->name }}"

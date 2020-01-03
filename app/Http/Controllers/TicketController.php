@@ -45,6 +45,9 @@ class TicketController extends Controller
     {
         $this->authorize('tickets.index');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug], ['users', 'versions']);
+        if (!in_array($project->id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $tickets = $this->ticketRepository->getByCustomConditions($project->id, $request->all());
 
         return view('tickets.index', compact('tickets', 'project'));
@@ -68,6 +71,9 @@ class TicketController extends Controller
     {
         $this->authorize('tickets.create');
         $project = $this->projectRepository->getProjectInfo($slug);
+        if (!in_array($project->id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $sample = $this->sampleDescriptionRepository->findActiveSampleInProject($project->id);
 
         return view('tickets.create', compact('project', 'sample'));
@@ -77,6 +83,9 @@ class TicketController extends Controller
     {
         $this->authorize('tickets.createSubTicket');
         $project = $this->projectRepository->getProjectInfo($slug);
+        if (!in_array($project->id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $ticketParent = $this->ticketRepository->findOrFail($id, ['id', 'title']);
         $sample = $this->sampleDescriptionRepository->findActiveSampleInProject($project->id);
 
@@ -93,6 +102,9 @@ class TicketController extends Controller
     public function store(StoreRequest $request, TicketService $ticketService)
     {
         $this->authorize('tickets.store');
+        if (!in_array($request->pid, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $result = $ticketService->store($this->user, $request->all());
         $result ? toastr()->success('Ticket Successfully Created') : toastr()->error('Ticket Created Error');
 
@@ -109,6 +121,9 @@ class TicketController extends Controller
     {
         $this->authorize('tickets.show');
         $ticket = $this->ticketRepository->findOrFail($id);
+        if (!in_array($ticket->project_id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $notInIds = $ticket->ticketRelations->pluck('ticket_relation_id')->toArray();
         array_push($notInIds, $ticket->id);
         $relationTickets = $this->ticketRepository->getRelationTickets(
@@ -139,6 +154,9 @@ class TicketController extends Controller
     {
         $this->authorize('tickets.edit');
         $ticket = $this->ticketRepository->findOrFail($id);
+        if (!in_array($ticket->project_id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
 
         return view('tickets.edit', compact('ticket'));
     }
@@ -154,6 +172,9 @@ class TicketController extends Controller
     {
         $this->authorize('tickets.update');
         $ticket = $this->ticketRepository->findOrFail($id);
+        if (!in_array($ticket->project_id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $result = $ticketService->update($this->user, $ticket, $request->all());
         $result ? toastr()->success('Ticket Successfully Updated') : toastr()->error('Ticket Updated Error');
 
@@ -170,6 +191,9 @@ class TicketController extends Controller
     {
         $this->authorize('tickets.destroy');
         $ticket = $this->ticketRepository->findOrFail($id);
+        if (!in_array($ticket->project_id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $slug = $ticket->project->slug;
         $result = $ticket->delete();
         $result ? toastr()->success('Ticket Successfully Deleted') : toastr()->error('Ticket Deleted Error');
