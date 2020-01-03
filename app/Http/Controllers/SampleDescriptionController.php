@@ -25,6 +25,9 @@ class SampleDescriptionController extends Controller
     {
         $this->authorize('samples.index');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        if (!in_array($project->id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $sampleDescriptions = $this->sampleDescriptionRepository->getByAttributesWithRelation([
             'project_id' => $project->id,
         ], ['project', 'user']);
@@ -35,6 +38,9 @@ class SampleDescriptionController extends Controller
     public function store(StoreRequest $request)
     {
         $this->authorize('samples.store');
+        if (!in_array($request->project, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         if ($request->status) {
             $this->sampleDescriptionRepository->updateStatus($request->project);
         }
@@ -54,6 +60,9 @@ class SampleDescriptionController extends Controller
     {
         $this->authorize('samples.update');
         $sampleDescription = $this->sampleDescriptionRepository->findOrFail($id);
+        if (!in_array($sampleDescription->project_id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         if ($request->status && !$sampleDescription->status) {
             $this->sampleDescriptionRepository->updateStatus($request->project);
         }
@@ -71,6 +80,9 @@ class SampleDescriptionController extends Controller
     {
         $this->authorize('samples.destroy');
         $sampleDescription = $this->sampleDescriptionRepository->findOrFail($id);
+        if (!in_array($sampleDescription->project_id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $slug = $sampleDescription->project->slug;
         $sampleDescription->delete();
         toastr()->success('Sample Successfully Deleted');

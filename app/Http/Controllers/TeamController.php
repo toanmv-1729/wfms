@@ -32,6 +32,9 @@ class TeamController extends Controller
     {
         $this->authorize('teams.index');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        if (!in_array($project->id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $teams = $this->teamRepository->getByAttributesWithRelation(['project_id' => $project->id], ['users']);
 
         return view('teams.index', compact('teams', 'project'));
@@ -46,6 +49,9 @@ class TeamController extends Controller
     public function store(StoreRequest $request)
     {
         $this->authorize('teams.store');
+        if (!in_array($request->project, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         DB::beginTransaction();
         try {
             $team = $this->teamRepository->create([
@@ -76,6 +82,9 @@ class TeamController extends Controller
     {
         $this->authorize('teams.update');
         $team = $this->teamRepository->findOrFail($id);
+        if (!in_array($team->project_id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $slug = $team->project->slug;
         DB::beginTransaction();
         try {
@@ -104,6 +113,9 @@ class TeamController extends Controller
     {
         $this->authorize('teams.destroy');
         $team = $this->teamRepository->findOrFail($id);
+        if (!in_array($team->project_id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $slug = $team->project->slug;
         DB::beginTransaction();
         try {

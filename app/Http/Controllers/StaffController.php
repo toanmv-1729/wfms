@@ -74,6 +74,9 @@ class StaffController extends Controller
     {
         $this->authorize('staffs.edit');
         $staff = $this->userRepository->findOrFail($id);
+        if ($this->user->id !== $staff->created_by) {
+            return view('errors.403');
+        }
         $roles = $this->roleRepository->getByCompanyId($this->user->company_id);
 
         return view('staffs.edit', compact('staff', 'roles'));
@@ -83,6 +86,9 @@ class StaffController extends Controller
     {
         $this->authorize('staffs.update');
         $staff = $this->userRepository->findOrFail($id);
+        if ($this->user->id !== $staff->created_by) {
+            return view('errors.403');
+        }
         $staff->roles()->sync($request->roles);
         toastr()->success('Staff Successfully Updated');
 
@@ -93,6 +99,9 @@ class StaffController extends Controller
     {
         $this->authorize('staffs.destroy');
         $staff = $this->userRepository->findOrFail($id);
+        if ($this->user->id !== $staff->created_by) {
+            return view('errors.403');
+        }
         $staff->update([
             'email' => now()->format('YmdHis') . $staff->email,
         ]);

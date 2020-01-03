@@ -31,6 +31,9 @@ class DocumentController extends Controller
     {
         $this->authorize('documents.index');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        if (!in_array($project->id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $documents = $this->documentRepository->getRootItemsInProject($project->id);
 
         return view('documents.index', compact('project', 'documents'));
@@ -40,6 +43,9 @@ class DocumentController extends Controller
     {
         $this->authorize('documents.indexChild');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        if (!in_array($project->id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $currentDocument = $this->documentRepository->findByAttributes(['uuid' => $uuid]);
         $documents = $this->documentRepository->getChildDocuments($project->id, $currentDocument->id);
 
@@ -64,6 +70,9 @@ class DocumentController extends Controller
     public function store(StoreRequest $request)
     {
         $this->authorize('documents.store');
+        if (!in_array($request->project, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         try {
             if ($request->parent) {
                 $parentId = $this->documentRepository->findByAttributes([
@@ -102,6 +111,9 @@ class DocumentController extends Controller
     {
         $this->authorize('documents.update');
         $document = $this->documentRepository->findOrFail($id);
+        if (!in_array($document->project_id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $document->update([
             'name' => $request->name ?? $document->name,
             'link' => $request->link ?? $document->link,
@@ -123,6 +135,9 @@ class DocumentController extends Controller
     {
         $this->authorize('documents.destroy');
         $document = $this->documentRepository->findOrFail($id);
+        if (!in_array($document->project_id, $this->user->projects->pluck('id')->toArray())) {
+            return view('errors.403');
+        }
         $childrenIds = $this->documentRepository
             ->getByAttributes(['parent_id' => $id])
             ->pluck('id')

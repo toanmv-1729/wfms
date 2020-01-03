@@ -80,6 +80,12 @@ class ProjectController extends Controller
     {
         $this->authorize('projects.edit');
         $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
+        if (($this->user->user_type !== 'company' &&
+                !in_array($this->user->id, $project->users->pluck('id')->toArray())) ||
+            ($this->user->user_type === 'company' && $this->user->company_id !== $project->company_id)
+        ) {
+            return view('errors.403');
+        }
         $description = "- What does the project do?\n- Project Objectives,...";
         $roles = $this->roleRepository->getByCompanyId($this->user->company_id);
         $users = $this->userRepository->getStaffInCompany($this->user->company_id);
@@ -98,6 +104,12 @@ class ProjectController extends Controller
     {
         $this->authorize('projects.update');
         $project = $this->projectRepository->findOrFail($id);
+        if (($this->user->user_type !== 'company' &&
+                !in_array($this->user->id, $project->users->pluck('id')->toArray())) ||
+            ($this->user->user_type === 'company' && $this->user->company_id !== $project->company_id)
+        ) {
+            return view('errors.403');
+        }
         $projectService->update($this->user, $project, $request->all());
         toastr()->success('Project Successfully Updated');
 
