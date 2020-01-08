@@ -43,14 +43,14 @@
             <div class="card">
                 <ul class="nav nav-tabs profile-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" role="tab">Profile</a>
+                        <a class="nav-link active" href="#change-profile" data-toggle="tab" role="tab">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#change-password" data-toggle="tab" role="tab">Change Password</a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active" role="tabpanel">
+                    <div class="tab-pane active" id="change-profile" role="tabpanel">
                         <div class="card-body">
                             <form class="form-horizontal form-material" enctype="multipart/form-data" method="POST" action="{{ route('users.update.profile', $user->id) }}">
                                 @csrf
