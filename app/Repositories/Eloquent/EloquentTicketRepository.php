@@ -66,6 +66,7 @@ class EloquentTicketRepository extends EloquentRepository implements TicketRepos
             ->when(array_get($conditions, 'version'), function ($query) use ($conditions) {
                 $query->whereIn('version_id', array_get($conditions, 'version'));
             })
+            ->with(['user', 'team', 'version', 'assignee'])
             ->get($columns);
     }
 }
