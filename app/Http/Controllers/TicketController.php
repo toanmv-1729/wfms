@@ -44,7 +44,7 @@ class TicketController extends Controller
     public function index(Request $request, $slug)
     {
         $this->authorize('tickets.index');
-        $project = $this->projectRepository->findByAttributes(['slug' => $slug], ['users', 'versions']);
+        $project = $this->projectRepository->findByAttributes(['slug' => $slug]);
         if (!in_array($project->id, $this->user->projects->pluck('id')->toArray())) {
             return view('errors.403');
         }
